@@ -165,47 +165,41 @@ export default function CompanyPageComponent() {
       {/* Who We Are Section */}
       <section className="py-24 md:py-32 bg-secondary/30">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={stagger}
-            className="grid lg:grid-cols-2 gap-16 items-center"
-          >
-            <motion.div variants={fadeUp} className="relative aspect-video lg:aspect-[4/5] rounded-xl overflow-hidden shadow-2xl">
-               <Image
-                  src="https://picsum.photos/seed/fashion-design/800/1000"
-                  alt="Fashion design sketches"
-                  fill
-                  className="object-cover"
-                  data-ai-hint="fashion design"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-            </motion.div>
-            <motion.div variants={fadeUp} className="space-y-6">
-              <span className="text-primary font-semibold uppercase tracking-wider">Who We Are</span>
-              <h2 className="text-4xl font-bold tracking-tight">Redefining Apparel Manufacturing</h2>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                MSS Group BD is a leading apparel manufacturer and retailer based in Bangladesh, established in 2005. We specialize in delivering high-quality clothing solutions to international and domestic markets, providing end-to-end services including product sourcing, design, manufacturing, and delivery.
-              </p>
-              <div className="grid sm:grid-cols-2 gap-6 pt-6 border-t">
-                <div className="flex items-start gap-3">
-                  <Target className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
-                  <div>
-                    <h3 className="text-xl font-bold">Vision</h3>
-                    <p className="text-muted-foreground mt-1">To become a trusted and customer-focused apparel brand recognized for quality, transparency, and innovation.</p>
+          <Card className="grid lg:grid-cols-2 overflow-hidden shadow-2xl bg-card">
+              <div className="relative min-h-[400px] lg:min-h-0">
+                 <Image
+                    src="https://picsum.photos/seed/fashion-design/800/1000"
+                    alt="Fashion design sketches"
+                    fill
+                    className="object-cover"
+                    data-ai-hint="fashion design"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+              </div>
+              <div className="p-8 md:p-12 flex flex-col justify-center">
+                <span className="text-primary font-semibold uppercase tracking-wider">Who We Are</span>
+                <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mt-2">Redefining Apparel Manufacturing</h2>
+                <p className="text-lg text-muted-foreground leading-relaxed mt-4">
+                  MSS Group BD is a leading apparel manufacturer and retailer based in Bangladesh, established in 2005. We specialize in delivering high-quality clothing solutions to international and domestic markets, providing end-to-end services including product sourcing, design, manufacturing, and delivery.
+                </p>
+                <div className="grid sm:grid-cols-2 gap-6 pt-6 mt-6 border-t">
+                  <div className="flex items-start gap-3">
+                    <Target className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
+                    <div>
+                      <h3 className="text-xl font-bold">Vision</h3>
+                      <p className="text-muted-foreground mt-1 text-sm">To become a trusted and customer-focused apparel brand recognized for quality, transparency, and innovation.</p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <BarChart className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
-                  <div>
-                    <h3 className="text-xl font-bold">Mission</h3>
-                    <p className="text-muted-foreground mt-1">To provide reliable, transparent, and customized clothing solutions for businesses and individual clients.</p>
+                  <div className="flex items-start gap-3">
+                    <BarChart className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
+                    <div>
+                      <h3 className="text-xl font-bold">Mission</h3>
+                      <p className="text-muted-foreground mt-1 text-sm">To provide reliable, transparent, and customized clothing solutions for businesses and individual clients.</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </motion.div>
-          </motion.div>
+          </Card>
         </div>
       </section>
       
@@ -334,40 +328,34 @@ export default function CompanyPageComponent() {
       {/* Commitment & Compliance Section */}
       <section className="py-24 md:py-32 bg-background">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={stagger}
-            className="grid lg:grid-cols-2 gap-16 items-center"
-          >
-            <motion.div variants={fadeUp} className="relative aspect-video lg:aspect-square rounded-xl overflow-hidden shadow-2xl">
-               <Image
-                  src="https://picsum.photos/seed/ethical-factory/800/800"
-                  alt="Workers in an ethical factory"
-                  fill
-                  className="object-cover"
-                  data-ai-hint="ethical factory"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-            </motion.div>
-            <motion.div variants={fadeUp} className="space-y-6">
-              <span className="text-primary font-semibold uppercase tracking-wider">Commitment</span>
-              <h2 className="text-4xl font-bold tracking-tight">Ethical & Compliant Manufacturing</h2>
-              <p className="text-lg text-muted-foreground">Ethical practices, sustainable growth, and uncompromising quality form the bedrock of our operations.</p>
-              <div className="space-y-8 pt-6">
-                {complianceItems.map((item) => (
-                  <div key={item.title} className="flex items-start gap-6">
-                    <div className="flex-shrink-0 text-primary">{item.icon}</div>
-                    <div>
-                      <h3 className="text-xl font-bold">{item.title}</h3>
-                      <p className="text-muted-foreground mt-1">{item.description}</p>
+          <Card className="grid lg:grid-cols-2 overflow-hidden shadow-2xl bg-card">
+              <div className="p-8 md:p-12 flex flex-col justify-center">
+                <span className="text-primary font-semibold uppercase tracking-wider">Commitment</span>
+                <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mt-2">Ethical & Compliant Manufacturing</h2>
+                <p className="text-lg text-muted-foreground mt-4">Ethical practices, sustainable growth, and uncompromising quality form the bedrock of our operations.</p>
+                <div className="space-y-6 pt-6 mt-6 border-t">
+                  {complianceItems.map((item) => (
+                    <div key={item.title} className="flex items-start gap-4">
+                      <div className="flex-shrink-0 text-primary mt-1">{item.icon}</div>
+                      <div>
+                        <h3 className="text-xl font-bold">{item.title}</h3>
+                        <p className="text-muted-foreground mt-1 text-sm">{item.description}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </motion.div>
-          </motion.div>
+              <div className="relative min-h-[400px] lg:min-h-0">
+                 <Image
+                    src="https://picsum.photos/seed/ethical-factory/800/800"
+                    alt="Workers in an ethical factory"
+                    fill
+                    className="object-cover"
+                    data-ai-hint="ethical factory"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+              </div>
+          </Card>
         </div>
       </section>
       
