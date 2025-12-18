@@ -18,8 +18,12 @@ import {
   Link as LinkIcon,
   Globe,
   RefreshCw,
+  Mail,
+  Lightbulb,
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: `Privacy Policy - ${siteConfig.name}`,
@@ -168,6 +172,13 @@ const policySections = [
   },
 ];
 
+const keyHighlights = [
+    "We collect personal and usage data to process orders and improve our service.",
+    "We do not sell your personal data. We only share it with trusted partners for essential services.",
+    "We use strong security measures to protect your information.",
+    "You have the right to access, update, and delete your data at any time."
+]
+
 export default function PrivacyPolicyPage() {
   return (
     <div className="bg-background min-h-screen">
@@ -183,34 +194,82 @@ export default function PrivacyPolicyPage() {
       </header>
 
       <div className="container mx-auto px-4 md:px-6 py-16 md:py-24">
-        <Card className="max-w-4xl mx-auto animate-in fade-in duration-500">
-            <CardHeader>
-                <CardTitle className='font-headline text-2xl'>
-                    Your Privacy Matters to Us
-                </CardTitle>
-                <p className="text-muted-foreground pt-2">
-                    At MSS Group, we value your trust and are committed to protecting your personal information. This policy explains how we collect, use, and safeguard your data.
-                </p>
-            </CardHeader>
-            <CardContent>
-                 <Accordion type="single" collapsible className="w-full">
-                    {policySections.map((section, index) => (
-                        <AccordionItem value={`item-${index}`} key={index}>
-                            <AccordionTrigger className="text-lg hover:no-underline">
-                                <div className="flex items-center gap-4">
-                                    {section.icon}
-                                    <span className='font-semibold'>{section.title}</span>
-                                </div>
-                            </AccordionTrigger>
-                            <AccordionContent className="prose prose-sm dark:prose-invert max-w-none pl-14 text-muted-foreground">
-                                {section.content}
-                            </AccordionContent>
-                        </AccordionItem>
-                    ))}
-                </Accordion>
-            </CardContent>
-        </Card>
+        <div className="grid lg:grid-cols-3 gap-12 lg:gap-8 animate-in fade-in duration-500">
+            {/* Main Content */}
+            <div className="lg:col-span-2">
+                <Card>
+                    <CardHeader>
+                        <CardTitle className='font-headline text-2xl'>
+                            Your Privacy Matters to Us
+                        </CardTitle>
+                        <CardDescription>
+                            At MSS Group, we value your trust and are committed to protecting your personal information. This policy explains how we collect, use, and safeguard your data.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <Accordion type="single" collapsible className="w-full">
+                            {policySections.map((section, index) => (
+                                <AccordionItem value={`item-${index}`} key={index}>
+                                    <AccordionTrigger className="text-lg hover:no-underline font-semibold">
+                                        <div className="flex items-center gap-4">
+                                            {section.icon}
+                                            <span>{section.title}</span>
+                                        </div>
+                                    </AccordionTrigger>
+                                    <AccordionContent className="prose prose-sm dark:prose-invert max-w-none pl-14 text-muted-foreground">
+                                        {section.content}
+                                    </AccordionContent>
+                                </AccordionItem>
+                            ))}
+                        </Accordion>
+                    </CardContent>
+                </Card>
+            </div>
+
+            {/* Sidebar */}
+            <div className="space-y-8 lg:mt-0">
+                 <Card className="bg-muted/30">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-3 font-headline text-xl">
+                            <Lightbulb className="h-6 w-6 text-primary" />
+                            <span>Key Highlights</span>
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <ul className="space-y-3">
+                            {keyHighlights.map((item, index) => (
+                                <li key={index} className="flex items-start gap-3">
+                                    <ShieldCheck className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                                    <span className="text-sm text-muted-foreground">{item}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </CardContent>
+                </Card>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-3 font-headline text-xl">
+                            <Mail className="h-6 w-6 text-primary" />
+                            <span>Contact Us</span>
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-sm text-muted-foreground mb-4">
+                            Have questions about your data? Reach out to our privacy team.
+                        </p>
+                        <Button asChild className="w-full">
+                            <Link href="mailto:info@mssgroupbd.com">
+                                Email: info@mssgroupbd.com
+                            </Link>
+                        </Button>
+                    </CardContent>
+                </Card>
+            </div>
+        </div>
       </div>
     </div>
   );
 }
+
+    
