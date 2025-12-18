@@ -5,24 +5,20 @@ export function Logo(props: SVGProps<SVGSVGElement>) {
     <svg
       width="40"
       height="40"
-      viewBox="0 0 40 40"
+      viewBox="0 0 140 40"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <g clipPath="url(#clip0_303_2)">
-        <path d="M10 0H20L10 40H0L10 0Z" fill="hsl(var(--primary))" />
-        <path
-          d="M39.6 19.8L20 40H12.4L32 19.8L12.4 0H20L39.6 19.8Z"
-          fill="hsl(var(--primary))"
-          fillOpacity="0.7"
-        />
-      </g>
-      <defs>
-        <clipPath id="clip0_303_2">
-          <rect width="40" height="40" fill="white" />
-        </clipPath>
-      </defs>
+      <path
+        d="M0 20V0H20V20H40V0H60V40H0V20Z"
+        fill="hsl(var(--accent))"
+      />
+      <path
+        d="M70 40H90L110 20L90 0H70L90 20L70 40Z"
+        fill="hsl(var(--chart-1))"
+      />
+      <path d="M140 40V0H120V40H140Z" fill="hsl(var(--primary))" />
     </svg>
   );
 }

@@ -14,15 +14,16 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   keywords: [
-    'Industrial Conglomerate',
-    'Real Estate',
-    'Engineering',
-    'Logistics',
-    'Waste Management',
-    'Renewable Energy',
+    'Apparel Sourcing',
+    'Apparel Manufacturing',
+    'Bangladesh RMG',
+    'Knitwear',
+    'Woven',
+    'Denim',
+    'Sweater',
   ],
-  authors: [{ name: 'Ahmed Amin Group' }],
-  creator: 'Ahmed Amin Group',
+  authors: [{ name: 'MSS Group' }],
+  creator: 'MSS Group',
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     images: [`${siteConfig.url}/og.jpg`],
-    creator: '@ahmedamin',
+    creator: '@mssgroup',
   },
   icons: {
     icon: '/favicon.ico',
@@ -67,7 +68,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@700&display=swap"
           rel="stylesheet"
         />
       </head>
@@ -78,7 +79,7 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >

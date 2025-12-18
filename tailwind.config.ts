@@ -1,5 +1,4 @@
 import type {Config} from 'tailwindcss';
-import { nextui } from '@nextui-org/react';
 const {fontFamily} = require('tailwindcss/defaultTheme');
 import plugin from 'tailwindcss/plugin';
 
@@ -9,7 +8,6 @@ export default {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-    './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     container: {
@@ -22,7 +20,7 @@ export default {
     extend: {
       fontFamily: {
         body: ['Inter', 'sans-serif'],
-        headline: ['Manrope', 'sans-serif'],
+        headline: ['Space Grotesk', 'sans-serif'],
       },
       colors: {
         background: 'hsl(var(--background))',
