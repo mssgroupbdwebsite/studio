@@ -23,8 +23,8 @@ export function MainNav({ items }: MainNavProps) {
                   key={index}
                   href={item.href}
                   className={cn(
-                    'relative flex items-center rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors duration-200 ease-in-out hover:bg-secondary hover:text-foreground',
-                    pathname === item.href && 'text-foreground',
+                    'relative flex items-center rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors duration-200 ease-in-out hover:bg-primary/10 hover:text-primary',
+                    pathname === item.href && 'text-primary',
                     item.disabled && 'cursor-not-allowed opacity-80'
                   )}
                 >

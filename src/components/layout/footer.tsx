@@ -22,7 +22,7 @@ export function Footer() {
               <ul className="mt-4 space-y-2">
                 {siteConfig.mainNav.map((item) => (
                   <li key={item.href}>
-                    <Link href={item.href!} className="text-sm text-muted-foreground hover:text-foreground">
+                    <Link href={item.href!} className="text-sm text-muted-foreground hover:text-primary">
                       {item.title}
                     </Link>
                   </li>
@@ -32,11 +32,11 @@ export function Footer() {
             <div>
               <h3 className="font-semibold font-headline">Company</h3>
               <ul className="mt-4 space-y-2">
-                <li><Link href="/about" className="text-sm text-muted-foreground hover:text-foreground">About Us</Link></li>
-                <li><Link href="/quality" className="text-sm text-muted-foreground hover:text-foreground">Compliance</Link></li>
-                <li><Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground">Careers</Link></li>
-                <li><Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-foreground">Privacy Policy</Link></li>
-                <li><Link href="/disclaimer" className="text-sm text-muted-foreground hover:text-foreground">Disclaimer</Link></li>
+                <li><Link href="/about" className="text-sm text-muted-foreground hover:text-primary">About Us</Link></li>
+                <li><Link href="/quality" className="text-sm text-muted-foreground hover:text-primary">Compliance</Link></li>
+                <li><Link href="/contact" className="text-sm text-muted-foreground hover:text-primary">Careers</Link></li>
+                <li><Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary">Privacy Policy</Link></li>
+                <li><Link href="/disclaimer" className="text-sm text-muted-foreground hover:text-primary">Disclaimer</Link></li>
               </ul>
             </div>
             <div>
@@ -44,7 +44,7 @@ export function Footer() {
               <p className="mt-4 text-sm text-muted-foreground">
                 Dhaka, Bangladesh
                 <br />
-                <a href="mailto:info@mssgroupbd.com" className="hover:text-foreground">info@mssgroupbd.com</a>
+                <a href="mailto:info@mssgroupbd.com" className="hover:text-primary">info@mssgroupbd.com</a>
               </p>
             </div>
           </div>
