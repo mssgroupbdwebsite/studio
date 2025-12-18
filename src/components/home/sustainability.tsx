@@ -6,39 +6,46 @@ import { Leaf, Recycle, ArrowRight } from 'lucide-react';
 
 export function Sustainability() {
   return (
-    <section className="bg-muted/50">
-      <div className="container mx-auto px-4 md:px-6 py-16 md:py-24">
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-          <div className="relative aspect-square md:aspect-[4/3] rounded-lg overflow-hidden shadow-lg">
+    <section className="bg-background">
+      <div className="container mx-auto px-4 md:px-6 py-16 md:py-32">
+        <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+          <div className="relative aspect-square md:aspect-[4/3.5] rounded-lg overflow-hidden group">
             <Image
-              src="https://picsum.photos/seed/sustainability/600/450"
+              src="https://picsum.photos/seed/green-fabric/800/600"
               alt="Sustainable materials like cotton and linen"
               fill
-              className="object-cover"
-              data-ai-hint="sustainable materials"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              data-ai-hint="green fabric"
               sizes="(max-width: 768px) 100vw, 50vw"
             />
           </div>
           <div className="order-first md:order-last">
-            <h2 className="text-3xl md:text-4xl font-bold font-headline text-primary tracking-tight">
+            <span className="text-primary font-semibold uppercase tracking-wider font-headline">Sustainability</span>
+            <h2 className="mt-2 text-3xl md:text-4xl font-bold font-headline text-foreground tracking-tight">
               Committed to a Greener Future
             </h2>
             <p className="mt-4 text-lg text-muted-foreground">
               We believe in fashion that feels good and does good. Our commitment to sustainability is woven into every aspect of our business, from sourcing eco-friendly materials to ensuring ethical production processes.
             </p>
-            <ul className="mt-6 space-y-4 text-muted-foreground">
-              <li className="flex items-start">
-                <Leaf className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                <span className="ml-3">Prioritizing organic, recycled, and biodegradable materials.</span>
-              </li>
-              <li className="flex items-start">
-                <Recycle className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                <span className="ml-3">Partnering with factories that invest in water and energy reduction.</span>
-              </li>
-            </ul>
-             <Button asChild className="mt-8" size="lg" variant="outline">
+            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="flex items-start gap-4">
+                <Leaf className="h-8 w-8 text-primary flex-shrink-0 mt-1" />
+                <div>
+                    <h4 className="font-semibold">Eco-Friendly Materials</h4>
+                    <p className="text-sm text-muted-foreground">Prioritizing organic, recycled, and biodegradable fabrics.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <Recycle className="h-8 w-8 text-primary flex-shrink-0 mt-1" />
+                <div>
+                    <h4 className="font-semibold">Responsible Production</h4>
+                    <p className="text-sm text-muted-foreground">Partnering with factories that invest in water and energy reduction.</p>
+                </div>
+              </div>
+            </div>
+             <Button asChild className="mt-8" size="lg" variant="link">
               <Link href="/quality">
-                Our Ethical Promise <ArrowRight />
+                Learn About Our Ethical Promise <ArrowRight />
               </Link>
             </Button>
           </div>

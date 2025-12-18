@@ -88,10 +88,11 @@ const keyHighlights = [
 export default function DisclaimerPage() {
   return (
     <div className="bg-background min-h-screen">
-      <header className="bg-primary/5 border-b border-primary/10">
-        <div className="container mx-auto px-4 md:px-6 py-12 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold font-headline text-primary tracking-tight">
-                Disclaimer
+       <header className="bg-secondary/50 border-b">
+        <div className="container mx-auto px-4 md:px-6 py-16 text-center">
+             <span className="text-primary font-semibold uppercase tracking-wider font-headline">Disclaimer</span>
+            <h1 className="mt-2 text-4xl md:text-5xl font-bold font-headline text-foreground tracking-tight">
+                Terms of Use
             </h1>
             <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
               Last Updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
@@ -100,10 +101,10 @@ export default function DisclaimerPage() {
       </header>
 
       <div className="container mx-auto px-4 md:px-6 py-16 md:py-24">
-        <div className="grid lg:grid-cols-3 gap-12 lg:gap-8 animate-in fade-in duration-500">
+        <div className="grid lg:grid-cols-3 gap-12 lg:gap-16 animate-in fade-in duration-500">
             {/* Sidebar */}
             <div className="space-y-8 lg:mt-0">
-                 <Card className="bg-muted/30">
+                 <Card className="bg-secondary/30">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-3 font-headline text-xl">
                             <Lightbulb className="h-6 w-6 text-primary" />
@@ -114,7 +115,7 @@ export default function DisclaimerPage() {
                         <ul className="space-y-3">
                             {keyHighlights.map((item, index) => (
                                 <li key={index} className="flex items-start gap-3">
-                                    <ShieldAlert className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                                    <ShieldAlert className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                                     <span className="text-sm text-muted-foreground">{item}</span>
                                 </li>
                             ))}
@@ -144,7 +145,7 @@ export default function DisclaimerPage() {
 
             {/* Main Content */}
             <div className="lg:col-span-2">
-                <Card>
+                <Card className="shadow-lg">
                     <CardHeader>
                         <CardTitle className='font-headline text-2xl'>
                             General Information & Terms of Use

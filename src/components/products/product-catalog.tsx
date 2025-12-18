@@ -26,9 +26,9 @@ export function ProductCatalog() {
   const showResetButton = categoryFilter !== 'all' || segmentFilter !== 'all';
 
   return (
-    <section className="w-full">
-      <div className="container mx-auto px-4 md:px-6 py-8">
-        <div className="mb-8 p-4 bg-card border rounded-lg shadow-sm">
+    <section className="w-full bg-background">
+      <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
+        <div className="mb-8 p-4 bg-card border rounded-lg">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex items-center gap-2 font-headline text-lg font-semibold">
                 <ListFilter className="h-5 w-5"/>

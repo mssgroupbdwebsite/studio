@@ -10,11 +10,12 @@ export const metadata: Metadata = {
 
 export default function ProductsPage() {
   return (
-    <div className="flex flex-col">
-      <header className="bg-primary/5 border-b border-primary/10">
-        <div className="container mx-auto px-4 md:px-6 py-12 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold font-headline text-primary tracking-tight">
-                Our Product Catalog
+    <div className="flex flex-col bg-background">
+      <header className="bg-secondary/50 border-b">
+        <div className="container mx-auto px-4 md:px-6 py-16 text-center">
+            <span className="text-primary font-semibold uppercase tracking-wider font-headline">Our Products</span>
+            <h1 className="mt-2 text-4xl md:text-5xl font-bold font-headline text-foreground tracking-tight">
+                Product Catalog
             </h1>
             <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
                 Discover a wide range of high-quality apparel. We offer flexible sourcing through our own manufacturing units and a network of trusted trading partners.

@@ -9,8 +9,9 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '../ui/button';
 import { Logo } from './logo';
 import { cn } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
 
-export function Header() {
+function useScroll() {
   const [scrolled, setScrolled] = React.useState(false);
 
   React.useEffect(() => {
@@ -18,18 +19,27 @@ export function Header() {
       setScrolled(window.scrollY > 10);
     };
 
+    handleScroll();
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
+  return scrolled;
+}
+
+
+export function Header() {
+  const scrolled = useScroll();
+  const pathname = usePathname();
+
   return (
     <header
       className={cn(
-        'sticky top-0 z-40 w-full transition-all duration-300',
-        scrolled
-          ? 'border-b border-border/50 bg-background/80 backdrop-blur-lg'
+        'sticky top-0 z-50 w-full transition-all duration-300',
+         scrolled || pathname !== '/'
+          ? 'border-b bg-background/80 backdrop-blur-xl'
           : 'bg-transparent'
       )}
     >
@@ -43,19 +53,19 @@ export function Header() {
           </Link>
         </div>
 
-        <div className="hidden md:flex">
+        <div className="hidden md:flex flex-1 items-center justify-center">
           <MainNav items={siteConfig.mainNav} />
         </div>
 
 
-        <div className="flex items-center justify-end space-x-2">
-          <nav className="hidden md:flex items-center space-x-2">
-             <Button asChild>
+        <div className="flex items-center justify-end space-x-1">
+          <div className="hidden md:flex items-center space-x-2">
+             <Button asChild size="sm">
               <Link href="/contact">
                 Contact Us
               </Link>
             </Button>
-          </nav>
+          </div>
           <ThemeToggle />
           <MobileNav />
         </div>

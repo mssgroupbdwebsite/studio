@@ -31,9 +31,10 @@ const capabilitiesList = [
 export function Capabilities() {
   return (
     <section className="bg-background">
-      <div className="container mx-auto px-4 md:px-6 py-16 md:py-24">
+      <div className="container mx-auto px-4 md:px-6 py-16 md:py-32">
         <div className="text-center max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold font-headline text-primary tracking-tight">
+           <span className="text-primary font-semibold uppercase tracking-wider font-headline">What We Do Best</span>
+          <h2 className="mt-2 text-3xl md:text-4xl font-bold font-headline text-foreground tracking-tight">
             Our Core Capabilities
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
@@ -41,19 +42,19 @@ export function Capabilities() {
             apparel supply chain with precision and expertise.
           </p>
         </div>
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
           {capabilitiesList.map((capability, index) => (
-            <Card key={index} className="flex items-start gap-4 p-6 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex-shrink-0">{capability.icon}</div>
+            <div key={index} className="flex items-start gap-6 p-6">
+              <div className="flex-shrink-0 mt-1">{capability.icon}</div>
               <div>
-                <CardTitle className="font-headline text-xl">
+                <h3 className="font-headline text-xl font-bold">
                   {capability.title}
-                </CardTitle>
-                <CardDescription className="pt-2">
+                </h3>
+                <p className="pt-2 text-muted-foreground">
                   {capability.description}
-                </CardDescription>
+                </p>
               </div>
-            </Card>
+            </div>
           ))}
         </div>
       </div>
