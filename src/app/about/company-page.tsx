@@ -163,7 +163,7 @@ export default function CompanyPageComponent() {
       </header>
 
       {/* Who We Are Section */}
-      <section className="py-24 md:py-32">
+      <section className="py-24 md:py-32 bg-secondary/30">
         <div className="container mx-auto px-4">
           <motion.div
             initial="hidden"
@@ -172,24 +172,7 @@ export default function CompanyPageComponent() {
             variants={stagger}
             className="grid lg:grid-cols-2 gap-16 items-center"
           >
-            <motion.div variants={fadeUp} className="space-y-6">
-              <Badge>Who We Are</Badge>
-              <h2 className="text-4xl font-bold tracking-tight">Redefining Apparel Manufacturing</h2>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                MSS Group BD is a leading apparel manufacturer and retailer based in Bangladesh, established in 2005. We specialize in delivering high-quality clothing solutions to international and domestic markets, providing end-to-end services including product sourcing, design, manufacturing, and delivery.
-              </p>
-              <div className="grid sm:grid-cols-2 gap-6 pt-6 border-t">
-                <div>
-                  <h3 className="text-xl font-bold flex items-center gap-2"><Target className="h-6 w-6 text-primary" /> Vision</h3>
-                  <p className="text-muted-foreground mt-2">To become a trusted and customer-focused apparel brand recognized for quality, transparency, and innovation.</p>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold flex items-center gap-2"><BarChart className="h-6 w-6 text-primary" /> Mission</h3>
-                  <p className="text-muted-foreground mt-2">To provide reliable, transparent, and customized clothing solutions for businesses and individual clients.</p>
-                </div>
-              </div>
-            </motion.div>
-            <motion.div variants={fadeUp} className="relative aspect-[4/5] rounded-xl overflow-hidden shadow-2xl">
+            <motion.div variants={fadeUp} className="relative aspect-video lg:aspect-[4/5] rounded-xl overflow-hidden shadow-2xl">
                <Image
                   src="https://picsum.photos/seed/fashion-design/800/1000"
                   alt="Fashion design sketches"
@@ -199,12 +182,35 @@ export default function CompanyPageComponent() {
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
             </motion.div>
+            <motion.div variants={fadeUp} className="space-y-6">
+              <span className="text-primary font-semibold uppercase tracking-wider">Who We Are</span>
+              <h2 className="text-4xl font-bold tracking-tight">Redefining Apparel Manufacturing</h2>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                MSS Group BD is a leading apparel manufacturer and retailer based in Bangladesh, established in 2005. We specialize in delivering high-quality clothing solutions to international and domestic markets, providing end-to-end services including product sourcing, design, manufacturing, and delivery.
+              </p>
+              <div className="grid sm:grid-cols-2 gap-6 pt-6 border-t">
+                <div className="flex items-start gap-3">
+                  <Target className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
+                  <div>
+                    <h3 className="text-xl font-bold">Vision</h3>
+                    <p className="text-muted-foreground mt-1">To become a trusted and customer-focused apparel brand recognized for quality, transparency, and innovation.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <BarChart className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
+                  <div>
+                    <h3 className="text-xl font-bold">Mission</h3>
+                    <p className="text-muted-foreground mt-1">To provide reliable, transparent, and customized clothing solutions for businesses and individual clients.</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
       
       {/* Core Values Section */}
-      <section className="py-24 md:py-32 bg-secondary/50">
+      <section className="py-24 md:py-32 bg-background">
         <div className="container mx-auto px-4 text-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
             <h2 className="text-4xl font-bold mb-4">Our Core Values</h2>
@@ -222,7 +228,7 @@ export default function CompanyPageComponent() {
             {coreValues.map((value) => (
               <motion.div key={value.text} variants={fadeUp} className="flex flex-col items-center gap-4">
                 <motion.div 
-                  className="flex h-20 w-20 items-center justify-center rounded-full bg-background shadow-lg border"
+                  className="flex h-20 w-20 items-center justify-center rounded-full bg-secondary shadow-lg border"
                   whileHover={{ scale: 1.1, rotate: 10 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
@@ -236,7 +242,7 @@ export default function CompanyPageComponent() {
       </section>
 
       {/* Product Expertise Section */}
-      <section className="py-24 md:py-32">
+      <section className="py-24 md:py-32 bg-secondary/30">
         <div className="container mx-auto px-4">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4">Product Expertise & Categories</h2>
@@ -251,7 +257,7 @@ export default function CompanyPageComponent() {
           >
             {productCategories.map((category) => (
               <motion.div key={category.title} variants={fadeUp}>
-                <Card className="p-6 h-full shadow-md hover:shadow-xl hover:-translate-y-1 transition-all">
+                <Card className="p-6 h-full shadow-md hover:shadow-xl hover:-translate-y-1 transition-all bg-background">
                   <CardHeader className="p-0 mb-4">
                     <CardTitle className="flex items-center gap-3 text-xl font-bold">
                       <span className="text-primary">{category.icon}</span>
@@ -273,7 +279,7 @@ export default function CompanyPageComponent() {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-24 md:py-32 bg-secondary/50">
+      <section className="py-24 md:py-32 bg-background">
         <div className="container mx-auto px-4">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4">Why Choose MSS Group BD</h2>
@@ -288,7 +294,7 @@ export default function CompanyPageComponent() {
           >
             {strengths.map((strength) => (
               <motion.div key={strength.title} variants={fadeUp}>
-                <Card className="p-6 text-center h-full flex flex-col items-center justify-center shadow-md hover:shadow-xl hover:-translate-y-1 transition-all">
+                <Card className="p-6 text-center h-full flex flex-col items-center justify-center shadow-md hover:shadow-xl hover:-translate-y-1 transition-all bg-secondary/30">
                   <div className="flex-shrink-0 text-primary mb-4">{strength.icon}</div>
                   <h3 className="text-xl font-bold">{strength.title}</h3>
                   <p className="text-muted-foreground mt-2 text-sm flex-grow">{strength.description}</p>
@@ -301,7 +307,7 @@ export default function CompanyPageComponent() {
       </section>
 
       {/* Departments Section */}
-      <section className="py-24 md:py-32">
+      <section className="py-24 md:py-32 bg-secondary/30">
         <div className="container mx-auto px-4 text-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
             <h2 className="text-4xl font-bold mb-4">Our Specialized Departments</h2>
@@ -318,7 +324,7 @@ export default function CompanyPageComponent() {
           >
             {departments.map((dept) => (
               <motion.div key={dept} variants={fadeUp} whileHover={{ y: -4 }}>
-                <Badge variant="outline" className="text-base px-4 py-2 rounded-lg cursor-default">{dept}</Badge>
+                <Badge variant="outline" className="text-base px-4 py-2 rounded-lg cursor-default bg-background">{dept}</Badge>
               </motion.div>
             ))}
           </motion.div>
@@ -326,7 +332,7 @@ export default function CompanyPageComponent() {
       </section>
 
       {/* Commitment & Compliance Section */}
-      <section className="py-24 md:py-32 bg-secondary/50">
+      <section className="py-24 md:py-32 bg-background">
         <div className="container mx-auto px-4">
           <motion.div
             initial="hidden"
@@ -335,7 +341,7 @@ export default function CompanyPageComponent() {
             variants={stagger}
             className="grid lg:grid-cols-2 gap-16 items-center"
           >
-            <motion.div variants={fadeUp} className="relative aspect-square rounded-xl overflow-hidden shadow-2xl">
+            <motion.div variants={fadeUp} className="relative aspect-video lg:aspect-square rounded-xl overflow-hidden shadow-2xl">
                <Image
                   src="https://picsum.photos/seed/ethical-factory/800/800"
                   alt="Workers in an ethical factory"
@@ -346,7 +352,8 @@ export default function CompanyPageComponent() {
                 />
             </motion.div>
             <motion.div variants={fadeUp} className="space-y-6">
-              <h2 className="text-4xl font-bold tracking-tight">Commitment & Compliance</h2>
+              <span className="text-primary font-semibold uppercase tracking-wider">Commitment</span>
+              <h2 className="text-4xl font-bold tracking-tight">Ethical & Compliant Manufacturing</h2>
               <p className="text-lg text-muted-foreground">Ethical practices, sustainable growth, and uncompromising quality form the bedrock of our operations.</p>
               <div className="space-y-8 pt-6">
                 {complianceItems.map((item) => (
@@ -367,12 +374,14 @@ export default function CompanyPageComponent() {
       {/* CTA Section */}
       <section className="py-24 md:py-32">
         <div className="container mx-auto px-4">
-          <div className="bg-primary text-primary-foreground rounded-2xl p-12 text-center shadow-2xl overflow-hidden">
+          <div className="bg-primary text-primary-foreground rounded-2xl p-12 text-center shadow-2xl overflow-hidden relative">
+             <div className="absolute inset-0 bg-grid-white/[0.05] [mask-image:linear-gradient(to_bottom,white_5%,transparent_90%)]"></div>
             <motion.div
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               variants={stagger}
+              className="relative z-10"
             >
               <motion.div variants={fadeUp}>
                 <Sparkles className="h-12 w-12 mx-auto mb-4" />
