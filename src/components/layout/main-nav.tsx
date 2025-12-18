@@ -23,12 +23,15 @@ export function MainNav({ items }: MainNavProps) {
                 key={index}
                 href={item.href}
                 className={cn(
-                  'flex items-center text-xs font-medium text-foreground/70 transition-colors hover:text-foreground/90',
+                  'relative flex items-center text-xs font-medium text-foreground/70 transition-transform duration-200 ease-in-out hover:scale-110 hover:text-foreground/90',
                   pathname === item.href && '!text-primary',
                   item.disabled && 'cursor-not-allowed opacity-80'
                 )}
               >
                 {item.title}
+                {pathname === item.href && (
+                  <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-1 w-1 rounded-full bg-primary" />
+                )}
               </Link>
             )
         )
