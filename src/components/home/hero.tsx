@@ -20,7 +20,7 @@ export function Hero() {
       </div>
       <div className="relative z-10 p-4 container mx-auto text-white">
         <div className="max-w-3xl">
-          <h1 className="text-4xl md:text-7xl font-bold font-headline tracking-tight text-shadow-md">
+          <h1 className="text-4xl md:text-6xl font-bold font-headline tracking-tight text-shadow-md">
              Your Partner in Apparel Sourcing & Manufacturing
           </h1>
           <p className="mt-6 max-w-2xl text-lg md:text-xl text-shadow">

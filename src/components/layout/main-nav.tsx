@@ -14,7 +14,7 @@ export function MainNav({ items }: MainNavProps) {
   const pathname = usePathname();
 
   return (
-    <nav className="hidden gap-6 md:flex">
+    <nav className="hidden gap-8 md:flex">
       {items?.length ? (
         items.map(
           (item, index) =>
@@ -23,7 +23,7 @@ export function MainNav({ items }: MainNavProps) {
                 key={index}
                 href={item.href}
                 className={cn(
-                  'flex items-center text-lg font-medium text-foreground/60 transition-colors hover:text-foreground/80',
+                  'flex items-center text-sm font-medium text-foreground/70 transition-colors hover:text-foreground/90',
                   pathname === item.href && '!text-primary',
                   item.disabled && 'cursor-not-allowed opacity-80'
                 )}

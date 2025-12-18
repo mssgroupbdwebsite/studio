@@ -15,7 +15,7 @@ export function Header() {
 
   React.useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 0);
+      setScrolled(window.scrollY > 50);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -27,7 +27,7 @@ export function Header() {
   return (
     <header className={cn(
       "sticky top-0 z-40 w-full transition-all duration-300",
-      scrolled ? "border-b bg-background/80 backdrop-blur-sm" : "bg-transparent"
+      scrolled ? "border-b border-white/20 bg-background/80 backdrop-blur-lg" : "bg-transparent"
     )}>
       <div className="container flex h-20 items-center justify-between">
         <div className="flex gap-6 md:gap-10">
@@ -44,11 +44,8 @@ export function Header() {
         </div>
 
 
-        <div className="flex items-center justify-end space-x-4">
+        <div className="flex items-center justify-end space-x-2">
           <nav className="hidden md:flex items-center space-x-2">
-            <Button variant="outline">
-              Explore Subsidiaries
-            </Button>
              <Button asChild>
               <Link href="/contact">
                 Contact Us
