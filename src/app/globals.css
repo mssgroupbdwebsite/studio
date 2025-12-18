@@ -4,48 +4,50 @@
 
 @layer base {
   :root {
-    --background: 220 13% 97%; /* Lighter Gray */
+    --background: 220 13% 97%;
     --foreground: 224 71.4% 4.1%;
     --card: 0 0% 100%;
     --card-foreground: 224 71.4% 4.1%;
     --popover: 0 0% 100%;
     --popover-foreground: 224 71.4% 4.1%;
-    --primary: 221 78% 33%; /* Blue from logo */
-    --primary-foreground: 0 0% 100%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 210 20% 98%;
     --secondary: 220 13% 91%;
     --secondary-foreground: 220 14.3% 34.3%;
     --muted: 220 13% 91%;
     --muted-foreground: 220 8.9% 46.1%;
-    --accent: 145 63% 39%; /* Green from logo */
-    --accent-foreground: 0 0% 100%;
+    --accent: 220 13% 85%;
+    --accent-foreground: 220 14.3% 34.3%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 220 13% 85%;
     --input: 220 13% 91%;
-    --ring: 221 78% 33%;
+    --ring: 217 91% 60%;
     --radius: 0.5rem;
-    /* Adding the orange as a chart/special color */
-    --chart-1: 35 84% 51%; /* Orange from logo */
+    --chart-1: 217 91% 60%;
   }
+
   .dark {
-    --background: 224 71.4% 4.1%;
+    --background: 223 23% 10%;
     --foreground: 210 20% 98%;
-    --card: 224 71.4% 4.1%;
+    --card: 223 23% 12%;
     --card-foreground: 210 20% 98%;
-    --primary: 221 78% 45%; /* Lighter Blue for dark mode */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 215 27.9% 16.9%;
+    --popover: 223 23% 10%;
+    --popover-foreground: 210 20% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 210 20% 98%;
+    --secondary: 215 28% 17%;
     --secondary-foreground: 210 20% 98%;
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%;
-    --accent: 145 63% 45%; /* Lighter Green for dark mode */
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 85.7% 97.3%;
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
-    --ring: 221 78% 45%;
-    --chart-1: 35 90% 55%; /* Lighter Orange for dark mode */
+    --muted: 215 28% 17%;
+    --muted-foreground: 218 11% 65%;
+    --accent: 215 28% 17%;
+    --accent-foreground: 210 20% 98%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 20% 98%;
+    --border: 215 28% 17%;
+    --input: 215 28% 17%;
+    --ring: 217 91% 60%;
+    --chart-1: 217 91% 60%;
   }
 }
 
