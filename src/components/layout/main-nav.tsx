@@ -23,15 +23,13 @@ export function MainNav({ items }: MainNavProps) {
                 key={index}
                 href={item.href}
                 className={cn(
-                  'relative flex items-center text-xs font-medium text-foreground/70 transition-transform duration-200 ease-in-out hover:scale-110 hover:text-foreground/90',
-                  pathname === item.href && '!text-primary',
+                  'relative flex items-center text-xs font-medium text-foreground/70 transition-colors duration-200 ease-in-out hover:text-primary',
+                  'after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 after:ease-in-out after:origin-center hover:after:scale-x-100',
+                  pathname === item.href && 'text-primary after:scale-x-100',
                   item.disabled && 'cursor-not-allowed opacity-80'
                 )}
               >
                 {item.title}
-                {pathname === item.href && (
-                  <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-1 w-1 rounded-full bg-primary" />
-                )}
               </Link>
             )
         )
