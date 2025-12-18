@@ -1,18 +1,14 @@
 export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
-  name: "MSS Group BD",
-  description: "A premier apparel buying house and manufacturer in Bangladesh, delivering quality and trust since our inception.",
-  url: "https://mssgroupbd.com",
+  name: "Ahmed Amin Group",
+  description: "25+ years of industrial leadership in real estate, engineering, logistics, waste management and renewable energy.",
+  url: "https://ahmedamin.com",
   mainNav: [
-    { title: "Products", href: "/products" },
-    { title: "About Us", href: "/about" },
-    { title: "Quality & Compliance", href: "/quality" },
-    { title: "Contact", href: "/contact" },
+    { title: "Home", href: "/" },
+    { title: "About", href: "/about" },
+    { title: "Leadership", href: "/leadership" },
   ],
   links: {
-    // Add social links here
-    // twitter: "https://twitter.com/example",
-    // facebook: "https://facebook.com/example",
   },
 }

@@ -8,21 +8,35 @@ import { Logo } from './logo';
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background">
-      <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
+    <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur-sm">
+      <div className="container flex h-20 items-center justify-between">
         <div className="flex gap-6 md:gap-10">
           <Link href="/" className="flex items-center space-x-2">
-            <Logo className="h-6 w-6" />
-            <span className="inline-block font-bold font-headline">{siteConfig.name}</span>
+            <Logo className="h-8 w-8" />
+            <span className="hidden font-bold sm:inline-block font-headline text-lg">
+              {siteConfig.name}
+            </span>
           </Link>
+        </div>
+
+        <div className="hidden md:flex">
           <MainNav items={siteConfig.mainNav} />
         </div>
 
-        <div className="flex flex-1 items-center justify-end space-x-4">
-          <nav className="flex items-center space-x-1">
-            <ThemeToggle />
-            <MobileNav />
+
+        <div className="flex items-center justify-end space-x-4">
+          <nav className="hidden md:flex items-center space-x-2">
+            <Button variant="outline">
+              Explore Subsidiaries
+            </Button>
+             <Button asChild>
+              <Link href="/contact">
+                Contact Us
+              </Link>
+            </Button>
           </nav>
+          <ThemeToggle />
+          <MobileNav />
         </div>
       </div>
     </header>
