@@ -25,10 +25,14 @@ export function Header() {
   }, []);
 
   return (
-    <header className={cn(
-      "sticky top-0 z-40 w-full transition-all duration-300",
-      scrolled ? "border-b border-white/20 bg-background/80 backdrop-blur-lg" : "bg-transparent"
-    )}>
+    <header
+      className={cn(
+        'sticky top-0 z-40 w-full transition-all duration-300',
+        scrolled
+          ? 'border-b border-white/20 bg-background/80 backdrop-blur-lg'
+          : 'bg-transparent'
+      )}
+    >
       <div className="container flex h-14 items-center justify-between">
         <div className="flex gap-6 md:gap-10">
           <Link href="/" className="flex items-center space-x-2">
