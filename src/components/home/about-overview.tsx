@@ -19,7 +19,7 @@ export function AboutOverview() {
             />
           </div>
           <div>
-            <span className="text-primary font-semibold uppercase tracking-wider font-headline">About Us</span>
+            <span className="text-primary font-semibold uppercase tracking-wider font-headline">Our Company</span>
             <h2 className="mt-2 text-3xl md:text-4xl font-bold font-headline text-foreground tracking-tight">
               A Legacy of Quality and Trust
             </h2>
@@ -37,7 +37,7 @@ export function AboutOverview() {
             </p>
             <Button asChild className="mt-8" size="lg" variant="link" >
               <Link href="/about">
-                Learn More About Our Story <ArrowRight />
+                Learn More About Our Company <ArrowRight />
               </Link>
             </Button>
           </div>
