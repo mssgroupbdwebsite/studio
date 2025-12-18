@@ -11,15 +11,11 @@ export function Logo(props: SVGProps<SVGSVGElement>) {
       {...props}
     >
       <g clipPath="url(#clip0_303_2)">
-        <path
-          d="M10 0H20L10 40H0L10 0Z"
-          fill="currentColor"
-          className="text-primary"
-        />
+        <path d="M10 0H20L10 40H0L10 0Z" fill="hsl(var(--primary))" />
         <path
           d="M39.6 19.8L20 40H12.4L32 19.8L12.4 0H20L39.6 19.8Z"
-          fill="currentColor"
-          className="text-primary/70"
+          fill="hsl(var(--primary))"
+          fillOpacity="0.7"
         />
       </g>
       <defs>

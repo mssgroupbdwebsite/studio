@@ -21,7 +21,7 @@ export function Hero() {
       <div className="relative z-10 p-4 container mx-auto text-white">
         <div className="max-w-3xl">
           <h1 className="text-4xl md:text-7xl font-bold font-headline tracking-tight text-shadow-md">
-            Ahmed Amin Group Industrial & Business Conglomerate
+             Your Partner in Apparel Sourcing & Manufacturing
           </h1>
           <p className="mt-6 max-w-2xl text-lg md:text-xl text-shadow">
             {siteConfig.description}
@@ -33,8 +33,8 @@ export function Hero() {
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="bg-transparent border-white hover:bg-white hover:text-primary">
-              <Link href="/subsidiaries">
-                View Subsidiaries
+              <Link href="/products">
+                Explore Products
               </Link>
             </Button>
           </div>

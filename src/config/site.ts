@@ -1,13 +1,14 @@
 export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
-  name: "Ahmed Amin Group",
-  description: "25+ years of industrial leadership in real estate, engineering, logistics, waste management and renewable energy.",
-  url: "https://ahmedamin.com",
+  name: "MSS Group",
+  description: "Your trusted, full-service apparel sourcing and manufacturing partner in Bangladesh.",
+  url: "https://mssgroup.com",
   mainNav: [
     { title: "Home", href: "/" },
+    { title: "Products", href: "/products" },
     { title: "About", href: "/about" },
-    { title: "Leadership", href: "/leadership" },
+    { title: "Contact", href: "/contact" },
   ],
   links: {
   },

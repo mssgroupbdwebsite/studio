@@ -1,3 +1,6 @@
+'use client';
+
+import * as React from 'react';
 import Link from 'next/link';
 import { siteConfig } from '@/config/site';
 import { MainNav } from '@/components/layout/main-nav';
@@ -5,10 +8,27 @@ import { MobileNav } from '@/components/layout/mobile-nav';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '../ui/button';
 import { Logo } from './logo';
+import { cn } from '@/lib/utils';
 
 export function Header() {
+  const [scrolled, setScrolled] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur-sm">
+    <header className={cn(
+      "sticky top-0 z-40 w-full transition-all duration-300",
+      scrolled ? "border-b bg-background/80 backdrop-blur-sm" : "bg-transparent"
+    )}>
       <div className="container flex h-20 items-center justify-between">
         <div className="flex gap-6 md:gap-10">
           <Link href="/" className="flex items-center space-x-2">
