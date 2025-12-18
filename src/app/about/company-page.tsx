@@ -2,8 +2,7 @@
 'use client';
 
 import Image from 'next/image';
-import { motion, useScroll, useSpring } from 'framer-motion';
-import { useRef } from 'react';
+import { motion } from 'framer-motion';
 import {
   Card,
   CardContent,
@@ -131,16 +130,9 @@ const stagger = {
 };
 
 export default function CompanyPageComponent() {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   return (
-    <div className="bg-background text-foreground" ref={containerRef}>
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-primary z-50 origin-left"
-        style={{ scaleX }}
-      />
+    <div className="bg-background text-foreground">
       
       {/* Hero Section */}
       <header className="relative h-[70vh] flex items-center justify-center text-center overflow-hidden">
@@ -229,9 +221,13 @@ export default function CompanyPageComponent() {
           >
             {coreValues.map((value) => (
               <motion.div key={value.text} variants={fadeUp} className="flex flex-col items-center gap-4">
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-background shadow-lg border">
+                <motion.div 
+                  className="flex h-20 w-20 items-center justify-center rounded-full bg-background shadow-lg border"
+                  whileHover={{ scale: 1.1, rotate: 10 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
                   <div className="text-primary">{value.icon}</div>
-                </div>
+                </motion.div>
                 <p className="font-semibold text-center text-sm">{value.text}</p>
               </motion.div>
             ))}
@@ -255,7 +251,7 @@ export default function CompanyPageComponent() {
           >
             {productCategories.map((category) => (
               <motion.div key={category.title} variants={fadeUp}>
-                <Card className="p-6 h-full">
+                <Card className="p-6 h-full shadow-md hover:shadow-xl hover:-translate-y-1 transition-all">
                   <CardHeader className="p-0 mb-4">
                     <CardTitle className="flex items-center gap-3 text-xl font-bold">
                       <span className="text-primary">{category.icon}</span>
@@ -292,7 +288,7 @@ export default function CompanyPageComponent() {
           >
             {strengths.map((strength) => (
               <motion.div key={strength.title} variants={fadeUp}>
-                <Card className="p-6 text-center h-full flex flex-col items-center justify-center shadow-md">
+                <Card className="p-6 text-center h-full flex flex-col items-center justify-center shadow-md hover:shadow-xl hover:-translate-y-1 transition-all">
                   <div className="flex-shrink-0 text-primary mb-4">{strength.icon}</div>
                   <h3 className="text-xl font-bold">{strength.title}</h3>
                   <p className="text-muted-foreground mt-2 text-sm flex-grow">{strength.description}</p>
@@ -321,8 +317,8 @@ export default function CompanyPageComponent() {
             className="flex flex-wrap justify-center gap-3 mt-12"
           >
             {departments.map((dept) => (
-              <motion.div key={dept} variants={fadeUp}>
-                <Badge variant="outline" className="text-base px-4 py-2 rounded-lg">{dept}</Badge>
+              <motion.div key={dept} variants={fadeUp} whileHover={{ y: -4 }}>
+                <Badge variant="outline" className="text-base px-4 py-2 rounded-lg cursor-default">{dept}</Badge>
               </motion.div>
             ))}
           </motion.div>
@@ -371,7 +367,7 @@ export default function CompanyPageComponent() {
       {/* CTA Section */}
       <section className="py-24 md:py-32">
         <div className="container mx-auto px-4">
-          <div className="bg-primary text-primary-foreground rounded-2xl p-12 text-center shadow-2xl">
+          <div className="bg-primary text-primary-foreground rounded-2xl p-12 text-center shadow-2xl overflow-hidden">
             <motion.div
               initial="hidden"
               whileInView="visible"
@@ -410,5 +406,3 @@ export default function CompanyPageComponent() {
     </div>
   );
 }
-
-    
