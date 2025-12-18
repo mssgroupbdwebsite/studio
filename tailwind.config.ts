@@ -1,4 +1,7 @@
 import type {Config} from 'tailwindcss';
+import { nextui } from '@nextui-org/react';
+const {fontFamily} = require('tailwindcss/defaultTheme');
+import plugin from 'tailwindcss/plugin';
 
 export default {
   darkMode: ['class'],
@@ -6,13 +9,14 @@ export default {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: '2rem',
       screens: {
-        "2xl": "1400px",
+        '2xl': '1400px',
       },
     },
     extend: {
@@ -89,7 +93,25 @@ export default {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
+      textShadow: {
+        sm: '0 1px 2px var(--tw-shadow-color)',
+        DEFAULT: '0 2px 4px var(--tw-shadow-color)',
+        md: '0 4px 8px var(--tw-shadow-color)',
+        lg: '0 10px 15px var(--tw-shadow-color)',
+      },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [
+    require('tailwindcss-animate'),
+    plugin(function ({matchUtilities, theme}) {
+      matchUtilities(
+        {
+          'text-shadow': value => ({
+            textShadow: value,
+          }),
+        },
+        {values: theme('textShadow')}
+      );
+    }),
+  ],
 } satisfies Config;
