@@ -97,10 +97,41 @@ export default {
         md: '0 4px 8px var(--tw-shadow-color)',
         lg: '0 10px 15px var(--tw-shadow-color)',
       },
+      typography: (theme: (arg0: string) => any) => ({
+        DEFAULT: {
+          css: {
+            color: theme('colors.foreground'),
+            a: {
+              color: theme('colors.primary.DEFAULT'),
+              '&:hover': {
+                color: theme('colors.primary.DEFAULT'),
+              },
+            },
+            'h1, h2, h3, h4': {
+              color: theme('colors.primary.DEFAULT'),
+            },
+          },
+        },
+        invert: {
+           css: {
+              color: theme('colors.muted.foreground'),
+               a: {
+                 color: theme('colors.primary.DEFAULT'),
+                 '&:hover': {
+                   color: theme('colors.primary.DEFAULT'),
+                 },
+               },
+              'h1, h2, h3, h4': {
+                 color: theme('colors.primary.DEFAULT'),
+              },
+           },
+        },
+      }),
     },
   },
   plugins: [
     require('tailwindcss-animate'),
+    require('@tailwindcss/typography'),
     plugin(function ({matchUtilities, theme}) {
       matchUtilities(
         {
