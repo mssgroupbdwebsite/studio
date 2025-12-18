@@ -85,7 +85,7 @@ const categoryIcons = {
     "Tops & Bottoms": <ShirtIcon className="h-5 w-5" />,
     "Accessories": <Briefcase className="h-5 w-5" />,
     "Trims & Packaging": <Package className="h-5 w-5" />,
-    "Footwear & Leather": <Footprints className="h-5 w-5" />,
+    "Footwear & Leather": <Footprints className="h-5 w-5" />
 }
 
 const strengths = [
