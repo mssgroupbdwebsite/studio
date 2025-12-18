@@ -2,8 +2,8 @@
 'use client';
 
 import Image from 'next/image';
-import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { motion, useScroll, useSpring } from 'framer-motion';
+import { useRef } from 'react';
 import {
   Card,
   CardContent,
@@ -12,12 +12,9 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
-  Globe,
-  Star,
   ShieldCheck,
   Heart,
   Users,
-  CheckCircle,
   Gem,
   Award,
   Zap,
@@ -32,7 +29,6 @@ import {
   Package,
   Footprints,
   HeartHandshake,
-  ChevronRight,
   Sparkles,
   TrendingUp,
   Clock,
@@ -41,6 +37,7 @@ import {
   Users2,
   CheckCircle2,
 } from 'lucide-react';
+import Link from 'next/link';
 
 // Animated Shirt Icon
 const AnimatedShirtIcon = () => (
@@ -396,14 +393,14 @@ export default function CompanyPageComponent() {
                     whileTap={{ scale: 0.95 }}
                     className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary-foreground text-primary hover:bg-primary-foreground/90 h-11 px-8"
                   >
-                    Get a Quote
+                    <Link href="/contact">Get a Quote</Link>
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-primary-foreground bg-transparent hover:bg-primary-foreground/10 h-11 px-8"
                   >
-                    Explore Services
+                    <Link href="/products">Explore Services</Link>
                   </motion.button>
               </motion.div>
             </motion.div>

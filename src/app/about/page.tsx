@@ -11,3 +11,5 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return <CompanyPageComponent />;
 }
+
+    
