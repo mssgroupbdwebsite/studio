@@ -101,37 +101,6 @@ export default function DisclaimerPage() {
 
       <div className="container mx-auto px-4 md:px-6 py-16 md:py-24">
         <div className="grid lg:grid-cols-3 gap-12 lg:gap-8 animate-in fade-in duration-500">
-            {/* Main Content */}
-            <div className="lg:col-span-2">
-                <Card>
-                    <CardHeader>
-                        <CardTitle className='font-headline text-2xl'>
-                            General Information & Terms of Use
-                        </CardTitle>
-                        <CardDescription>
-                            The content on MSS Group BD (https://www.mssgroupbd.com) is published in good faith and for general information and shopping purposes only.
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <Accordion type="single" collapsible className="w-full">
-                            {disclaimerSections.map((section, index) => (
-                                <AccordionItem value={`item-${index}`} key={index}>
-                                    <AccordionTrigger className="text-lg hover:no-underline font-semibold">
-                                        <div className="flex items-center gap-4">
-                                            {section.icon}
-                                            <span>{section.title}</span>
-                                        </div>
-                                    </AccordionTrigger>
-                                    <AccordionContent className="prose prose-sm dark:prose-invert max-w-none pl-14 text-muted-foreground">
-                                        {section.content}
-                                    </AccordionContent>
-                                </AccordionItem>
-                            ))}
-                        </Accordion>
-                    </CardContent>
-                </Card>
-            </div>
-
             {/* Sidebar */}
             <div className="space-y-8 lg:mt-0">
                  <Card className="bg-muted/30">
@@ -172,6 +141,38 @@ export default function DisclaimerPage() {
                     </CardContent>
                 </Card>
             </div>
+
+            {/* Main Content */}
+            <div className="lg:col-span-2">
+                <Card>
+                    <CardHeader>
+                        <CardTitle className='font-headline text-2xl'>
+                            General Information & Terms of Use
+                        </CardTitle>
+                        <CardDescription>
+                            The content on MSS Group BD (https://www.mssgroupbd.com) is published in good faith and for general information and shopping purposes only.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <Accordion type="single" collapsible className="w-full">
+                            {disclaimerSections.map((section, index) => (
+                                <AccordionItem value={`item-${index}`} key={index}>
+                                    <AccordionTrigger className="text-lg hover:no-underline font-semibold">
+                                        <div className="flex items-center gap-4">
+                                            {section.icon}
+                                            <span>{section.title}</span>
+                                        </div>
+                                    </AccordionTrigger>
+                                    <AccordionContent className="prose prose-sm dark:prose-invert max-w-none pl-14 text-muted-foreground">
+                                        {section.content}
+                                    </AccordionContent>
+                                </AccordionItem>
+                            ))}
+                        </Accordion>
+                    </CardContent>
+                </Card>
+            </div>
+
         </div>
       </div>
     </div>
