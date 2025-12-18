@@ -8,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Globe,
   Star,
@@ -30,7 +29,10 @@ import {
   Briefcase,
   Layers3,
   Package,
-  Footprints
+  Footprints,
+  Workflow,
+  Sparkles,
+  HeartHandshake
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
@@ -87,12 +89,12 @@ const categoryIcons = {
 }
 
 const strengths = [
-  { icon: <CheckCircle />, title: "Timely & Competitive", description: "High-quality products, on time and at competitive prices." },
-  { icon: <GitCommit />, title: "Full Transparency", description: "Complete client involvement in all production stages." },
-  { icon: <Globe />, title: "Global Standards", description: "Skilled professionals knowledgeable in international standards." },
-  { icon: <Users />, title: "Strong Sourcing", description: "Vast network across Bangladesh and neighboring countries." },
-  { icon: <PenTool />, title: "In-House Development", description: "Expertise in sampling, pattern making, and product development." },
-  { icon: <Star />, title: "Customization Expertise", description: "Specializing in high-fashion, custom embroidery, and printing." },
+  { icon: <CheckCircle className="h-6 w-6 text-primary" />, title: "Timely & Competitive", description: "High-quality products, on time and at competitive prices." },
+  { icon: <GitCommit className="h-6 w-6 text-primary" />, title: "Full Transparency", description: "Complete client involvement in all production stages." },
+  { icon: <Globe className="h-6 w-6 text-primary" />, title: "Global Standards", description: "Skilled professionals knowledgeable in international standards." },
+  { icon: <Users className="h-6 w-6 text-primary" />, title: "Strong Sourcing", description: "Vast network across Bangladesh and neighboring countries." },
+  { icon: <PenTool className="h-6 w-6 text-primary" />, title: "In-House Development", description: "Expertise in sampling, pattern making, and product development." },
+  { icon: <Star className="h-6 w-6 text-primary" />, title: "Customization Expertise", description: "Specializing in high-fashion, custom embroidery, and printing." },
 ];
 
 const departments = [
@@ -105,19 +107,66 @@ export default function CompanyPage() {
   return (
     <div className="bg-background text-foreground">
       {/* Hero Section */}
-      <header className="bg-secondary/50 border-b">
-        <div className="container mx-auto px-4 md:px-6 py-16 text-center">
-            <h1 className="mt-2 text-4xl md:text-5xl font-bold font-headline text-foreground tracking-tight">
+      <header className="relative h-[60vh] flex items-center justify-center text-center text-white overflow-hidden">
+        <div className="absolute inset-0">
+            <Image
+                src="https://picsum.photos/seed/company-hero/1800/1200"
+                alt="Modern apparel factory"
+                fill
+                className="object-cover"
+                data-ai-hint="apparel factory"
+                priority
+                sizes="100vw"
+            />
+            <div className="absolute inset-0 bg-black/60" />
+        </div>
+        <div className="relative container mx-auto px-4 md:px-6">
+            <h1 className="text-4xl md:text-6xl font-bold font-headline tracking-tight text-shadow-md shadow-black/50">
                 About MSS Group BD
             </h1>
-            <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+            <p className="mt-4 max-w-2xl mx-auto text-lg md:text-xl text-white/90 text-shadow shadow-black/50">
               A Trusted Manufacturer and Retailer of Apparel
             </p>
         </div>
       </header>
 
-      {/* Core Values Section */}
+      {/* Who We Are, Vision, Mission */}
       <section className="py-16 md:py-24">
+          <div className="container mx-auto px-4 md:px-6">
+              <div className="grid md:grid-cols-2 gap-12 lg:gap-24 items-center">
+                  <div className="space-y-8">
+                       <div>
+                          <h2 className="text-3xl md:text-4xl font-bold font-headline text-foreground tracking-tight">Who We Are</h2>
+                          <p className="mt-4 text-lg text-muted-foreground">MSS Group BD is a leading apparel manufacturer and retailer based in Bangladesh, established in 2025. We specialize in delivering high-quality clothing solutions to international and domestic markets, providing end-to-end services including product sourcing, design, manufacturing, and delivery.</p>
+                          <p className="mt-4 text-muted-foreground">Our team is committed to professional service, quality control, and timely delivery. By staying aligned with global fashion trends and customer preferences, we ensure our products are always relevant, stylish, and reliable.</p>
+                       </div>
+                       <div className="grid sm:grid-cols-2 gap-8 pt-6 border-t">
+                            <div>
+                                <h3 className="flex items-center gap-3 text-xl font-bold font-headline text-primary"><Target/> Vision</h3>
+                                <p className="mt-2 text-muted-foreground">To become a trusted and customer-focused apparel brand recognized for quality, transparency, and innovation.</p>
+                            </div>
+                            <div>
+                                <h3 className="flex items-center gap-3 text-xl font-bold font-headline text-primary"><BarChart/> Mission</h3>
+                                <p className="mt-2 text-muted-foreground">To provide reliable, transparent, and customized clothing solutions for businesses and individual clients.</p>
+                            </div>
+                       </div>
+                  </div>
+                   <div className="relative aspect-[3/4] rounded-lg overflow-hidden group shadow-2xl">
+                        <Image
+                            src="https://picsum.photos/seed/about-portrait/600/800"
+                            alt="Stylish apparel on display"
+                            fill
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            data-ai-hint="stylish apparel"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                        />
+                    </div>
+              </div>
+          </div>
+      </section>
+      
+      {/* Core Values Section */}
+      <section className="py-16 md:py-24 bg-secondary/50">
         <div className="container mx-auto px-4 md:px-6">
            <div className="text-center max-w-3xl mx-auto">
                 <span className="text-primary font-semibold uppercase tracking-wider font-headline">Our Foundation</span>
@@ -126,50 +175,15 @@ export default function CompanyPage() {
             </div>
             <div className="mt-16 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-8 text-center">
                 {coreValues.map((value) => (
-                    <div key={value.text} className="flex flex-col items-center gap-3">
-                        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <div key={value.text} className="flex flex-col items-center gap-3 transform transition-transform hover:scale-110 duration-300">
+                        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-background shadow-md text-primary">
                             {value.icon}
                         </div>
-                        <p className="font-semibold">{value.text}</p>
+                        <p className="font-semibold mt-2">{value.text}</p>
                     </div>
                 ))}
             </div>
         </div>
-      </section>
-
-      {/* Who We Are, Vision, Mission */}
-      <section className="bg-secondary/50 py-16 md:py-24">
-          <div className="container mx-auto px-4 md:px-6">
-              <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
-                  <div className="space-y-8">
-                       <div>
-                          <h3 className="text-2xl md:text-3xl font-bold font-headline text-primary tracking-tight">Who We Are</h3>
-                          <p className="mt-4 text-muted-foreground">MSS Group BD is a leading apparel manufacturer and retailer based in Bangladesh, established in 2025. We specialize in delivering high-quality clothing solutions to international and domestic markets, providing end-to-end services including product sourcing, design, manufacturing, and delivery.</p>
-                          <p className="mt-2 text-muted-foreground">Our team is committed to professional service, quality control, and timely delivery. By staying aligned with global fashion trends and customer preferences, we ensure our products are always relevant, stylish, and reliable. MSS Group BD combines flexibility in production with rigorous quality standards to consistently exceed client expectations.</p>
-                       </div>
-                       <div className="grid sm:grid-cols-2 gap-8">
-                            <div>
-                                <h4 className="flex items-center gap-3 text-xl font-bold font-headline text-foreground"><Target/> Vision</h4>
-                                <p className="mt-2 text-muted-foreground">To become a trusted and customer-focused apparel brand recognized for quality, transparency, and innovation. We aim to simplify apparel manufacturing and retail while delivering long-term value and satisfaction to our clients.</p>
-                            </div>
-                            <div>
-                                <h4 className="flex items-center gap-3 text-xl font-bold font-headline text-foreground"><BarChart/> Mission</h4>
-                                <p className="mt-2 text-muted-foreground">To provide reliable, transparent, and customized clothing solutions for businesses and individual clients. We focus on delivering products that meet market demands, maintain international quality standards, and support clients’ goals.</p>
-                            </div>
-                       </div>
-                  </div>
-                   <div className="relative aspect-square md:aspect-[4/3.5] rounded-lg overflow-hidden group">
-                        <Image
-                            src="https://picsum.photos/seed/about-us/800/600"
-                            alt="MSS Group office"
-                            fill
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
-                            data-ai-hint="modern office"
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                        />
-                    </div>
-              </div>
-          </div>
       </section>
 
       {/* Product Expertise */}
@@ -177,33 +191,27 @@ export default function CompanyPage() {
           <div className="container mx-auto px-4 md:px-6">
                <div className="text-center max-w-3xl mx-auto">
                     <span className="text-primary font-semibold uppercase tracking-wider font-headline">What We Make</span>
-                    <h2 className="mt-2 text-3xl md:text-4xl font-bold font-headline text-foreground tracking-tight">Product Expertise & Categories</h2>
+                    <h2 className="mt-2 text-3xl md:text-4xl font-bold font-headline text-foreground tracking-tight">Product Expertise</h2>
                     <p className="mt-4 text-lg text-muted-foreground">A diverse range of apparel and accessories to meet every market need.</p>
                 </div>
-                <div className="mt-12">
-                    <Tabs defaultValue={Object.keys(productCategories)[0]} className="w-full">
-                        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 h-auto">
-                            {Object.entries(categoryIcons).map(([category]) => (
-                               <TabsTrigger key={category} value={category} className="flex gap-2">
-                                 {categoryIcons[category as keyof typeof categoryIcons]}
-                                 {category}
-                               </TabsTrigger>
-                            ))}
-                        </TabsList>
-                        {Object.entries(productCategories).map(([category, items]) => (
-                            <TabsContent key={category} value={category} className="mt-8">
-                                <Card>
-                                    <CardContent className="p-6">
-                                        <div className="flex flex-wrap gap-3">
-                                            {items.map(item => (
-                                                <Badge key={item} variant="secondary" className="text-base px-4 py-1">{item}</Badge>
-                                            ))}
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </TabsContent>
-                        ))}
-                    </Tabs>
+                <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {Object.keys(productCategories).map(category => (
+                        <Card key={category} className="p-6 flex flex-col">
+                            <CardHeader className="p-0">
+                                <CardTitle className="flex items-center gap-3 font-headline text-xl">
+                                    {categoryIcons[category as keyof typeof categoryIcons]}
+                                    {category}
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-0 pt-4 flex-grow">
+                                <div className="flex flex-wrap gap-2">
+                                    {(productCategories as any)[category].map((item: string) => (
+                                        <Badge key={item} variant="secondary" className="px-3 py-1">{item}</Badge>
+                                    ))}
+                                </div>
+                            </CardContent>
+                        </Card>
+                    ))}
                 </div>
           </div>
       </section>
@@ -219,53 +227,37 @@ export default function CompanyPage() {
 
                 <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {strengths.map(strength => (
-                        <Card key={strength.title} className="p-6 text-center flex flex-col items-center">
-                            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary mb-4">
-                                {strength.icon}
+                        <div key={strength.title} className="flex items-start gap-6">
+                           {strength.icon}
+                            <div>
+                                <h3 className="font-headline text-xl font-bold">{strength.title}</h3>
+                                <p className="mt-1 text-muted-foreground">{strength.description}</p>
                             </div>
-                            <h3 className="font-headline text-xl font-bold">{strength.title}</h3>
-                            <p className="mt-2 text-muted-foreground flex-grow">{strength.description}</p>
-                        </Card>
+                        </div>
                     ))}
                 </div>
-
-                 <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div className="space-y-2">
-                        <h4 className="font-headline text-lg font-semibold">Technological Advantage</h4>
-                        <p className="text-muted-foreground">Our facilities use advanced machinery from Europe and the USA for precision, efficiency, and superior quality.</p>
-                    </div>
-                     <div className="space-y-2">
-                        <h4 className="font-headline text-lg font-semibold">Sustainability</h4>
-                        <p className="text-muted-foreground">We integrate sustainable practices across our operations, maintaining safety, compliance, and responsible manufacturing.</p>
-                    </div>
-                     <div className="space-y-2">
-                        <h4 className="font-headline text-lg font-semibold">Cost & Quality Advantage</h4>
-                        <p className="text-muted-foreground">Bangladesh’s competitive ecosystem allows us to deliver high-quality products at optimal costs without compromise.</p>
-                    </div>
-                 </div>
-
           </div>
       </section>
 
        {/* Our Culture */}
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 md:px-6">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-                <div className="order-last lg:order-first">
-                    <span className="text-primary font-semibold uppercase tracking-wider font-headline">Our Environment</span>
-                    <h2 className="mt-2 text-3xl md:text-4xl font-bold font-headline text-foreground tracking-tight">Our Story & Culture</h2>
-                    <p className="mt-4 text-muted-foreground">Since our inception, we have focused on delivering quality, reliability, and customer satisfaction. Our experienced team ensures the right products reach the right customers at the right time, adhering to global quality standards and ethical practices.</p>
-                    <p className="mt-4 text-muted-foreground">Our culture is built on clear values, ethics, and continuous improvement, fostering an environment of innovation, empowerment, and respect.</p>
-                </div>
-                 <div className="relative aspect-square md:aspect-[4/3.5] rounded-lg overflow-hidden group">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+                 <div className="relative aspect-video lg:aspect-square rounded-lg overflow-hidden group shadow-2xl">
                     <Image
-                        src="https://picsum.photos/seed/culture/800/600"
-                        alt="MSS Group Team"
+                        src="https://picsum.photos/seed/culture-team/800/600"
+                        alt="MSS Group Team collaborating"
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        data-ai-hint="diverse team"
+                        data-ai-hint="diverse team collaboration"
                         sizes="(max-width: 1024px) 100vw, 50vw"
                     />
+                </div>
+                <div className="space-y-6">
+                    <span className="text-primary font-semibold uppercase tracking-wider font-headline">Our Environment</span>
+                    <h2 className="mt-2 text-3xl md:text-4xl font-bold font-headline text-foreground tracking-tight">Our Story & Culture</h2>
+                    <p className="text-lg text-muted-foreground">Since our inception, we have focused on delivering quality, reliability, and customer satisfaction. Our experienced team ensures the right products reach the right customers at the right time, adhering to global quality standards and ethical practices.</p>
+                    <p className="text-muted-foreground">Our culture is built on clear values, ethics, and continuous improvement, fostering an environment of innovation, empowerment, and respect.</p>
                 </div>
             </div>
         </div>
@@ -280,25 +272,28 @@ export default function CompanyPage() {
                 <p className="mt-4 text-lg text-muted-foreground">Upholding the highest standards of ethical conduct, safety, and legal compliance in all our operations.</p>
               </div>
               <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                  <Card className="p-6">
-                      <CardHeader className="p-0">
-                          <CardTitle className="flex items-center gap-3 font-headline text-lg"><Scale/> Legal & Ethical Compliance</CardTitle>
+                  <Card className="p-6 text-center hover:bg-background transition-colors">
+                      <CardHeader className="p-0 items-center">
+                          <Scale className="h-10 w-10 text-primary mb-4"/>
+                          <CardTitle className="font-headline text-lg">Legal & Ethical Compliance</CardTitle>
                       </CardHeader>
                       <CardContent className="p-0 pt-2">
                           <p className="text-muted-foreground text-sm">All production units comply with labor laws and international standards.</p>
                       </CardContent>
                   </Card>
-                   <Card className="p-6">
-                      <CardHeader className="p-0">
-                          <CardTitle className="flex items-center gap-3 font-headline text-lg"><ShieldCheck/> Child Labor Policy</CardTitle>
+                   <Card className="p-6 text-center hover:bg-background transition-colors">
+                      <CardHeader className="p-0 items-center">
+                           <HeartHandshake className="h-10 w-10 text-primary mb-4"/>
+                          <CardTitle className="font-headline text-lg">Child Labor Policy</CardTitle>
                       </CardHeader>
                       <CardContent className="p-0 pt-2">
                           <p className="text-muted-foreground text-sm">No child labor; workers’ safety, education, and well-being are fully protected.</p>
                       </CardContent>
                   </Card>
-                   <Card className="p-6">
-                      <CardHeader className="p-0">
-                          <CardTitle className="flex items-center gap-3 font-headline text-lg"><Factory/> Building & Fire Safety</CardTitle>
+                   <Card className="p-6 text-center hover:bg-background transition-colors">
+                      <CardHeader className="p-0 items-center">
+                          <Factory className="h-10 w-10 text-primary mb-4"/>
+                          <CardTitle className="font-headline text-lg">Building & Fire Safety</CardTitle>
                       </CardHeader>
                       <CardContent className="p-0 pt-2">
                           <p className="text-muted-foreground text-sm">Factories equipped with secure exits, alarms, and firefighting systems.</p>
@@ -318,7 +313,7 @@ export default function CompanyPage() {
                 </div>
                 <div className="mt-12 flex flex-wrap justify-center gap-4">
                     {departments.map(dept => (
-                        <Badge key={dept} variant="outline" className="text-lg px-5 py-2 border-primary/50 text-primary">{dept}</Badge>
+                        <Badge key={dept} variant="outline" className="text-base md:text-lg px-5 py-2 border-primary/30 text-primary/80 hover:bg-primary/10 hover:text-primary transition-colors cursor-default">{dept}</Badge>
                     ))}
                 </div>
           </div>
@@ -326,3 +321,5 @@ export default function CompanyPage() {
     </div>
   );
 }
+
+    
