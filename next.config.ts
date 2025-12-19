@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   // This is required to allow the Next.js dev server to be accessed from the Studio preview.
   allowedDevOrigins: [
-    'https://*.cluster-yylgzpipxrar4v4a72liastuqy.cloudworkstations.dev',
+    '*.cluster-yylgzpipxrar4v4a72liastuqy.cloudworkstations.dev',
   ],
   typescript: {
     ignoreBuildErrors: true,
