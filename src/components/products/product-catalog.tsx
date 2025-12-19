@@ -5,24 +5,9 @@ import { useState } from 'react';
 import { products, productCategories, productSegments, type ProductCategory, type ProductSegment } from '@/lib/products-data';
 import { ProductCard } from './product-card';
 import { Button } from '@/components/ui/button';
-import { ListFilter, X, Shirt, Layers, Users, Milestone, Globe } from 'lucide-react';
+import { ListFilter, X } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
-import { Separator } from '@/components/ui/separator';
-
-const categoryIcons: Record<ProductCategory, React.ReactNode> = {
-  'Knitwear': <Shirt className="mr-2 h-4 w-4" />,
-  'Woven': <Layers className="mr-2 h-4 w-4" />,
-  'Denim': <Milestone className="mr-2 h-4 w-4" />,
-  'Sweater': <Users className="mr-2 h-4 w-4" />
-};
-
-const segmentIcons: Record<ProductSegment, React.ReactNode> = {
-  'Menswear': <Users className="mr-2 h-4 w-4" />,
-  'Womenswear': <Users className="mr-2 h-4 w-4" />,
-  'Kids & Newborn': <Users className="mr-2 h-4 w-4" />,
-  'Unisex': <Globe className="mr-2 h-4 w-4" />
-}
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 50 },
@@ -76,42 +61,35 @@ export function ProductCatalog() {
                 )}
             </div>
             
-            <div className="space-y-4">
-              <div>
-                <h4 className="font-semibold mb-3">Category</h4>
-                <div className="flex flex-wrap gap-2">
-                  <Button variant={categoryFilter === 'all' ? 'default' : 'outline'} size="sm" onClick={() => setCategoryFilter('all')}>All</Button>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Select 
+                onValueChange={(value) => setCategoryFilter(value as ProductCategory | 'all')} 
+                value={categoryFilter}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Filter by category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
                   {productCategories.map((category) => (
-                    <Button
-                      key={category}
-                      variant={categoryFilter === category ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => setCategoryFilter(category)}
-                    >
-                      {categoryIcons[category]}
-                      {category}
-                    </Button>
+                    <SelectItem key={category} value={category}>{category}</SelectItem>
                   ))}
-                </div>
-              </div>
-              <Separator />
-              <div>
-                <h4 className="font-semibold mb-3">Segment</h4>
-                <div className="flex flex-wrap gap-2">
-                   <Button variant={segmentFilter === 'all' ? 'default' : 'outline'} size="sm" onClick={() => setSegmentFilter('all')}>All</Button>
-                   {productSegments.map((segment) => (
-                    <Button
-                      key={segment}
-                      variant={segmentFilter === segment ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => setSegmentFilter(segment)}
-                    >
-                      {segmentIcons[segment]}
-                      {segment}
-                    </Button>
+                </SelectContent>
+              </Select>
+              <Select 
+                onValueChange={(value) => setSegmentFilter(value as ProductSegment | 'all')}
+                value={segmentFilter}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Filter by segment" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Segments</SelectItem>
+                  {productSegments.map((segment) => (
+                    <SelectItem key={segment} value={segment}>{segment}</SelectItem>
                   ))}
-                </div>
-              </div>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </motion.div>
