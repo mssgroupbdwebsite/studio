@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import {
   Accordion,
   AccordionContent,
@@ -17,7 +18,7 @@ import {
   Mail,
   ShieldAlert,
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -96,8 +97,14 @@ const stagger = {
 
 
 export default function DisclaimerPageComponent() {
+  const [date, setDate] = useState('');
+
+  useEffect(() => {
+    setDate(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
+  }, []);
+
   return (
-    <motion.div 
+    <motion.div
       initial="hidden"
       animate="visible"
       variants={stagger}
@@ -109,12 +116,12 @@ export default function DisclaimerPageComponent() {
                 Terms of Use
             </h1>
             <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-              Last Updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              Last Updated: {date}
             </p>
         </div>
       </motion.header>
 
-      <motion.div 
+      <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
@@ -173,9 +180,9 @@ export default function DisclaimerPageComponent() {
                         <CardTitle className='font-headline text-2xl'>
                             General Information & Terms of Use
                         </CardTitle>
-                        <CardDescription>
+                        <p className="text-sm text-muted-foreground pt-2">
                             The content on MSS Group BD (https://www.mssgroupbd.com) is published in good faith and for general information and shopping purposes only.
-                        </CardDescription>
+                        </p>
                     </CardHeader>
                     <CardContent>
                         <Accordion type="single" collapsible className="w-full">

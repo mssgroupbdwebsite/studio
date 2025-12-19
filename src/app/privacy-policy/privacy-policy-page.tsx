@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import {
   Accordion,
   AccordionContent,
@@ -191,8 +192,14 @@ const stagger = {
 
 
 export default function PrivacyPolicyPageComponent() {
+  const [date, setDate] = useState('');
+
+  useEffect(() => {
+    setDate(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
+  }, []);
+
   return (
-    <motion.div 
+    <motion.div
       initial="hidden"
       animate="visible"
       variants={stagger}
@@ -204,12 +211,12 @@ export default function PrivacyPolicyPageComponent() {
                 Your Privacy Matters to Us
             </h1>
             <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-              Last Updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              Last Updated: {date}
             </p>
         </div>
       </motion.header>
 
-      <motion.div 
+      <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
@@ -260,7 +267,7 @@ export default function PrivacyPolicyPageComponent() {
                     </Card>
                 </motion.div>
             </motion.div>
-            
+
             {/* Main Content */}
             <motion.div variants={fadeUp} className="lg:col-span-2">
                 <Card className="shadow-lg">
