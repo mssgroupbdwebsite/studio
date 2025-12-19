@@ -1,4 +1,6 @@
 
+'use client';
+
 import type { Metadata } from 'next';
 import { siteConfig } from '@/config/site';
 import Image from 'next/image';
@@ -27,10 +29,29 @@ const sustainabilityPoints = [
     { text: "Energy Efficiency", icon: <Factory className="h-5 w-5 text-primary" /> }
 ];
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+};
+
+const stagger = {
+  visible: {
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+
 export default function QualityPage() {
   return (
-    <div className="bg-background text-foreground">
-       <header className="relative h-[50vh] flex items-center justify-center text-center overflow-hidden bg-secondary/20">
+    <motion.div 
+      initial="hidden"
+      animate="visible"
+      variants={stagger}
+      className="bg-background text-foreground"
+    >
+       <motion.header variants={fadeUp} className="relative h-[50vh] flex items-center justify-center text-center overflow-hidden bg-secondary/20">
         <div className="absolute inset-0">
             <Image
                 src="https://picsum.photos/seed/quality-control/1920/1080"
@@ -50,11 +71,17 @@ export default function QualityPage() {
                 Our unwavering commitment to excellence, ethical practices, and a sustainable future.
             </p>
         </div>
-      </header>
+      </motion.header>
 
       <main>
         {/* Quality Section */}
-        <section className="py-24 md:py-32">
+        <motion.section 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={fadeUp}
+          className="py-24 md:py-32"
+        >
             <div className="container mx-auto px-4">
                 <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
                      <div className="relative aspect-square md:aspect-[4/3.5] rounded-lg overflow-hidden group shadow-2xl">
@@ -97,10 +124,16 @@ export default function QualityPage() {
                     </div>
                 </div>
             </div>
-        </section>
+        </motion.section>
 
         {/* Compliance Section */}
-         <section className="py-24 md:py-32 bg-secondary/50">
+         <motion.section 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={fadeUp}
+            className="py-24 md:py-32 bg-secondary/50"
+          >
             <div className="container mx-auto px-4">
                 <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
                     <div className="md:order-last relative aspect-square md:aspect-[4/3.5] rounded-lg overflow-hidden group shadow-2xl">
@@ -132,10 +165,15 @@ export default function QualityPage() {
                     </div>
                 </div>
             </div>
-        </section>
+        </motion.section>
 
         {/* Sustainability Section */}
-        <section className="py-24 md:py-32">
+        <motion.section 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={fadeUp}
+            className="py-24 md:py-32">
             <div className="container mx-auto px-4">
                 <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
                      <div className="relative aspect-square md:aspect-[4/3.5] rounded-lg overflow-hidden group shadow-2xl">
@@ -167,8 +205,8 @@ export default function QualityPage() {
                     </div>
                 </div>
             </div>
-        </section>
+        </motion.section>
       </main>
-    </div>
+    </motion.div>
   );
 }

@@ -1,4 +1,6 @@
 
+'use client';
+
 import type { Metadata } from 'next';
 import { siteConfig } from '@/config/site';
 import {
@@ -20,6 +22,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 export const metadata: Metadata = {
   title: `Disclaimer - ${siteConfig.name}`,
@@ -85,10 +88,28 @@ const keyHighlights = [
     "Your use of the site signifies your consent to this disclaimer."
 ]
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+};
+
+const stagger = {
+  visible: {
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+
 export default function DisclaimerPage() {
   return (
-    <div className="bg-background min-h-screen">
-       <header className="bg-secondary/50 border-b">
+    <motion.div 
+      initial="hidden"
+      animate="visible"
+      variants={stagger}
+      className="bg-background min-h-screen">
+       <motion.header variants={fadeUp} className="bg-secondary/50 border-b">
         <div className="container mx-auto px-4 md:px-6 py-16 text-center">
              <span className="text-primary font-semibold uppercase tracking-wider font-headline">Disclaimer</span>
             <h1 className="mt-2 text-4xl md:text-5xl font-bold font-headline text-foreground tracking-tight">
@@ -98,53 +119,62 @@ export default function DisclaimerPage() {
               Last Updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
             </p>
         </div>
-      </header>
+      </motion.header>
 
-      <div className="container mx-auto px-4 md:px-6 py-16 md:py-24">
-        <div className="grid lg:grid-cols-3 gap-12 lg:gap-16 animate-in fade-in duration-500">
+      <motion.div 
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        variants={stagger}
+        className="container mx-auto px-4 md:px-6 py-16 md:py-24">
+        <div className="grid lg:grid-cols-3 gap-12 lg:gap-16">
             {/* Sidebar */}
-            <div className="space-y-8 lg:mt-0">
-                 <Card className="bg-secondary/30">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-3 font-headline text-xl">
-                            <Lightbulb className="h-6 w-6 text-primary" />
-                            <span>Key Highlights</span>
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <ul className="space-y-3">
-                            {keyHighlights.map((item, index) => (
-                                <li key={index} className="flex items-start gap-3">
-                                    <ShieldAlert className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                                    <span className="text-sm text-muted-foreground">{item}</span>
-                                </li>
-                            ))}
-                        </ul>
-                    </CardContent>
-                </Card>
+            <motion.div variants={stagger} className="space-y-8 lg:mt-0">
+                 <motion.div variants={fadeUp}>
+                    <Card className="bg-secondary/30">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-3 font-headline text-xl">
+                                <Lightbulb className="h-6 w-6 text-primary" />
+                                <span>Key Highlights</span>
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <ul className="space-y-3">
+                                {keyHighlights.map((item, index) => (
+                                    <li key={index} className="flex items-start gap-3">
+                                        <ShieldAlert className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                                        <span className="text-sm text-muted-foreground">{item}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </CardContent>
+                    </Card>
+                 </motion.div>
 
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-3 font-headline text-xl">
-                            <Mail className="h-6 w-6 text-primary" />
-                            <span>Contact Us</span>
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-sm text-muted-foreground mb-4">
-                            If you have any questions about this disclaimer, please contact us.
-                        </p>
-                        <Button asChild className="w-full">
-                            <Link href="mailto:info@mssgroupbd.com">
-                                Email: info@mssgroupbd.com
-                            </Link>
-                        </Button>
-                    </CardContent>
-                </Card>
-            </div>
+                <motion.div variants={fadeUp}>
+                  <Card>
+                      <CardHeader>
+                          <CardTitle className="flex items-center gap-3 font-headline text-xl">
+                              <Mail className="h-6 w-6 text-primary" />
+                              <span>Contact Us</span>
+                          </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                          <p className="text-sm text-muted-foreground mb-4">
+                              If you have any questions about this disclaimer, please contact us.
+                          </p>
+                          <Button asChild className="w-full">
+                              <Link href="mailto:info@mssgroupbd.com">
+                                  Email: info@mssgroupbd.com
+                              </Link>
+                          </Button>
+                      </CardContent>
+                  </Card>
+                </motion.div>
+            </motion.div>
 
             {/* Main Content */}
-            <div className="lg:col-span-2">
+            <motion.div variants={fadeUp} className="lg:col-span-2">
                 <Card className="shadow-lg">
                     <CardHeader>
                         <CardTitle className='font-headline text-2xl'>
@@ -172,10 +202,10 @@ export default function DisclaimerPage() {
                         </Accordion>
                     </CardContent>
                 </Card>
-            </div>
+            </motion.div>
 
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

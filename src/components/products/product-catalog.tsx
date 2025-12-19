@@ -7,6 +7,21 @@ import { ProductCard } from './product-card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { ListFilter, X } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+};
+
+const stagger = {
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
 
 export function ProductCatalog() {
   const [categoryFilter, setCategoryFilter] = useState<ProductCategory | 'all'>('all');
@@ -26,9 +41,13 @@ export function ProductCatalog() {
   const showResetButton = categoryFilter !== 'all' || segmentFilter !== 'all';
 
   return (
-    <section className="w-full bg-background">
+    <motion.section 
+      initial="hidden"
+      animate="visible"
+      variants={stagger}
+      className="w-full bg-background">
       <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
-        <div className="mb-8 p-4 bg-card border rounded-lg">
+        <motion.div variants={fadeUp} className="mb-8 p-4 bg-card border rounded-lg">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex items-center gap-2 font-headline text-lg font-semibold">
                 <ListFilter className="h-5 w-5"/>
@@ -69,24 +88,31 @@ export function ProductCatalog() {
               )}
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+          <motion.div 
+            key={`${categoryFilter}-${segmentFilter}`} // Re-trigger animation on filter change
+            initial="hidden"
+            animate="visible"
+            variants={stagger}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
             {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <motion.div variants={fadeUp} key={product.id}>
+                <ProductCard product={product} />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         ) : (
-          <div className="text-center py-16">
+          <motion.div variants={fadeUp} className="text-center py-16">
             <h3 className="text-2xl font-headline font-semibold">No Products Found</h3>
             <p className="text-muted-foreground mt-2">Try adjusting your filters to find what you're looking for.</p>
             <Button variant="link" onClick={handleResetFilters} className="mt-4">
               Reset Filters
             </Button>
-          </div>
+          </motion.div>
         )}
       </div>
-    </section>
+    </motion.section>
   );
 }
