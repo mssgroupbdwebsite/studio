@@ -259,7 +259,7 @@ export default function PrivacyPolicyPageComponent() {
                         </CardContent>
                     </Card>
                 </motion.div>
-            </div>
+            </motion.div>
             
             {/* Main Content */}
             <motion.div variants={fadeUp} className="lg:col-span-2">
