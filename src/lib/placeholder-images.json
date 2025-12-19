@@ -2,98 +2,98 @@
   "placeholderImages": [
     {
       "id": "product-knit-polo",
-      "description": "A men's knit polo shirt on a hanger.",
+      "description": "High-quality pique fabric, available in various colors.",
       "imageUrl": "https://images.unsplash.com/photo-1625910513394-ea511bed44ca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwb2xvJTIwc2hpcnR8ZW58MHx8fHwxNzY1OTgzOTMxfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "polo shirt"
     },
     {
       "id": "product-knit-tshirt",
-      "description": "A basic men's t-shirt.",
+      "description": "Soft 100% cotton, perfect for printing and everyday wear.",
       "imageUrl": "https://images.unsplash.com/photo-1633966887768-64f9a867bdba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx0c2hpcnR8ZW58MHx8fHwxNzY2MDg5NTA4fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "tshirt"
     },
     {
       "id": "product-knit-top-women",
-      "description": "A women's knit top.",
+      "description": "Stylish and comfortable tops in various knit patterns.",
       "imageUrl": "https://images.unsplash.com/photo-1737056207688-acc991990309?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxrbml0JTIwdG9wfGVufDB8fHx8MTc2NjA4OTUwOHww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "knit top"
     },
     {
       "id": "product-knit-cardigan",
-      "description": "A women's cardigan sweater.",
+      "description": "Cozy and elegant cardigans, ideal for layering.",
       "imageUrl": "https://images.unsplash.com/photo-1552875387-814ba27aeafd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxjYXJkaWdhbnxlbnwwfHx8fDE3NjYwODk1MDh8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "cardigan"
     },
     {
       "id": "product-knit-hoodie",
-      "description": "A unisex hoodie.",
+      "description": "Warm fleece hoodies, perfect for casual and sportswear.",
       "imageUrl": "https://images.unsplash.com/photo-1517942420142-6a296f9ee4b1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxob29kaWV8ZW58MHx8fHwxNzY2MDg5NTA4fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "hoodie"
     },
     {
       "id": "product-woven-shirt-men",
-      "description": "A men's formal woven shirt.",
+      "description": "Crisp and professional shirts for business and formal wear.",
       "imageUrl": "https://images.unsplash.com/photo-1603252109303-2751441dd157?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxkcmVzcyUyMHNoaXJ0fGVufDB8fHx8MTc2NjA4OTUwOHww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "dress shirt"
     },
     {
       "id": "product-woven-chinos",
-      "description": "A pair of men's chino pants.",
+      "description": "Versatile and durable chino pants for a smart-casual look.",
       "imageUrl": "https://images.unsplash.com/photo-1758696654562-4c534bf0cad8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxjaGlubyUyMHBhbnRzfGVufDB8fHx8MTc2NjA4OTUwOHww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "chino pants"
     },
     {
       "id": "product-woven-blouse",
-      "description": "A women's woven blouse.",
-      "imageUrl": "https://images.unsplash.com/photo-1608234807905-4466023792f5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxibG91c2V8ZW58MHx8fHwxNzY2MDg5NTA4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "Elegant blouses in a variety of fabrics and styles.",
+      "imageUrl": "https://images.unsplash.com/photo-1608234807905-4466023792f5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxibG91c2V8ZW58MHx8fHwxNzY2MDg5NTA4fDA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "blouse"
     },
     {
       "id": "product-woven-dress",
-      "description": "A women's woven dress.",
+      "description": "Lightweight and stylish dresses for any occasion.",
       "imageUrl": "https://images.unsplash.com/photo-1532675432006-329c6fed7045?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxzdW1tZXIlMjBkcmVzc3xlbnwwfHx8fDE3NjYwODMwNTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "summer dress"
     },
     {
       "id": "product-denim-jeans-men",
-      "description": "A pair of men's denim jeans.",
+      "description": "Classic five-pocket jeans in various fits and washes.",
       "imageUrl": "https://images.unsplash.com/photo-1621059591080-d5db06386b53?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxkZW5pbSUyMGplYW5zfGVufDB8fHx8MTc2NjA1NDAwMXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "denim jeans"
     },
     {
       "id": "product-denim-jacket-women",
-      "description": "A women's denim jacket.",
+      "description": "A timeless denim jacket, perfect for all seasons.",
       "imageUrl": "https://images.unsplash.com/photo-1537465978529-d23b17165b3b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxkZW5pbSUyMGphY2tldHxlbnwwfHx8fDE3NjYwMjg0NTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "denim jacket"
     },
     {
       "id": "product-sweater-pullover",
-      "description": "A unisex pullover sweater.",
-      "imageUrl": "https://images.unsplash.com/photo-1731399211410-e3ffe1560310?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwdWxsb3ZlciUyMHN3ZWF0ZXJ8ZW58MHx8fHwxNzY2MDg5NTA4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "Comfortable pullover sweaters in wool, and cotton blends.",
+      "imageUrl": "https://images.unsplash.com/photo-1731399211410-e3ffe1560310?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwdWxsb3ZlciUyMHN3ZWF0ZXJ8ZW58MHx8fHwxNzY2MDg5NTA4fDA&ixlibrb-4.1.0&q=80&w=1080",
       "imageHint": "pullover sweater"
     },
     {
       "id": "product-knit-onesie",
-      "description": "A knit baby onesie.",
-      "imageUrl": "https://images.unsplash.com/photo-1542355581-caf7454785ca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxiYWJ5JTIwY2xvdGhlc3xlbnwwfHx8fDE3NjYwODU5MzR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "Soft, breathable, and gentle on baby's skin.",
+      "imageUrl": "https://images.unsplash.com/photo-1542355581-caf7454785ca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxiYWJ5JTIwY2xvdGhlc3xlbnwwfHx8fDE3NjYwODU5MzR8MA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "baby clothes"
     },
     {
       "id": "product-woven-toddler-shorts",
-      "description": "A pair of woven toddler shorts.",
-      "imageUrl": "https://images.unsplash.com/photo-1749560992398-6836f7f8fe1b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx0b2RkbGVyJTIwc2hvcnRzfGVufDB8fHx8MTc2NjA4OTUwOHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "Durable and comfortable shorts for active toddlers.",
+      "imageUrl": "https://images.unsplash.com/photo-1749560992398-6836f7f8fe1b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx0b2RkbGVyJTIwc2hvcnRzfGVufDB8fHx8MTc2NjA4OTUwOHww&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "toddler shorts"
     },
     {
       "id": "product-sweater-kids",
-      "description": "A children's sweater.",
-      "imageUrl": "https://images.unsplash.com/photo-1697064369391-1ef486f5dbd6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxraWRzJTIwc3dlYXRlcnxlbnwwfHx8fDE3NjYwODk1MDh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "Warm and playful sweaters for children of all ages.",
+      "imageUrl": "https://images.unsplash.com/photo-1697064369391-1ef486f5dbd6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxraWRzJTIwc3dlYXRlcnxlbnwwfHx8fDE3NjYwODk1MDh8MA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "kids sweater"
     },
     {
       "id": "product-denim-kids-jeans",
-      "description": "A pair of children's denim jeans.",
-      "imageUrl": "https://images.unsplash.com/photo-1566513857791-2caec63bd9be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxraWRzJTIwamVhbnN8ZW58MHx8fHwxNzY2MDg5NTA4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "Comfortable and resilient jeans for everyday play.",
+      "imageUrl": "https://images.unsplash.com/photo-1566513857791-2caec63bd9be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxraWRzJTIwamVhbnN8ZW58MHx8fHwxNzY2MDg5NTA4fDA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "kids jeans"
     }
   ]
