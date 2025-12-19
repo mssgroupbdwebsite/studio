@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import Image from 'next/image';
@@ -218,15 +219,16 @@ export default function CompanyPageComponent() {
             viewport={{ once: true, amount: 0.2 }}
             variants={stagger}
             className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-8 mt-16"
+            style={{ perspective: 1000 }}
           >
             {coreValues.map((value) => (
               <motion.div key={value.text} variants={fadeUp} className="flex flex-col items-center gap-4">
                 <motion.div 
                   className="flex h-20 w-20 items-center justify-center rounded-full bg-secondary shadow-lg border"
-                  whileHover={{ scale: 1.1, rotate: 10 }}
+                  whileHover={{ rotateY: 180, scale: 1.1 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <div className="text-primary">{value.icon}</div>
+                  <div className="text-primary" style={{ backfaceVisibility: "hidden" }}>{value.icon}</div>
                 </motion.div>
                 <p className="font-semibold text-center text-sm">{value.text}</p>
               </motion.div>
