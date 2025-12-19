@@ -1,5 +1,8 @@
 
+'use client';
+
 import { Globe, Award, ShieldCheck, TrendingUp } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const indicators = [
   {
@@ -20,24 +23,47 @@ const indicators = [
   },
 ];
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+};
+
+const stagger = {
+  visible: {
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
 export function TrustIndicators() {
   return (
-    <section className="bg-secondary/50">
+    <motion.section 
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.5 }}
+      variants={fadeUp}
+      className="bg-secondary/50"
+    >
       <div className="container mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-8 gap-x-4 justify-items-center py-12">
+        <motion.div
+          variants={stagger}
+          className="grid grid-cols-2 md:grid-cols-4 gap-y-8 gap-x-4 justify-items-center py-12"
+        >
           {indicators.map((indicator, index) => (
-            <div
+            <motion.div
               key={index}
+              variants={fadeUp}
               className="flex flex-col items-center gap-3 text-center"
             >
               {indicator.icon}
               <p className="font-semibold text-sm text-secondary-foreground">
                 {indicator.text}
               </p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }

@@ -1,15 +1,29 @@
 
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Check, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+};
 
 export function QualityOverview() {
   return (
-    <section className="bg-secondary/50">
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
+      variants={fadeUp}
+      className="bg-secondary/50"
+    >
       <div className="container mx-auto px-4 md:px-6 py-16 md:py-32">
         <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
-           <div className="order-last md:order-first">
+           <motion.div variants={fadeUp} className="order-last md:order-first">
              <span className="text-primary font-semibold uppercase tracking-wider font-headline">Quality First</span>
             <h2 className="mt-2 text-3xl md:text-4xl font-bold font-headline text-foreground tracking-tight">
               Uncompromising Quality, Guaranteed
@@ -45,8 +59,8 @@ export function QualityOverview() {
                 Our Quality Standards <ArrowRight />
               </Link>
             </Button>
-          </div>
-          <div className="relative aspect-square md:aspect-[4/3.5] rounded-lg overflow-hidden group">
+          </motion.div>
+          <motion.div variants={fadeUp} className="relative aspect-square md:aspect-[4/3.5] rounded-lg overflow-hidden group">
             <Image
               src="https://picsum.photos/seed/quality-assurance/800/600"
               alt="Apparel quality inspection"
@@ -55,9 +69,9 @@ export function QualityOverview() {
               data-ai-hint="quality assurance"
               sizes="(max-width: 768px) 100vw, 50vw"
             />
-          </div>
+          </motion.div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

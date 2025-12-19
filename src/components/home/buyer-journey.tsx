@@ -1,5 +1,9 @@
+
+'use client';
+
 import { Handshake, Package, Search, Factory, ArrowRight } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { motion } from 'framer-motion';
 
 const journeySteps = [
   {
@@ -24,11 +28,30 @@ const journeySteps = [
   },
 ];
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+};
+
+const stagger = {
+  visible: {
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
 export function BuyerJourney() {
   return (
-    <section className="bg-secondary/50">
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={stagger}
+      className="bg-secondary/50"
+    >
       <div className="container mx-auto px-4 md:px-6 py-16 md:py-32">
-        <div className="text-center max-w-3xl mx-auto">
+        <motion.div variants={fadeUp} className="text-center max-w-3xl mx-auto">
              <span className="text-primary font-semibold uppercase tracking-wider font-headline">Our Process</span>
             <h2 className="mt-2 text-3xl md:text-4xl font-bold font-headline text-foreground tracking-tight">
                 Your Journey to Success, Simplified
@@ -36,23 +59,23 @@ export function BuyerJourney() {
             <p className="mt-4 text-lg text-muted-foreground">
                 We've streamlined the apparel sourcing process into a seamless, transparent, and efficient experience for our partners.
             </p>
-        </div>
+        </motion.div>
         <div className="relative mt-16">
           <div className="absolute left-1/2 top-7 hidden h-px w-full max-w-3xl -translate-x-1/2 bg-border lg:block" aria-hidden="true" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+          <motion.div variants={stagger} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
             {journeySteps.map((step, index) => (
-              <div key={index} className="flex flex-col items-center text-center">
+              <motion.div key={index} variants={fadeUp} className="flex flex-col items-center text-center">
                   <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-background text-primary ring-8 ring-background shadow-md">
                       {step.icon}
                   </div>
                   <h3 className="font-headline text-xl font-bold">{`Step ${index+1}`}</h3>
                   <h4 className="mt-1 text-lg font-semibold">{step.title}</h4>
                   <p className="mt-2 text-muted-foreground">{step.description}</p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

@@ -1,5 +1,9 @@
+
+'use client';
+
 import { CheckCircle2, Users, ShieldCheck, Truck } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { motion } from 'framer-motion';
 
 const capabilitiesList = [
   {
@@ -28,11 +32,30 @@ const capabilitiesList = [
   },
 ];
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+};
+
+const stagger = {
+  visible: {
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
 export function Capabilities() {
   return (
-    <section className="bg-background">
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={stagger}
+      className="bg-background"
+    >
       <div className="container mx-auto px-4 md:px-6 py-16 md:py-32">
-        <div className="text-center max-w-3xl mx-auto">
+        <motion.div variants={fadeUp} className="text-center max-w-3xl mx-auto">
            <span className="text-primary font-semibold uppercase tracking-wider font-headline">What We Do Best</span>
           <h2 className="mt-2 text-3xl md:text-4xl font-bold font-headline text-foreground tracking-tight">
             Our Core Capabilities
@@ -41,10 +64,10 @@ export function Capabilities() {
             We provide an end-to-end solution, covering every aspect of the
             apparel supply chain with precision and expertise.
           </p>
-        </div>
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
+        </motion.div>
+        <motion.div variants={stagger} className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
           {capabilitiesList.map((capability, index) => (
-            <div key={index} className="flex items-start gap-6 p-6">
+            <motion.div key={index} variants={fadeUp} className="flex items-start gap-6 p-6">
               <div className="flex-shrink-0 mt-1">{capability.icon}</div>
               <div>
                 <h3 className="font-headline text-xl font-bold">
@@ -54,10 +77,10 @@ export function Capabilities() {
                   {capability.description}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }

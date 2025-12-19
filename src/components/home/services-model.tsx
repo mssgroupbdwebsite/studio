@@ -1,5 +1,9 @@
+
+'use client';
+
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Factory, GitFork } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const serviceModels = [
   {
@@ -14,11 +18,30 @@ const serviceModels = [
   },
 ];
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+};
+
+const stagger = {
+  visible: {
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
 export function ServicesModel() {
   return (
-    <section className="bg-secondary/50">
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={stagger}
+      className="bg-secondary/50"
+    >
       <div className="container mx-auto px-4 md:px-6 py-16 md:py-32">
-        <div className="text-center max-w-3xl mx-auto">
+        <motion.div variants={fadeUp} className="text-center max-w-3xl mx-auto">
            <span className="text-primary font-semibold uppercase tracking-wider font-headline">Our Services</span>
           <h2 className="mt-2 text-3xl md:text-4xl font-bold font-headline text-foreground tracking-tight">
             Flexible Models for Your Business
@@ -26,21 +49,23 @@ export function ServicesModel() {
           <p className="mt-4 text-lg text-muted-foreground">
             We adapt to your business needs, offering both direct manufacturing and agile sourcing solutions to bring your apparel concepts to life.
           </p>
-        </div>
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
+        </motion.div>
+        <motion.div variants={stagger} className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
           {serviceModels.map((model, index) => (
-            <Card key={index} className="p-8 text-center shadow-lg hover:shadow-xl transition-shadow group border-2 border-transparent hover:border-primary/50">
-                <CardHeader className="items-center">
-                    <div className="mb-6 bg-primary/10 p-4 rounded-full group-hover:scale-110 transition-transform duration-300">
-                        {model.icon}
-                    </div>
-                    <CardTitle className="font-headline text-2xl">{model.title}</CardTitle>
-                    <CardDescription className="pt-4 text-base">{model.description}</CardDescription>
-                </CardHeader>
-            </Card>
+            <motion.div key={index} variants={fadeUp}>
+              <Card className="p-8 text-center shadow-lg hover:shadow-xl transition-shadow group border-2 border-transparent hover:border-primary/50 h-full">
+                  <CardHeader className="items-center">
+                      <div className="mb-6 bg-primary/10 p-4 rounded-full group-hover:scale-110 transition-transform duration-300">
+                          {model.icon}
+                      </div>
+                      <CardTitle className="font-headline text-2xl">{model.title}</CardTitle>
+                      <CardDescription className="pt-4 text-base">{model.description}</CardDescription>
+                  </CardHeader>
+              </Card>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }
