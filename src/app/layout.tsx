@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { PageProgressBar } from '@/components/layout/page-progress-bar';
+import { CookieConsent } from '@/components/layout/cookie-consent';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -91,6 +92,7 @@ export default function RootLayout({
             <Footer />
           </div>
           <Toaster />
+          <CookieConsent />
         </ThemeProvider>
       </body>
     </html>
