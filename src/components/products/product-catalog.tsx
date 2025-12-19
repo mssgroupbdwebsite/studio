@@ -6,18 +6,13 @@ import { products, productCategories, productSegments, type ProductCategory, typ
 import { ProductCard } from './product-card';
 import { Button } from '@/components/ui/button';
 import { ListFilter, X } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-};
 
 const stagger = {
   visible: {
     transition: {
-      staggerChildren: 0.05,
+      staggerChildren: 0.07,
     },
   },
 };
@@ -40,13 +35,14 @@ export function ProductCatalog() {
   const showResetButton = categoryFilter !== 'all' || segmentFilter !== 'all';
 
   return (
-    <motion.section 
-      initial="hidden"
-      animate="visible"
-      variants={stagger}
-      className="w-full bg-background">
+    <section className="w-full bg-background -mt-24 relative z-10">
       <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
-        <motion.div variants={fadeUp} className="mb-12 p-6 bg-card border rounded-lg shadow-sm">
+        <motion.div 
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+            className="mb-12 p-6 bg-card border rounded-2xl shadow-xl sticky top-20 z-20 backdrop-blur-xl bg-card/80"
+        >
           <div className="flex flex-col gap-6">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-3 font-headline text-xl font-semibold">
@@ -66,7 +62,7 @@ export function ProductCatalog() {
                 onValueChange={(value) => setCategoryFilter(value as ProductCategory | 'all')} 
                 value={categoryFilter}
               >
-                <SelectTrigger>
+                <SelectTrigger className="h-12 text-base">
                   <SelectValue placeholder="Filter by category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -80,7 +76,7 @@ export function ProductCatalog() {
                 onValueChange={(value) => setSegmentFilter(value as ProductSegment | 'all')}
                 value={segmentFilter}
               >
-                <SelectTrigger>
+                <SelectTrigger className="h-12 text-base">
                   <SelectValue placeholder="Filter by segment" />
                 </SelectTrigger>
                 <SelectContent>
@@ -94,29 +90,35 @@ export function ProductCatalog() {
           </div>
         </motion.div>
 
-        {filteredProducts.length > 0 ? (
-          <motion.div 
-            key={`${categoryFilter}-${segmentFilter}`} // Re-trigger animation on filter change
-            initial="hidden"
-            animate="visible"
-            variants={stagger}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-            {filteredProducts.map((product) => (
-              <motion.div variants={fadeUp} key={product.id}>
-                <ProductCard product={product} />
-              </motion.div>
-            ))}
+        <AnimatePresence mode="wait">
+            <motion.div 
+                key={`${categoryFilter}-${segmentFilter}`}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={stagger}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-10"
+            >
+            {filteredProducts.length > 0 ? (
+                filteredProducts.map((product) => (
+                    <ProductCard product={product} key={product.id} />
+                ))
+            ) : (
+            <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-center py-16 col-span-full"
+            >
+                <h3 className="text-2xl font-headline font-semibold">No Products Found</h3>
+                <p className="text-muted-foreground mt-2">Try adjusting your filters to find what you're looking for.</p>
+                <Button variant="link" onClick={handleResetFilters} className="mt-4">
+                Reset Filters
+                </Button>
+            </motion.div>
+            )}
           </motion.div>
-        ) : (
-          <motion.div variants={fadeUp} className="text-center py-16">
-            <h3 className="text-2xl font-headline font-semibold">No Products Found</h3>
-            <p className="text-muted-foreground mt-2">Try adjusting your filters to find what you're looking for.</p>
-            <Button variant="link" onClick={handleResetFilters} className="mt-4">
-              Reset Filters
-            </Button>
-          </motion.div>
-        )}
+        </AnimatePresence>
       </div>
-    </motion.section>
+    </section>
   );
 }
