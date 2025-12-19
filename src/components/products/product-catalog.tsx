@@ -4,10 +4,25 @@
 import { useState } from 'react';
 import { products, productCategories, productSegments, type ProductCategory, type ProductSegment } from '@/lib/products-data';
 import { ProductCard } from './product-card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { ListFilter, X } from 'lucide-react';
+import { ListFilter, X, Shirt, Layers, Users, Milestone, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
+import { Separator } from '@/components/ui/separator';
+
+const categoryIcons: Record<ProductCategory, React.ReactNode> = {
+  'Knitwear': <Shirt className="mr-2 h-4 w-4" />,
+  'Woven': <Layers className="mr-2 h-4 w-4" />,
+  'Denim': <Milestone className="mr-2 h-4 w-4" />,
+  'Sweater': <Users className="mr-2 h-4 w-4" />
+};
+
+const segmentIcons: Record<ProductSegment, React.ReactNode> = {
+  'Menswear': <Users className="mr-2 h-4 w-4" />,
+  'Womenswear': <Users className="mr-2 h-4 w-4" />,
+  'Kids & Newborn': <Users className="mr-2 h-4 w-4" />,
+  'Unisex': <Globe className="mr-2 h-4 w-4" />
+}
 
 const fadeUp = {
   hidden: { opacity: 0, y: 50 },
@@ -17,11 +32,10 @@ const fadeUp = {
 const stagger = {
   visible: {
     transition: {
-      staggerChildren: 0.1,
+      staggerChildren: 0.05,
     },
   },
 };
-
 
 export function ProductCatalog() {
   const [categoryFilter, setCategoryFilter] = useState<ProductCategory | 'all'>('all');
@@ -47,45 +61,57 @@ export function ProductCatalog() {
       variants={stagger}
       className="w-full bg-background">
       <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
-        <motion.div variants={fadeUp} className="mb-8 p-4 bg-card border rounded-lg">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="flex items-center gap-2 font-headline text-lg font-semibold">
-                <ListFilter className="h-5 w-5"/>
-                <span>Filter Products</span>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:flex md:items-center gap-4">
-              <Select value={categoryFilter} onValueChange={(value) => setCategoryFilter(value as ProductCategory | 'all')}>
-                <SelectTrigger className="w-full md:w-[180px]">
-                  <SelectValue placeholder="Category" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Categories</SelectItem>
-                  {productCategories.map((category) => (
-                    <SelectItem key={category} value={category}>
-                      {category}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Select value={segmentFilter} onValueChange={(value) => setSegmentFilter(value as ProductSegment | 'all')}>
-                <SelectTrigger className="w-full md:w-[180px]">
-                  <SelectValue placeholder="Segment" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Segments</SelectItem>
-                  {productSegments.map((segment) => (
-                    <SelectItem key={segment} value={segment}>
-                      {segment}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+        <motion.div variants={fadeUp} className="mb-12 p-6 bg-card border rounded-lg shadow-sm">
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3 font-headline text-xl font-semibold">
+                  <ListFilter className="h-6 w-6 text-primary"/>
+                  <span>Filter Products</span>
+              </div>
               {showResetButton && (
-                <Button variant="ghost" onClick={handleResetFilters} className="flex items-center gap-2 text-muted-foreground hover:text-foreground">
-                  <X className="h-4 w-4" />
-                  <span>Reset</span>
-                </Button>
-              )}
+                  <Button variant="ghost" onClick={handleResetFilters} className="flex items-center gap-2 text-muted-foreground hover:text-foreground">
+                    <X className="h-4 w-4" />
+                    <span>Reset Filters</span>
+                  </Button>
+                )}
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-semibold mb-3">Category</h4>
+                <div className="flex flex-wrap gap-2">
+                  <Button variant={categoryFilter === 'all' ? 'default' : 'outline'} size="sm" onClick={() => setCategoryFilter('all')}>All</Button>
+                  {productCategories.map((category) => (
+                    <Button
+                      key={category}
+                      variant={categoryFilter === category ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setCategoryFilter(category)}
+                    >
+                      {categoryIcons[category]}
+                      {category}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+              <Separator />
+              <div>
+                <h4 className="font-semibold mb-3">Segment</h4>
+                <div className="flex flex-wrap gap-2">
+                   <Button variant={segmentFilter === 'all' ? 'default' : 'outline'} size="sm" onClick={() => setSegmentFilter('all')}>All</Button>
+                   {productSegments.map((segment) => (
+                    <Button
+                      key={segment}
+                      variant={segmentFilter === segment ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setSegmentFilter(segment)}
+                    >
+                      {segmentIcons[segment]}
+                      {segment}
+                    </Button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </motion.div>
