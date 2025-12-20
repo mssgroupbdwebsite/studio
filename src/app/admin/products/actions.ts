@@ -56,13 +56,16 @@ export async function updateProduct(data: ProductFormValues) {
     const firestore = await getDb();
     const productRef = firestore.collection('products').doc(validation.data.id);
 
-    await productRef.update(validation.data);
+    // Omit id from the update payload, as it shouldn't be changed.
+    const { id, ...updateData } = validation.data;
+    await productRef.update(updateData);
 
     revalidatePath('/admin/products');
     revalidatePath('/products');
 
     return { success: true };
 }
+
 
 export async function toggleProductVisibility(productId: string, willBeHidden: boolean) {
     if (!productId) {
@@ -81,6 +84,7 @@ export async function toggleProductVisibility(productId: string, willBeHidden: b
         return { success: true };
     } catch (error) {
         const message = error instanceof Error ? error.message : "An unknown error occurred";
+        console.error('Error toggling product visibility:', error);
         return { success: false, error: message };
     }
 }
