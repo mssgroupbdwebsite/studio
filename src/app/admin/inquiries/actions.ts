@@ -1,3 +1,4 @@
+
 'use server';
 
 import { revalidatePath } from 'next/cache';
@@ -10,8 +11,7 @@ export async function deleteInquiry(inquiryId: string) {
     }
 
     try {
-        const adminApp = await initializeAdminApp();
-        const firestore = getFirestore(adminApp);
+        const { firestore } = await initializeAdminApp();
         await firestore.collection('inquiries').doc(inquiryId).delete();
 
         revalidatePath('/admin/inquiries');

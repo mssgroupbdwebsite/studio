@@ -19,8 +19,8 @@ const productSchema = z.object({
 export type ProductFormValues = z.infer<typeof productSchema>;
 
 async function getDb() {
-  const adminApp = await initializeAdminApp();
-  return getFirestore(adminApp);
+  const { firestore } = await initializeAdminApp();
+  return firestore;
 }
 
 export async function addProduct(data: ProductFormValues) {
@@ -30,17 +30,15 @@ export async function addProduct(data: ProductFormValues) {
   }
 
   const firestore = await getDb();
-  const newProductId = `p${Date.now()}`;
+  const newProductId = firestore.collection('products').doc().id;
   
   const newProduct = {
     ...validation.data,
     id: newProductId,
-    // remove optional id from the data being written
-    ...{id: undefined}
   };
   
   const productRef = firestore.collection('products').doc(newProductId);
-  await productRef.set({ ...newProduct, id: newProductId });
+  await productRef.set(newProduct);
 
 
   revalidatePath('/admin/products');
@@ -58,7 +56,7 @@ export async function updateProduct(data: ProductFormValues) {
     const firestore = await getDb();
     const productRef = firestore.collection('products').doc(validation.data.id);
 
-    await productRef.set(validation.data, { merge: true });
+    await productRef.update(validation.data);
 
     revalidatePath('/admin/products');
     revalidatePath('/products');
