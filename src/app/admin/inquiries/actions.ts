@@ -2,8 +2,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { initializeAdminApp } from '@/firebase/server-init';
-import { getFirestore } from 'firebase-admin/firestore';
+import { getAdminServices } from '@/firebase/server-init';
 
 export async function deleteInquiry(inquiryId: string) {
     if (!inquiryId) {
@@ -11,7 +10,7 @@ export async function deleteInquiry(inquiryId: string) {
     }
 
     try {
-        const { firestore } = await initializeAdminApp();
+        const { firestore } = getAdminServices();
         await firestore.collection('inquiries').doc(inquiryId).delete();
 
         revalidatePath('/admin/inquiries');

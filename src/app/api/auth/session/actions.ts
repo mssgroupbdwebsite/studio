@@ -1,25 +1,13 @@
 
 'use server';
 import {cookies} from 'next/headers';
-import {initializeApp, getApps, getApp, App} from 'firebase-admin/app';
-import {getAuth as getAdminAuth} from 'firebase-admin/auth';
-import { getFirestore } from 'firebase-admin/firestore';
-import { firebaseConfig } from '@/firebase/config';
-
-const appName = 'firebase-admin-app-session-actions';
-let app: App;
-if (!getApps().find(a => a.name === appName)) {
-  app = initializeApp({
-    projectId: firebaseConfig.projectId,
-  }, appName);
-} else {
-  app = getApp(appName);
-}
+import { getAdminServices } from '@/firebase/server-init';
 
 export async function createSession(idToken: string) {
+  const { auth } = getAdminServices();
   const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
   try {
-    const sessionCookie = await getAdminAuth(app).createSessionCookie(idToken, {expiresIn});
+    const sessionCookie = await auth.createSessionCookie(idToken, {expiresIn});
     const options = {
       name: 'session',
       value: sessionCookie,
@@ -41,14 +29,14 @@ export async function deleteSession() {
 }
 
 export async function createAccount(email: string, password: string):Promise<{success: boolean, error?: string, userId?: string}> {
+  const { auth, firestore } = getAdminServices();
   try {
-    const firestore = getFirestore(app);
     const usersCollection = firestore.collection('users');
     const existingUsers = await usersCollection.limit(1).get();
     const isFirstUser = existingUsers.empty;
     const role = isFirstUser ? 'admin' : 'user';
 
-    const userRecord = await getAdminAuth(app).createUser({
+    const userRecord = await auth.createUser({
       email,
       password
     });

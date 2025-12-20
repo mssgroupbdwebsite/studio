@@ -4,8 +4,7 @@
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { productCategories, productSegments } from '@/lib/products-data';
-import { getFirestore } from 'firebase-admin/firestore';
-import { initializeAdminApp } from '@/firebase/server-init';
+import { getAdminServices } from '@/firebase/server-init';
 
 const productSchema = z.object({
     id: z.string().optional(),
@@ -19,7 +18,7 @@ const productSchema = z.object({
 export type ProductFormValues = z.infer<typeof productSchema>;
 
 async function getDb() {
-  const { firestore } = await initializeAdminApp();
+  const { firestore } = getAdminServices();
   return firestore;
 }
 
