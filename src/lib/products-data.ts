@@ -14,6 +14,7 @@ export interface Product {
   sourcingModel: SourcingModel;
   imageId: string; // Keep imageId to reference the placeholder
   image: ImagePlaceholder;
+  hidden?: boolean;
 }
 
 const findImage = (id: string): ImagePlaceholder => {

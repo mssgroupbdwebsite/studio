@@ -34,6 +34,7 @@ export async function addProduct(data: ProductFormValues) {
   const newProduct = {
     ...validation.data,
     id: newProductId,
+    hidden: false, // Default to visible
   };
   
   const productRef = firestore.collection('products').doc(newProductId);
@@ -64,18 +65,23 @@ export async function updateProduct(data: ProductFormValues) {
 }
 
 
-export async function deleteProduct(productId: string) {
+export async function toggleProductVisibility(productId: string, willBeHidden: boolean) {
     if (!productId) {
-      return { success: false, errors: { _form: ['Product ID is required'] } };
+      return { success: false, error: 'Product ID is required' };
     }
 
-    const firestore = await getDb();
-    const productRef = firestore.collection('products').doc(productId);
-    
-    await productRef.delete();
+    try {
+        const firestore = await getDb();
+        const productRef = firestore.collection('products').doc(productId);
+        
+        await productRef.update({ hidden: willBeHidden });
 
-    revalidatePath('/admin/products');
-    revalidatePath('/products');
-    
-    return { success: true };
+        revalidatePath('/admin/products');
+        revalidatePath('/products');
+        
+        return { success: true };
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "An unknown error occurred";
+        return { success: false, error: message };
+    }
 }

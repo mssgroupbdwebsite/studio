@@ -3,7 +3,7 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { Product } from "@/lib/products-data"
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal, Eye, EyeOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -15,12 +15,22 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge"
 import { ProductFormDialog } from "./product-form-dialog"
-import { DeleteProductDialog } from "./delete-product-dialog"
+import { ToggleVisibilityDialog } from "./toggle-visibility-dialog"
+import { cn } from "@/lib/utils"
 
 export const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "name",
     header: "Name",
+    cell: ({ row }) => {
+        const product = row.original;
+        return (
+            <div className="flex items-center gap-2">
+                {product.hidden && <EyeOff className="h-4 w-4 text-muted-foreground" title="This product is hidden" />}
+                <span>{product.name}</span>
+            </div>
+        )
+    }
   },
   {
     accessorKey: "category",
@@ -43,6 +53,7 @@ export const columns: ColumnDef<Product>[] = [
     id: "actions",
     cell: ({ row }) => {
       const product = row.original
+      const isHidden = product.hidden
       return (
         <div className="text-right">
             <DropdownMenu>
@@ -58,11 +69,15 @@ export const columns: ColumnDef<Product>[] = [
                 <ProductFormDialog product={product}>
                     <DropdownMenuItem onSelect={(e) => e.preventDefault()}>Edit</DropdownMenuItem>
                 </ProductFormDialog>
-                <DeleteProductDialog productId={product.id}>
-                    <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-red-600">
-                        Delete
+                <ToggleVisibilityDialog product={product}>
+                    <DropdownMenuItem 
+                        onSelect={(e) => e.preventDefault()} 
+                        className={cn("flex items-center gap-2", isHidden ? "text-green-600" : "text-orange-600")}
+                    >
+                        {isHidden ? <Eye /> : <EyeOff />}
+                        {isHidden ? "Show" : "Hide"}
                     </DropdownMenuItem>
-                </DeleteProductDialog>
+                </ToggleVisibilityDialog>
             </DropdownMenuContent>
             </DropdownMenu>
         </div>
