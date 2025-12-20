@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -5,6 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { NavItem } from '@/types';
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
 interface MainNavProps {
   items?: NavItem[];
@@ -23,14 +25,17 @@ export function MainNav({ items }: MainNavProps) {
                   key={index}
                   href={item.href}
                   className={cn(
-                    'relative flex items-center rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors duration-200 ease-in-out hover:bg-primary/10 hover:text-primary',
+                    'relative flex items-center rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors duration-200 ease-in-out hover:text-primary',
                     pathname === item.href && 'text-primary',
                     item.disabled && 'cursor-not-allowed opacity-80'
                   )}
                 >
                   {item.title}
                   {pathname === item.href && (
-                    <span className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-primary"></span>
+                    <motion.span
+                      layoutId="underline"
+                      className="absolute bottom-1 left-0 right-0 h-0.5 rounded-full bg-primary"
+                    />
                   )}
                 </Link>
               )

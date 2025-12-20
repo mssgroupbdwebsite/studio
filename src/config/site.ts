@@ -10,6 +10,7 @@ export const siteConfig = {
     { title: "Products", href: "/products" },
     { title: "Company", href: "/about" },
     { title: "Quality", href: "/quality" },
+    { title: "Sustainability", href: "/sustainability" },
     { title: "Contact", href: "/contact" },
   ],
   links: {
