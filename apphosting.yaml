@@ -5,3 +5,10 @@ runConfig:
   # Increase this value if you'd like to automatically spin up
   # more instances in response to increased traffic.
   maxInstances: 1
+
+# The service account your App Hosting backend runs as.
+# By default, this is the default App Engine service account.
+# Best practice is to create a new service account with minimal
+# permissions and grant it the "Firebase App Hosting Admin" and "Secret Manager Secret Accessor" roles.
+# You can find the service account email in the Google Cloud Console.
+serviceAccount: studio-2779115415-2fdb9@gcp-sa-apphosting.iam.gserviceaccount.com
