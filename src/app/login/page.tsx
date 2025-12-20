@@ -33,7 +33,7 @@ export default function LoginPage() {
       setStatus('loading');
       return;
     }
-
+  
     if (user) {
       setStatus('authenticating');
       user.getIdToken().then(async (idToken) => {
@@ -43,10 +43,10 @@ export default function LoginPage() {
         } else {
           console.error('Failed to create session:', result.error);
           toast({
-            variant: "destructive",
-            title: "Authentication Error",
+            variant: 'destructive',
+            title: 'Authentication Error',
             description: result.error,
-          })
+          });
           setStatus('unauthenticated');
         }
       });
