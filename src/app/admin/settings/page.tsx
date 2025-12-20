@@ -27,7 +27,7 @@ export default async function AdminSettingsPage() {
                 <CardHeader>
                     <CardTitle>User Management</CardTitle>
                     <CardDescription>
-                        Manage user roles and permissions. The first user is automatically designated as an admin.
+                        Manage user roles and permissions. The first user is automatically designated as an admin and their role cannot be changed.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
