@@ -1,8 +1,14 @@
 
 'use server';
 import {cookies} from 'next/headers';
-import {app} from '@/lib/firebase/server-config'; // Use single server config
+import { getApps, initializeApp, getApp } from 'firebase-admin/app';
 import {getAuth as getAdminAuth} from 'firebase-admin/auth';
+
+// This file is the single source of truth for the server-side Firebase Admin App.
+// It ensures that the app is initialized only once.
+const appName = 'firebase-admin-app-session';
+const app = getApps().find(a => a.name === appName) || initializeApp(undefined, appName);
+
 
 export async function createSession(idToken: string) {
   const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
@@ -18,9 +24,7 @@ export async function createSession(idToken: string) {
     cookies().set(options);
     return {success: true};
   } catch (error) {
-    // Log the detailed error to the console for debugging
     console.error('Error creating session cookie:', error);
-    // Return a more specific error message
     return {success: false, error: (error as Error).message || 'Failed to create session.'};
   }
 }

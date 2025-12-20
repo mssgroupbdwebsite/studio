@@ -3,11 +3,10 @@
 
 import {useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation';
-import {getAuth, onAuthStateChanged} from 'firebase/auth';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Logo} from '@/components/layout/logo';
-import {signInWithGoogle} from '@/lib/firebase/auth';
+import { signInWithGoogle, useUser } from '@/firebase';
 import {Loader2} from 'lucide-react';
 import {createSession} from '@/app/api/auth/session/actions';
 import { useToast } from '@/hooks/use-toast';
@@ -24,18 +23,20 @@ function GoogleIcon() {
 }
 
 export default function LoginPage() {
-  const [status, setStatus] = useState<'loading' | 'unauthenticated' | 'authenticating'>(
-    'loading'
-  );
+  const { user, isUserLoading } = useUser();
+  const [status, setStatus] = useState<'loading' | 'unauthenticated' | 'authenticating'>('loading');
   const router = useRouter();
   const { toast } = useToast();
 
   useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, async user => {
-      if (user) {
-        setStatus('authenticating');
-        const idToken = await user.getIdToken();
+    if (isUserLoading) {
+      setStatus('loading');
+      return;
+    }
+
+    if (user) {
+      setStatus('authenticating');
+      user.getIdToken().then(async (idToken) => {
         const result = await createSession(idToken);
         if (result.success) {
           router.push('/admin');
@@ -48,13 +49,11 @@ export default function LoginPage() {
           })
           setStatus('unauthenticated');
         }
-      } else {
-        setStatus('unauthenticated');
-      }
-    });
-
-    return () => unsubscribe();
-  }, [router, toast]);
+      });
+    } else {
+      setStatus('unauthenticated');
+    }
+  }, [user, isUserLoading, router, toast]);
 
   const handleSignIn = async () => {
     setStatus('authenticating');

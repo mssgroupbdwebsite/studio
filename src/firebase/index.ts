@@ -2,7 +2,7 @@
 
 import { firebaseConfig } from '@/firebase/config';
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { getAuth, signInWithRedirect, GoogleAuthProvider, signOut as firebaseSignOut } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore'
 
 // IMPORTANT: DO NOT MODIFY THIS FUNCTION
@@ -33,9 +33,14 @@ export function initializeFirebase() {
 }
 
 export function getSdks(firebaseApp: FirebaseApp) {
+  const auth = getAuth(firebaseApp);
+  // In development, persistence is set to 'local' by default. 
+  // But in a server-side rendering context, you might want to manage this differently
+  // if you were to implement session management with cookies.
+  // For this client-side focused setup, default persistence is fine.
   return {
     firebaseApp,
-    auth: getAuth(firebaseApp),
+    auth: auth,
     firestore: getFirestore(firebaseApp)
   };
 }
@@ -48,3 +53,16 @@ export * from './non-blocking-updates';
 export * from './non-blocking-login';
 export * from './errors';
 export * from './error-emitter';
+
+// Auth related client actions
+const GOOGLE_PROVIDER = new GoogleAuthProvider();
+
+export async function signInWithGoogle() {
+  const { auth } = initializeFirebase();
+  await signInWithRedirect(auth, GOOGLE_PROVIDER);
+}
+
+export async function signOut() {
+  const { auth } = initializeFirebase();
+  await firebaseSignOut(auth);
+}

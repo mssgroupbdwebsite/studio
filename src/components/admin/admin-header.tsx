@@ -17,11 +17,9 @@ import {PanelLeft, Home, ShoppingBag, Package, Users, BarChart2, Settings} from 
 import {Avatar, AvatarFallback} from '@/components/ui/avatar';
 import {siteConfig} from '@/config/site';
 import {Logo} from '../layout/logo';
-import {signOut} from '@/lib/firebase/auth';
+import {signOut, useUser} from '@/firebase';
 import {deleteSession} from '@/app/api/auth/session/actions';
-import {getAuth} from 'firebase/auth';
-import {useEffect, useState} from 'react';
-import type {User} from 'firebase/auth';
+import {Skeleton} from '../ui/skeleton';
 
 const navItems = [
   {href: '/admin/inquiries', label: 'Inquiries', icon: Home},
@@ -33,14 +31,8 @@ const navItems = [
 ];
 
 function UserNav() {
-  const [user, setUser] = useState<User | null>(null);
+  const { user, isUserLoading } = useUser();
   const router = useRouter();
-
-  useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = auth.onAuthStateChanged(setUser);
-    return () => unsubscribe();
-  }, []);
 
   const handleSignOut = async () => {
     await deleteSession();
@@ -56,6 +48,10 @@ function UserNav() {
     }
     return names[0].substring(0, 2);
   };
+  
+  if (isUserLoading) {
+      return <Skeleton className="h-8 w-8 rounded-full" />;
+  }
 
   if (!user) return null;
 
