@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { format } from 'date-fns';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ChevronDown, Copy, Mail, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -179,9 +179,7 @@ export default function AdminInquiriesPage() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                <AnimatePresence>
                                 {inquiries.map(inquiry => <InquiryRow key={inquiry.id} inquiry={inquiry} />)}
-                                </AnimatePresence>
                             </TableBody>
                         </Table>
                     </div>
