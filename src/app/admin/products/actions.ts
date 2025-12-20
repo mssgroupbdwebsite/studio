@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache';
 import { productCategories, productSegments } from '@/lib/products-data';
 import { doc } from 'firebase/firestore';
 import { setDocumentNonBlocking, deleteDocumentNonBlocking } from '@/firebase/non-blocking-updates';
-import { initializeFirebase } from '@/firebase';
+import { initializeFirebase } from '@/firebase/index';
 
 const productSchema = z.object({
     id: z.string().optional(),
