@@ -17,7 +17,7 @@ import {PanelLeft, Home, ShoppingBag, Package, Users, BarChart2, Settings} from 
 import {Avatar, AvatarFallback} from '@/components/ui/avatar';
 import {siteConfig} from '@/config/site';
 import {Logo} from '../layout/logo';
-import {signOut, useUser} from '@/firebase';
+import {useUser, signOut} from '@/firebase';
 import {deleteSession} from '@/app/api/auth/session/actions';
 import {Skeleton} from '../ui/skeleton';
 
@@ -27,17 +27,20 @@ const navItems = [
   {href: '#', label: 'Orders', icon: ShoppingBag, disabled: true},
   {href: '#', label: 'Customers', icon: Users, disabled: true},
   {href: '#', label: 'Analytics', icon: BarChart2, disabled: true},
-  {href: '#', label: 'Settings', icon: Settings, disabled: true},
+  {href: '/admin/settings', label: 'Settings', icon: Settings},
 ];
 
 function UserNav() {
   const { user, isUserLoading } = useUser();
   const router = useRouter();
+  const { auth } = useFirebase();
 
   const handleSignOut = async () => {
-    await signOut();
-    await deleteSession();
-    router.push('/login');
+    if (auth) {
+      await signOut(auth);
+      await deleteSession();
+      router.push('/login');
+    }
   };
 
   const getInitials = (name?: string | null) => {

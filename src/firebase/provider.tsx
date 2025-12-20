@@ -3,7 +3,7 @@
 import React, { DependencyList, createContext, useContext, ReactNode, useMemo, useState, useEffect } from 'react';
 import { FirebaseApp } from 'firebase/app';
 import { Firestore } from 'firebase/firestore';
-import { Auth, User, onAuthStateChanged } from 'firebase/auth';
+import { Auth, User, onAuthStateChanged, signOut as firebaseSignOut } from 'firebase/auth';
 import { FirebaseErrorListener } from '@/components/FirebaseErrorListener'
 
 interface FirebaseProviderProps {
@@ -51,6 +51,14 @@ export interface UserHookResult { // Renamed from UserAuthHookResult for consist
 
 // React Context
 export const FirebaseContext = createContext<FirebaseContextState | undefined>(undefined);
+
+/**
+ * Signs the user out.
+ * @param auth The Firebase Auth instance.
+ */
+export async function signOut(auth: Auth): Promise<void> {
+  await firebaseSignOut(auth);
+}
 
 /**
  * FirebaseProvider manages and provides Firebase services and user authentication state.
