@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -13,7 +14,7 @@ const navItems = [
   { href: '#', label: 'Orders', icon: ShoppingBag, disabled: true },
   { href: '#', label: 'Customers', icon: Users, disabled: true },
   { href: '#', label: 'Analytics', icon: BarChart2, disabled: true },
-  { href: '/admin/settings', label: 'Settings', icon: Settings, disabled: false },
+  { href: '#', label: 'Settings', icon: Settings, disabled: true },
 ];
 
 export function AdminSidebar() {
