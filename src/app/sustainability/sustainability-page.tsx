@@ -29,7 +29,7 @@ const sustainabilityPillars = [
     icon: <Wind className="h-10 w-10 text-primary" />,
     title: 'Carbon Footprint',
     description: 'We continuously work to reduce emissions by optimizing logistics and encouraging the use of renewable energy sources.',
-  },
+  }
 ];
 
 const certifications = [
