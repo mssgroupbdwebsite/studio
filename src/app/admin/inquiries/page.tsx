@@ -9,8 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { ChevronDown, Copy, Mail, Trash2 } from 'lucide-react';
+import { Copy, Mail, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { deleteInquiry } from './actions';
 import {
@@ -70,78 +69,56 @@ function InquiryRow({ inquiry }: { inquiry: Inquiry }) {
     }
 
     return (
-        <Collapsible asChild>
-            <>
-                <TableRow>
-                    <TableCell className="w-1/4">
-                        <div className="font-medium">{inquiry.name}</div>
-                        <div className="text-sm text-muted-foreground">{inquiry.email}</div>
-                    </TableCell>
-                    <TableCell className="w-1/4">
-                        <div>{inquiry.subject || 'N/A'}</div>
-                        {inquiry.company && <div className="text-sm text-muted-foreground">{inquiry.company}</div>}
-                    </TableCell>
-                    <TableCell className="w-1/4 max-w-[300px] truncate">
-                        {inquiry.message}
-                    </TableCell>
-                    <TableCell className="w-1/4 text-right">
-                        <div className='flex items-center justify-end gap-4'>
-                            {submissionDate}
-                            <CollapsibleTrigger asChild>
-                                <Button variant="ghost" size="icon">
-                                    <ChevronDown className="h-4 w-4 transition-transform [&[data-state=open]]:rotate-180" />
-                                    <span className="sr-only">Toggle details</span>
-                                </Button>
-                            </CollapsibleTrigger>
-                        </div>
-                    </TableCell>
-                </TableRow>
-                <CollapsibleContent asChild>
-                    <motion.tr
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="bg-muted/30"
-                    >
-                        <TableCell colSpan={4} className="p-0">
-                            <div className="p-6 space-y-4">
-                                <h4 className="font-semibold">Full Message:</h4>
-                                <p className="text-muted-foreground text-sm whitespace-pre-wrap leading-relaxed">{inquiry.message}</p>
-                                <div className='flex items-center gap-2 pt-4 border-t'>
-                                    <Button variant="outline" size="sm" onClick={() => copyToClipboard(inquiry.email, 'Email')}>
-                                        <Mail className="mr-2 h-4 w-4" /> Copy Email
-                                    </Button>
-                                    <Button variant="outline" size="sm" onClick={() => copyToClipboard(inquiry.message, 'Message')}>
-                                        <Copy className="mr-2 h-4 w-4" /> Copy Message
-                                    </Button>
-                                    <AlertDialog>
-                                        <AlertDialogTrigger asChild>
-                                             <Button variant="destructive" size="sm" className="ml-auto" disabled={isDeleting}>
-                                                <Trash2 className="mr-2 h-4 w-4" /> {isDeleting ? 'Deleting...' : 'Delete'}
-                                            </Button>
-                                        </AlertDialogTrigger>
-                                        <AlertDialogContent>
-                                            <AlertDialogHeader>
-                                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                                                <AlertDialogDescription>
-                                                This action cannot be undone. This will permanently delete this inquiry.
-                                                </AlertDialogDescription>
-                                            </AlertDialogHeader>
-                                            <AlertDialogFooter>
-                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                <AlertDialogAction onClick={handleDelete} className="bg-destructive hover:bg-destructive/90">
-                                                    Yes, delete inquiry
-                                                </AlertDialogAction>
-                                            </AlertDialogFooter>
-                                        </AlertDialogContent>
-                                    </AlertDialog>
-                                </div>
-                            </div>
-                        </TableCell>
-                    </motion.tr>
-                </CollapsibleContent>
-            </>
-        </Collapsible>
+        <TableRow>
+            <TableCell>
+                <div className="font-medium">{inquiry.name}</div>
+                <div className="text-sm text-muted-foreground">{inquiry.email}</div>
+            </TableCell>
+            <TableCell>
+                <div>{inquiry.subject || 'N/A'}</div>
+                {inquiry.company && <div className="text-sm text-muted-foreground">{inquiry.company}</div>}
+            </TableCell>
+            <TableCell className="max-w-[300px]">
+                <p className='truncate'>{inquiry.message}</p>
+            </TableCell>
+            <TableCell>
+                {submissionDate}
+            </TableCell>
+            <TableCell className="text-right">
+                <div className='flex items-center justify-end gap-2'>
+                    <Button variant="ghost" size="icon" onClick={() => copyToClipboard(inquiry.email, 'Email')}>
+                        <Mail className="h-4 w-4" />
+                        <span className="sr-only">Copy Email</span>
+                    </Button>
+                    <Button variant="ghost" size="icon" onClick={() => copyToClipboard(inquiry.message, 'Message')}>
+                        <Copy className="h-4 w-4" />
+                        <span className="sr-only">Copy Message</span>
+                    </Button>
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                             <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" disabled={isDeleting}>
+                                <Trash2 className="h-4 w-4" />
+                                <span className="sr-only">Delete</span>
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                This action cannot be undone. This will permanently delete this inquiry.
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={handleDelete} className="bg-destructive hover:bg-destructive/90">
+                                    {isDeleting ? 'Deleting...' : 'Yes, delete inquiry'}
+                                </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
+                </div>
+            </TableCell>
+        </TableRow>
     )
 }
 
@@ -159,7 +136,7 @@ export default function AdminInquiriesPage() {
         <Card>
             <CardHeader>
                 <CardTitle>Inquiries</CardTitle>
-                <CardDescription>View and manage contact form submissions. Click a row to expand.</CardDescription>
+                <CardDescription>View and manage contact form submissions.</CardDescription>
             </CardHeader>
             <CardContent>
                 {isLoading && (
@@ -175,7 +152,8 @@ export default function AdminInquiriesPage() {
                                     <TableHead>From</TableHead>
                                     <TableHead>Subject / Company</TableHead>
                                     <TableHead>Message Snippet</TableHead>
-                                    <TableHead className="text-right">Date</TableHead>
+                                    <TableHead>Date</TableHead>
+                                    <TableHead className="text-right">Actions</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
