@@ -72,7 +72,7 @@ function InquiryRow({ inquiry }: { inquiry: Inquiry }) {
 
     return (
         <Collapsible asChild>
-            <>
+            <React.Fragment>
                 <TableRow className="cursor-pointer hover:bg-muted/50">
                     <TableCell className="w-1/4">
                         <div className="font-medium">{inquiry.name}</div>
@@ -141,7 +141,7 @@ function InquiryRow({ inquiry }: { inquiry: Inquiry }) {
                         </TableCell>
                     </motion.tr>
                 </CollapsibleContent>
-            </>
+            </React.Fragment>
         </Collapsible>
     )
 }
