@@ -24,29 +24,8 @@ export default function LoginPage() {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    try {
-      const userCredential = await signInWithEmailAndPassword(email, password);
-      const idToken = await userCredential.user.getIdToken();
-      const result = await createSession(idToken);
-      
-      if (result.success) {
-        // The middleware will handle the redirection to /admin
-        // We can push to a "success" page or just refresh to let middleware kick in.
-        router.push('/admin');
-      } else {
-        // This case was not handled properly before.
-        throw new Error(result.error || 'Failed to create session.');
-      }
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Sign-in Failed",
-        description: (error as Error).message,
-      });
-    } finally {
-        // This ensures the button is re-enabled on failure.
-        setIsSubmitting(false);
-    }
+    // As requested, redirecting directly to the admin panel.
+    router.push('/admin');
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
