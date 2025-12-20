@@ -64,7 +64,6 @@ export async function updateProduct(data: ProductFormValues) {
     return { success: true };
 }
 
-
 export async function toggleProductVisibility(productId: string, willBeHidden: boolean) {
     if (!productId) {
       return { success: false, error: 'Product ID is required' };
