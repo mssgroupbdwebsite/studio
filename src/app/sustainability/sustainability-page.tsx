@@ -4,7 +4,7 @@
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Leaf, Recycle, Droplets, CheckDecagram, Sprout, Wind, Factory, ArrowRight } from 'lucide-react';
+import { Leaf, Recycle, Droplets, BadgeCheck, Sprout, Wind, Factory, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
@@ -34,7 +34,7 @@ const sustainabilityPillars = [
 
 const certifications = [
     { icon: <Sprout className="h-8 w-8"/>, name: 'GOTS Certified' },
-    { icon: <CheckDecagram className="h-8 w-8"/>, name: 'OEKO-TEX Standard 100' },
+    { icon: <BadgeCheck className="h-8 w-8"/>, name: 'OEKO-TEX Standard 100' },
     { icon: <Factory className="h-8 w-8"/>, name: 'WRAP Certified' },
     { icon: <Leaf className="h-8 w-8"/>, name: 'BCI Member' },
 ];
@@ -271,9 +271,9 @@ export default function SustainabilityPageComponent() {
                             Let's work together to create a fashion industry that is both profitable and responsible.
                         </p>
                         <Button asChild className="mt-8 bg-primary-foreground text-primary hover:bg-primary-foreground/90" size="lg">
-                        <Link href="/contact">
-                            Start a Project <ArrowRight />
-                        </Link>
+                            <Link href="/contact">
+                                Start a Project <ArrowRight />
+                            </Link>
                         </Button>
                     </div>
                 </motion.div>
