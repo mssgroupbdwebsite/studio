@@ -4,8 +4,6 @@
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { productCategories, productSegments } from '@/lib/products-data';
-import { doc } from 'firebase/firestore';
-import { setDocumentNonBlocking, deleteDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import { getFirestore } from 'firebase-admin/firestore';
 import { initializeAdminApp } from '@/firebase/server-init';
 
@@ -33,14 +31,17 @@ export async function addProduct(data: ProductFormValues) {
 
   const firestore = await getDb();
   const newProductId = `p${Date.now()}`;
-  const productRef = firestore.collection('products').doc(newProductId);
   
   const newProduct = {
     ...validation.data,
     id: newProductId,
+    // remove optional id from the data being written
+    ...{id: undefined}
   };
   
-  await productRef.set(newProduct);
+  const productRef = firestore.collection('products').doc(newProductId);
+  await productRef.set({ ...newProduct, id: newProductId });
+
 
   revalidatePath('/admin/products');
   revalidatePath('/products');
