@@ -1,131 +1,103 @@
-
-/**
- * This Firestore Security Ruleset is designed for the MSS Group BD application.
- *
- * Core Philosophy:
- * The security model follows a principle of least privilege, segregating data into
- * distinct security contexts. It provides public read-access for the product
- * catalog, a secure "write-only" dropbox for user inquiries, and a strict
- * user-ownership model for personal preferences.
- *
- * Data Structure:
- * The data is organized into three distinct, top-level collections:
- * 1. /products: A public catalog of apparel.
- * 2. /inquiries: A collection for storing contact form submissions.
- * 3. /user_preferences: A collection for storing individual user settings.
- * 4. /users: Stores user account data including roles.
- * This flat structure avoids complex relational checks and improves performance.
- *
- * Key Security Decisions:
- * - Product Catalog (/products): This collection is publicly readable by anyone to
- *   allow browsing of the catalog. Write operations are restricted to admin users.
- * - Inquiries (/inquiries): This collection acts as a secure dropbox. Anyone,
- *   including anonymous users, can create a document (submit the form). However,
- *   only admin users can read, list, update, or delete inquiries.
- * - User Preferences (/user_preferences): Access is strictly limited to the
- *   document owner. A user can only create, read, update, or delete their own
- *   preferences document, identified by their authentication UID.
- * - Users (/users): User documents are readable only by the owner. Creation is handled
- *   by server-side logic (Cloud Functions), and updates are restricted to prevent
- *   role escalation.
- */
 rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // -------------------------------------------------------------------------
+    /**
+     * Core Philosophy: This ruleset establishes a clear separation between publicly
+     * readable content and private, admin-managed data. The core security model
+     * allows any user, including unauthenticated visitors, to read product and
+     * company information and to submit inquiries. All write operations (creating,
+     * updating, deleting) and access to sensitive data (like inquiries) are
+     * restricted to administrators.
+     *
+     * Data Structure: The data is organized into three distinct, top-level
+     * collections:
+     * - /products: Public catalog of all products.
+     * - /companyProfiles: Public information about the company.
+     * - /inquiries: A private "dropbox" for contact form submissions.
+     *
+     * Key Security Decisions:
+     * - Public Read, Admin Write: `products` and `companyProfiles` are globally
+     *   readable to support the public-facing website. All modifications are
+     *   locked down, intended for future implementation of an admin role.
+     * - Inquiry Dropbox: The `inquiries` collection allows any user (even
+     *   anonymous ones) to create a document, mimicking a public contact form.
+     *   However, reading, updating, or deleting these inquiries is strictly
+     *   prohibited for anyone but an administrator.
+     * - No Admin Role Defined: The provided application requirements mention
+     *   "authorized admins" but do not define how to identify one. Therefore,
+     *   this ruleset uses a placeholder `isAdmin()` function that currently
+     *   returns `false`, effectively disabling all administrative actions. A
+     *   developer must implement the logic in this function to enable writes.
+     *
+     * Denormalization for Authorization: This ruleset does not require
+     * denormalization as access controls are collection-wide (public vs. admin)
+     * rather than based on per-document ownership.
+     *
+     * Structural Segregation: The use of separate top-level collections for
+     * public data (`products`, `companyProfiles`) and private data (`inquiries`)
+     * provides a strong security boundary, ensuring that sensitive information
+     * cannot be accidentally listed or accessed by unauthorized users.
+     */
+
     // Helper Functions
-    // -------------------------------------------------------------------------
 
     /**
-     * Checks if the user is authenticated.
-     */
-    function isSignedIn() {
-      return request.auth != null;
-    }
-
-    /**
-     * Checks if the authenticated user's UID matches the provided userId.
-     * This is the primary function for enforcing document ownership.
-     */
-    function isOwner(userId) {
-      return isSignedIn() && request.auth.uid == userId;
-    }
-
-    /**
-     * Checks for ownership on an existing document.
-     * Used for update and delete operations to prevent acting on non-existent data.
-     */
-    function isExistingOwner(userId) {
-      return isOwner(userId) && resource != null;
-    }
-    
-    /**
-     * Checks if the requesting user has an 'admin' role.
-     * It reads the user's role from their document in the /users collection.
+     * Placeholder function to identify an administrator.
+     * CRITICAL: This must be implemented with actual business logic, such as
+     * checking a custom claim or looking up a user's role in a separate
+     * 'admins' collection.
      */
     function isAdmin() {
-      return isSignedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      // TODO: Implement admin role check. For example, check for a custom claim:
+      // return request.auth.token.admin == true;
+      return false;
     }
 
-
-    // -------------------------------------------------------------------------
-    // Collection Rules
-    // -------------------------------------------------------------------------
-
     /**
-     * @description  Rules for the product catalog. Products are public and readable by anyone.
-     * @path         /products/{productId}
-     * @allow        (get) Any user, signed in or not, can read a single product document.
-     * @allow        (write) Admin users can create, update, and delete products.
-     * @principle    Public Read with Admin-Only Writes.
+     * @description Publicly readable product catalog.
+     * @path /products/{productId}
+     * @allow (get) Any user, signed-in or not, can read a specific product.
+     * @deny (create) A non-admin user attempts to create a new product document.
+     * @principle Public read access for catalog data, with writes restricted to admins.
      */
     match /products/{productId} {
       allow get: if true;
       allow list: if true;
-      allow write: if isAdmin();
+      allow create: if isAdmin();
+      allow update: if isAdmin() && resource != null;
+      allow delete: if isAdmin() && resource != null;
     }
 
     /**
-     * @description  Rules for the inquiries collection, which acts as a "drop-box".
-     * @path         /inquiries/{inquiryId}
-     * @allow        (create) Any user, including anonymous visitors, can submit an inquiry.
-     * @allow        (read, write) Admins can read and manage inquiries.
-     * @principle    Write-Only for public, Full-Access for Admins.
+     * @description Publicly readable company profile information.
+     * @path /companyProfiles/{companyProfileId}
+     * @allow (list) Any user, signed-in or not, can list all company profiles.
+     * @deny (update) A non-admin user attempts to modify the company's mission statement.
+     * @principle Public read access for company info, with writes restricted to admins.
+     */
+    match /companyProfiles/{companyProfileId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if isAdmin();
+      allow update: if isAdmin() && resource != null;
+      allow delete: if isAdmin() && resource != null;
+    }
+
+    /**
+     * @description Secure dropbox for user-submitted inquiries.
+     * @path /inquiries/{inquiryId}
+     * @allow (create) An anonymous user successfully submits the contact form.
+     * @deny (get) A signed-in, non-admin user attempts to read an inquiry they submitted.
+     * @principle Allows public write-once access while making the resulting data private and admin-only.
      */
     match /inquiries/{inquiryId} {
+      allow get: if isAdmin();
+      allow list: if isAdmin();
       allow create: if true;
-      allow read, write: if isAdmin();
-    }
-
-    /**
-     * @description  Rules for user-specific preferences, such as theme settings.
-     * @path         /user_preferences/{userId}
-     * @allow        (create) A signed-in user creates their own preferences document (`/user_preferences/my-uid`).
-     * @deny         (get) A user (`user-A`) attempts to read the preferences of another user (`user-B`).
-     * @principle    Strict Ownership. Restricts all access to a user's own data tree, identified by their UID.
-     */
-    match /user_preferences/{userId} {
-      allow get: if isOwner(userId);
-      allow list: if false;
-      allow create: if isOwner(userId) && request.resource.data.id == userId;
-      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
-      allow delete: if isExistingOwner(userId);
-    }
-
-    /**
-     * @description Rules for user data and roles.
-     * @path /users/{userId}
-     * @allow (get) A user can read their own data. Admins can read any user's data.
-     * @deny (list) Listing users is forbidden to prevent user enumeration.
-     * @deny (create, update, delete) All client-side writes are forbidden to prevent role escalation.
-     */
-    match /users/{userId} {
-      allow get: if isOwner(userId) || isAdmin();
-      allow list: if false;
-      allow create: if false;
-      allow update: if false;
-      allow delete: if false;
+      allow update: if isAdmin() && resource != null;
+      allow delete: if isAdmin() && resource != null;
     }
   }
 }
