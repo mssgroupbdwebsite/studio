@@ -1,8 +1,7 @@
 
 'use server';
-import {getAuth} from 'firebase/auth';
 import {cookies} from 'next/headers';
-import {app} from '@/lib/firebase/server-config'; // Use server config
+import {app} from '@/lib/firebase/server-config'; // Use single server config
 import {getAuth as getAdminAuth} from 'firebase-admin/auth';
 
 export async function createSession(idToken: string) {
