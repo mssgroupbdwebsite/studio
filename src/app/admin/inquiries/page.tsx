@@ -73,7 +73,7 @@ function InquiryRow({ inquiry }: { inquiry: Inquiry }) {
     return (
         <Collapsible asChild>
             <>
-                <TableRow className="cursor-pointer hover:bg-muted/50">
+                <TableRow>
                     <TableCell className="w-1/4">
                         <div className="font-medium">{inquiry.name}</div>
                         <div className="text-sm text-muted-foreground">{inquiry.email}</div>
