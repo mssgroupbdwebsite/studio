@@ -32,7 +32,7 @@ export function AdminSidebar() {
         <nav className="flex-1 overflow-y-auto py-4">
           <ul className="grid items-start px-4 text-sm font-medium">
             {navItems.map(({ href, label, icon: Icon, disabled }) => (
-              <li key={href}>
+              <li key={label}>
                 <Link
                   href={href}
                   className={cn(

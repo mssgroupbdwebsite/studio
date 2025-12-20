@@ -99,7 +99,7 @@ export function AdminHeader() {
             </Link>
             {navItems.map(({href, label, icon: Icon, disabled}) => (
               <Link
-                key={href}
+                key={label}
                 href={href}
                 className={`flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground ${
                   disabled ? 'pointer-events-none opacity-50' : ''
