@@ -48,7 +48,10 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
   const router = useRouter();
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
-    defaultValues: product || {
+    defaultValues: product ? {
+      ...product,
+      // imageId is already part of product, no need to extract
+    } : {
       name: "",
       category: "Knitwear",
       segment: "Menswear",
@@ -61,7 +64,9 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
 
   async function onSubmit(data: ProductFormValues) {
     const action = isEditing ? updateProduct : addProduct;
-    const result = await action(data);
+    // Add the product ID for updates
+    const payload = isEditing ? { ...data, id: product.id } : data;
+    const result = await action(payload);
 
     if (result.success) {
       toast({

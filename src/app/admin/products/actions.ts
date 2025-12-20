@@ -6,7 +6,8 @@ import { revalidatePath } from 'next/cache';
 import { productCategories, productSegments } from '@/lib/products-data';
 import { doc } from 'firebase/firestore';
 import { setDocumentNonBlocking, deleteDocumentNonBlocking } from '@/firebase/non-blocking-updates';
-import { initializeFirebase } from '@/firebase/index';
+import { getFirestore } from 'firebase-admin/firestore';
+import { initializeAdminApp } from '@/firebase/server-init';
 
 const productSchema = z.object({
     id: z.string().optional(),
@@ -19,21 +20,27 @@ const productSchema = z.object({
 
 export type ProductFormValues = z.infer<typeof productSchema>;
 
+async function getDb() {
+  const adminApp = await initializeAdminApp();
+  return getFirestore(adminApp);
+}
+
 export async function addProduct(data: ProductFormValues) {
   const validation = productSchema.safeParse(data);
   if (!validation.success) {
     return { success: false, errors: validation.error.flatten().fieldErrors };
   }
 
-  const { firestore } = initializeFirebase();
+  const firestore = await getDb();
   const newProductId = `p${Date.now()}`;
-  const productRef = doc(firestore, 'products', newProductId);
+  const productRef = firestore.collection('products').doc(newProductId);
+  
   const newProduct = {
     ...validation.data,
     id: newProductId,
   };
   
-  setDocumentNonBlocking(productRef, newProduct, {});
+  await productRef.set(newProduct);
 
   revalidatePath('/admin/products');
   revalidatePath('/products');
@@ -47,10 +54,10 @@ export async function updateProduct(data: ProductFormValues) {
         return { success: false, errors: validation.error?.flatten().fieldErrors || { _form: ['Invalid data'] } };
     }
     
-    const { firestore } = initializeFirebase();
-    const productRef = doc(firestore, 'products', validation.data.id);
+    const firestore = await getDb();
+    const productRef = firestore.collection('products').doc(validation.data.id);
 
-    setDocumentNonBlocking(productRef, validation.data, { merge: true });
+    await productRef.set(validation.data, { merge: true });
 
     revalidatePath('/admin/products');
     revalidatePath('/products');
@@ -64,10 +71,10 @@ export async function deleteProduct(productId: string) {
       return { success: false, errors: { _form: ['Product ID is required'] } };
     }
 
-    const { firestore } = initializeFirebase();
-    const productRef = doc(firestore, 'products', productId);
+    const firestore = await getDb();
+    const productRef = firestore.collection('products').doc(productId);
     
-    deleteDocumentNonBlocking(productRef);
+    await productRef.delete();
 
     revalidatePath('/admin/products');
     revalidatePath('/products');
