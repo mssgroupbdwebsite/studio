@@ -19,8 +19,10 @@ export async function createSession(idToken: string) {
     cookies().set(options);
     return {success: true};
   } catch (error) {
+    // Log the detailed error to the console for debugging
     console.error('Error creating session cookie:', error);
-    return {success: false, error: 'Failed to create session.'};
+    // Return a more specific error message
+    return {success: false, error: (error as Error).message || 'Failed to create session.'};
   }
 }
 

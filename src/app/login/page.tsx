@@ -10,6 +10,7 @@ import {Logo} from '@/components/layout/logo';
 import {signInWithGoogle} from '@/lib/firebase/auth';
 import {Loader2} from 'lucide-react';
 import {createSession} from '@/app/api/auth/session/actions';
+import { useToast } from '@/hooks/use-toast';
 
 function GoogleIcon() {
   return (
@@ -27,6 +28,7 @@ export default function LoginPage() {
     'loading'
   );
   const router = useRouter();
+  const { toast } = useToast();
 
   useEffect(() => {
     const auth = getAuth();
@@ -39,6 +41,11 @@ export default function LoginPage() {
           router.push('/admin');
         } else {
           console.error('Failed to create session:', result.error);
+          toast({
+            variant: "destructive",
+            title: "Authentication Error",
+            description: result.error,
+          })
           setStatus('unauthenticated');
         }
       } else {
@@ -47,7 +54,7 @@ export default function LoginPage() {
     });
 
     return () => unsubscribe();
-  }, [router]);
+  }, [router, toast]);
 
   const handleSignIn = async () => {
     setStatus('authenticating');
@@ -55,6 +62,11 @@ export default function LoginPage() {
       await signInWithGoogle();
     } catch (error) {
       console.error('Sign in error:', error);
+      toast({
+        variant: "destructive",
+        title: "Sign-in Failed",
+        description: (error as Error).message,
+      })
       setStatus('unauthenticated');
     }
   };
