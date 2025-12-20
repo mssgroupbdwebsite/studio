@@ -102,12 +102,41 @@
         "id",
         "theme"
       ]
+    },
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user account.",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "The user's unique ID."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The user's email address."
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "admin",
+            "user"
+          ],
+          "description": "The user's role."
+        }
+      },
+      "required": [
+        "uid",
+        "email",
+        "role"
+      ]
     }
   },
   "auth": {
     "providers": [
-      "password",
-      "anonymous"
+      "password"
     ]
   },
   "firestore": {
@@ -152,6 +181,22 @@
             "$ref": "#/backend/entities/UserPreferences"
           },
           "description": "Stores user-specific preferences, such as theme (dark/light mode).",
+          "params": [
+            {
+              "name": "userId",
+              "description": "Unique identifier for the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user account information including their role.",
           "params": [
             {
               "name": "userId",

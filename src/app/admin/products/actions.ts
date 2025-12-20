@@ -3,8 +3,8 @@
 
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
-import { Product, productCategories, productSegments } from '@/lib/products-data';
-import { getFirestore, doc } from 'firebase/firestore';
+import { productCategories, productSegments } from '@/lib/products-data';
+import { doc } from 'firebase/firestore';
 import { setDocumentNonBlocking, deleteDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import { initializeFirebase } from '@/firebase';
 
@@ -18,12 +18,6 @@ const productSchema = z.object({
 });
 
 export type ProductFormValues = z.infer<typeof productSchema>;
-
-async function getProducts() {
-    // This function will need to be updated to fetch from Firestore
-    // For now, it will not be used in the new implementation.
-    return [];
-}
 
 export async function addProduct(data: ProductFormValues) {
   const validation = productSchema.safeParse(data);

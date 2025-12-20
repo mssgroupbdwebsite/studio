@@ -1,72 +1,70 @@
 
 'use client';
 
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {useRouter} from 'next/navigation';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Logo} from '@/components/layout/logo';
-import { signInWithGoogle, useUser } from '@/firebase';
+import {signInWithEmailAndPassword, useUser} from '@/firebase';
 import {Loader2} from 'lucide-react';
-import {createSession} from '@/app/api/auth/session/actions';
-import { useToast } from '@/hooks/use-toast';
-
-function GoogleIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-      <path
-        fill="#4285F4"
-        d="M21.35 11.1H12.18v2.8h4.99c-.3 1.8-1.7 3.2-3.6 3.2-2.1 0-3.9-1.7-3.9-3.9s1.8-3.9 3.9-3.9c1 0 1.9.4 2.6 1.1l2.1-2.1C16.6 3.4 14.5 2.5 12 2.5c-3.9 0-7 3.1-7 7s3.1 7 7 7c4 0 6.7-2.8 6.7-6.8 0-.5-.1-.9-.2-1.3z"
-      />
-    </svg>
-  );
-}
+import {createAccount, createSession} from '@/app/api/auth/session/actions';
+import {useToast} from '@/hooks/use-toast';
+import {Input} from '@/components/ui/input';
+import {Label} from '@/components/ui/label';
 
 export default function LoginPage() {
-  const { user, isUserLoading } = useUser();
-  const [status, setStatus] = useState<'loading' | 'unauthenticated' | 'authenticating'>('loading');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const router = useRouter();
   const { toast } = useToast();
 
-  useEffect(() => {
-    if (isUserLoading) {
-      setStatus('loading');
-      return;
-    }
-  
-    if (user) {
-      setStatus('authenticating');
-      user.getIdToken().then(async (idToken) => {
-        const result = await createSession(idToken);
-        if (result.success) {
-          router.push('/admin');
-        } else {
-          console.error('Failed to create session:', result.error);
-          toast({
-            variant: 'destructive',
-            title: 'Authentication Error',
-            description: result.error,
-          });
-          setStatus('unauthenticated');
-        }
-      });
-    } else {
-      setStatus('unauthenticated');
-    }
-  }, [user, isUserLoading, router, toast]);
-
-  const handleSignIn = async () => {
-    setStatus('authenticating');
+  const handleSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
     try {
-      await signInWithGoogle();
+      const userCredential = await signInWithEmailAndPassword(email, password);
+      const idToken = await userCredential.user.getIdToken();
+      const result = await createSession(idToken);
+      if (result.success) {
+        router.push('/admin');
+      } else {
+        throw new Error(result.error || 'Failed to create session.');
+      }
     } catch (error) {
-      console.error('Sign in error:', error);
       toast({
         variant: "destructive",
         title: "Sign-in Failed",
         description: (error as Error).message,
-      })
-      setStatus('unauthenticated');
+      });
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      const result = await createAccount(email, password);
+      if (result.success) {
+        toast({
+          title: "Account Created!",
+          description: "Please sign in with your new credentials.",
+        });
+        setMode('signin');
+      } else {
+        throw new Error(result.error || 'Failed to create account.');
+      }
+    } catch (error) {
+       toast({
+        variant: "destructive",
+        title: "Sign-up Failed",
+        description: (error as Error).message,
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -77,28 +75,58 @@ export default function LoginPage() {
           <div className="flex justify-center mb-4">
             <Logo />
           </div>
-          <CardTitle className="text-2xl">Admin Access</CardTitle>
-          <CardDescription>Sign in to manage your application.</CardDescription>
+          <CardTitle className="text-2xl">{mode === 'signin' ? 'Admin Access' : 'Create Account'}</CardTitle>
+          <CardDescription>
+            {mode === 'signin'
+              ? 'Sign in to manage your application.'
+              : 'The first user to sign up will be the admin.'}
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {status === 'unauthenticated' && (
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={handleSignIn}
-              >
-                <GoogleIcon />
-                Sign in with Google
-              </Button>
+          <form onSubmit={mode === 'signin' ? handleSignIn : handleSignUp} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="m@example.com"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                required
+                minLength={6}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {mode === 'signin' ? 'Sign In' : 'Sign Up'}
+            </Button>
+          </form>
+          <div className="mt-4 text-center text-sm">
+            {mode === 'signin' ? (
+              <>
+                No account?{' '}
+                <Button variant="link" className="p-0" onClick={() => setMode('signup')}>
+                  Sign up
+                </Button>
+              </>
+            ) : (
+              <>
+                Already have an account?{' '}
+                <Button variant="link" className="p-0" onClick={() => setMode('signin')}>
+                  Sign in
+                </Button>
+              </>
             )}
-            {status === 'loading' ||
-              (status === 'authenticating' && (
-                <div className="flex justify-center items-center p-4">
-                  <Loader2 className="mr-2 h-6 w-6 animate-spin" />
-                  <p>Authenticating...</p>
-                </div>
-              ))}
           </div>
         </CardContent>
       </Card>
