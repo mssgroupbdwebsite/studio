@@ -278,7 +278,7 @@ export default function SustainabilityPageComponent() {
                     </div>
                 </motion.div>
             </div>
-        </section>
+        </motion.section>
       </main>
     </motion.div>
   );
