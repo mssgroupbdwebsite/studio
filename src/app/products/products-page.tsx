@@ -4,6 +4,10 @@
 import { ProductCatalog } from '@/components/products/product-catalog';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
+import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
+import { collection } from 'firebase/firestore';
+import type { Product } from '@/lib/products-data';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 50 },
@@ -13,6 +17,14 @@ const fadeUp = {
 export default function ProductsPageComponent() {
   const { scrollYProgress } = useScroll();
   const parallaxY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
+  
+  const firestore = useFirestore();
+  const productsQuery = useMemoFirebase(() => {
+    if (!firestore) return null;
+    return collection(firestore, 'products');
+  }, [firestore]);
+
+  const { data: products, isLoading } = useCollection<Omit<Product, 'image'>>(productsQuery);
 
   return (
     <motion.div
@@ -54,7 +66,21 @@ export default function ProductsPageComponent() {
         </div>
       </motion.header>
       <motion.div variants={fadeUp}>
-        <ProductCatalog />
+        {isLoading ? (
+            <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
+                <div className="space-y-4">
+                    <Skeleton className="h-10 w-full" />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-10">
+                        <Skeleton className="h-[400px] w-full" />
+                        <Skeleton className="h-[400px] w-full" />
+                        <Skeleton className="h-[400px] w-full" />
+                        <Skeleton className="h-[400px] w-full" />
+                    </div>
+                </div>
+            </div>
+        ) : (
+            <ProductCatalog productsData={products || []} />
+        )}
       </motion.div>
     </motion.div>
   );

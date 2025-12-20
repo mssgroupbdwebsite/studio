@@ -1,13 +1,12 @@
 
 'use server';
 
-import fs from 'fs/promises';
-import path from 'path';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { Product, productCategories, productSegments } from '@/lib/products-data';
-
-const productsFilePath = path.join(process.cwd(), 'src', 'lib', 'products.json');
+import { getFirestore, doc } from 'firebase/firestore';
+import { setDocumentNonBlocking, deleteDocumentNonBlocking } from '@/firebase/non-blocking-updates';
+import { initializeFirebase } from '@/firebase';
 
 const productSchema = z.object({
     id: z.string().optional(),
@@ -20,25 +19,10 @@ const productSchema = z.object({
 
 export type ProductFormValues = z.infer<typeof productSchema>;
 
-async function readProductsFile(): Promise<Omit<Product, 'image'>[]> {
-  try {
-    const fileContent = await fs.readFile(productsFilePath, 'utf-8');
-    return JSON.parse(fileContent);
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-      return [];
-    }
-    throw error;
-  }
-}
-
-async function writeProductsFile(products: Omit<Product, 'image'>[]) {
-  await fs.writeFile(productsFilePath, JSON.stringify(products, null, 2), 'utf-8');
-}
-
-export async function getProducts() {
-  const products = await readProductsFile();
-  return products;
+async function getProducts() {
+    // This function will need to be updated to fetch from Firestore
+    // For now, it will not be used in the new implementation.
+    return [];
 }
 
 export async function addProduct(data: ProductFormValues) {
@@ -47,14 +31,15 @@ export async function addProduct(data: ProductFormValues) {
     return { success: false, errors: validation.error.flatten().fieldErrors };
   }
 
-  const products = await readProductsFile();
+  const { firestore } = initializeFirebase();
+  const newProductId = `p${Date.now()}`;
+  const productRef = doc(firestore, 'products', newProductId);
   const newProduct = {
     ...validation.data,
-    id: `p${Date.now()}`,
+    id: newProductId,
   };
-
-  products.push(newProduct);
-  await writeProductsFile(products);
+  
+  setDocumentNonBlocking(productRef, newProduct, {});
 
   revalidatePath('/admin/products');
   revalidatePath('/products');
@@ -67,16 +52,11 @@ export async function updateProduct(data: ProductFormValues) {
     if (!validation.success || !validation.data.id) {
         return { success: false, errors: validation.error?.flatten().fieldErrors || { _form: ['Invalid data'] } };
     }
+    
+    const { firestore } = initializeFirebase();
+    const productRef = doc(firestore, 'products', validation.data.id);
 
-    const products = await readProductsFile();
-    const index = products.findIndex(p => p.id === validation.data.id);
-
-    if (index === -1) {
-        return { success: false, errors: { _form: ['Product not found'] } };
-    }
-
-    products[index] = validation.data as Omit<Product, 'image'>;
-    await writeProductsFile(products);
+    setDocumentNonBlocking(productRef, validation.data, { merge: true });
 
     revalidatePath('/admin/products');
     revalidatePath('/products');
@@ -86,14 +66,14 @@ export async function updateProduct(data: ProductFormValues) {
 
 
 export async function deleteProduct(productId: string) {
-    const products = await readProductsFile();
-    const updatedProducts = products.filter(p => p.id !== productId);
-
-    if (products.length === updatedProducts.length) {
-        return { success: false, errors: { _form: ['Product not found'] } };
+    if (!productId) {
+      return { success: false, errors: { _form: ['Product ID is required'] } };
     }
 
-    await writeProductsFile(updatedProducts);
+    const { firestore } = initializeFirebase();
+    const productRef = doc(firestore, 'products', productId);
+    
+    deleteDocumentNonBlocking(productRef);
 
     revalidatePath('/admin/products');
     revalidatePath('/products');

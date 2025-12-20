@@ -1,6 +1,6 @@
 
 import { PlaceHolderImages, type ImagePlaceholder } from './placeholder-images';
-import productsData from './products.json';
+// We no longer import the static JSON file, as data will come from Firestore.
 
 export type ProductCategory = 'Knitwear' | 'Woven' | 'Denim' | 'Sweater';
 export type ProductSegment = 'Menswear' | 'Womenswear' | 'Kids & Newborn' | 'Unisex';
@@ -12,6 +12,7 @@ export interface Product {
   category: ProductCategory;
   segment: ProductSegment;
   sourcingModel: SourcingModel;
+  imageId: string; // Keep imageId to reference the placeholder
   image: ImagePlaceholder;
 }
 
@@ -25,11 +26,9 @@ const findImage = (id: string): ImagePlaceholder => {
   return image;
 };
 
-// The products array is now augmented with image data at runtime.
-export const products: Product[] = productsData.map(productInfo => ({
-  ...productInfo,
-  image: findImage(productInfo.imageId),
-})) as Product[];
+// The products array is now an empty array.
+// It will be populated by data fetched from Firestore.
+export const products: Product[] = [];
 
 
 export const productCategories: readonly ProductCategory[] = ['Knitwear', 'Woven', 'Denim', 'Sweater'];

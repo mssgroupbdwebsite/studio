@@ -8,6 +8,7 @@ import { Footer } from '@/components/layout/footer';
 import { PageProgressBar } from '@/components/layout/page-progress-bar';
 import { CookieConsent } from '@/components/layout/cookie-consent';
 import './globals.css';
+import { FirebaseClientProvider } from '@/firebase';
 
 export const metadata: Metadata = {
   title: {
@@ -85,14 +86,16 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <PageProgressBar />
-          <div className="relative flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-          <Toaster />
-          <CookieConsent />
+          <FirebaseClientProvider>
+            <PageProgressBar />
+            <div className="relative flex min-h-screen flex-col">
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+            <Toaster />
+            <CookieConsent />
+          </FirebaseClientProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -10,6 +10,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from "@/hooks/use-toast"
 import { motion } from 'framer-motion';
+import { useFirestore } from '@/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { addDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 
 const contactInfo = [
     {
@@ -54,6 +57,7 @@ export default function ContactPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const firestore = useFirestore();
 
   const handleValueChange = (name: keyof typeof formData, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -62,21 +66,30 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    
+    if (!firestore) {
+        toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Firestore is not available. Please try again later.",
+        });
+        setIsSubmitting(false);
+        return;
+    }
+
     try {
-      // Temporarily simulate saving to localStorage
-      const submissions = JSON.parse(localStorage.getItem('inquiries') || '[]');
+      const inquiriesCollection = collection(firestore, 'inquiries');
       const newInquiry = {
         ...formData,
-        id: Math.random().toString(36).substr(2, 9),
-        timestamp: new Date().toISOString(),
+        submissionDate: serverTimestamp(),
         status: 'new'
       };
-      localStorage.setItem('inquiries', JSON.stringify([...submissions, newInquiry]));
-      
-      // await saveInquiry(formData); // This will be used when Firebase is configured
+
+      addDocumentNonBlocking(inquiriesCollection, newInquiry);
       
       setIsSubmitted(true);
       setFormData({ name: '', email: '', company: '', subject: '', message: '' });
+
     } catch (error) {
       toast({
         variant: "destructive",
