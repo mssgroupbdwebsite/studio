@@ -24,8 +24,25 @@ export default function LoginPage() {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // As requested, redirecting directly to the admin panel.
-    router.push('/admin');
+    try {
+        const userCredential = await signInWithEmailAndPassword(email, password);
+        const idToken = await userCredential.user.getIdToken();
+        const sessionResult = await createSession(idToken);
+
+        if (sessionResult.success) {
+            router.push('/admin');
+        } else {
+            throw new Error(sessionResult.error || 'Failed to create session.');
+        }
+    } catch (error) {
+        toast({
+            variant: "destructive",
+            title: "Sign-in Failed",
+            description: (error as Error).message,
+        });
+    } finally {
+        setIsSubmitting(false);
+    }
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
