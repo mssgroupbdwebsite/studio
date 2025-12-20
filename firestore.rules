@@ -1,0 +1,124 @@
+/**
+ * This Firestore Security Ruleset is designed for the MSS Group BD application.
+ *
+ * Core Philosophy:
+ * The security model follows a principle of least privilege, segregating data into
+ * distinct security contexts. It provides public read-access for the product
+ * catalog, a secure "write-only" dropbox for user inquiries, and a strict
+ * user-ownership model for personal preferences.
+ *
+ * Data Structure:
+ * The data is organized into three distinct, top-level collections:
+ * 1. /products: A public catalog of apparel.
+ * 2. /inquiries: A collection for storing contact form submissions.
+ * 3. /user_preferences: A collection for storing individual user settings.
+ * This flat structure avoids complex relational checks and improves performance.
+ *
+ * Key Security Decisions:
+ * - Product Catalog (/products): This collection is publicly readable by anyone to
+ *   allow browsing of the catalog. All write operations are currently disabled
+ *   pending the addition of an ownership or admin role field to the data schema.
+ * - Inquiries (/inquiries): This collection acts as a secure dropbox. Anyone,
+ *   including anonymous users, can create a document (submit the form). However,
+ *   no client is allowed to read, list, update, or delete inquiries to protect privacy.
+ * - User Preferences (/user_preferences): Access is strictly limited to the
+ *   document owner. A user can only create, read, update, or delete their own
+ *   preferences document, identified by their authentication UID. Listing the
+ *   entire collection is disallowed to prevent user enumeration.
+ *
+ * Denormalization for Authorization:
+ * The rules enforce that for user-specific documents (like user_preferences), an
+ * `id` field matching the user's UID must exist within the document itself. This
+ * ensures a permanent, immutable link between the data and its owner, simplifying
+ * security logic and preventing data misattribution.
+ *
+ * Structural Segregation:
+ * Each top-level collection has a unique and uniform security posture. For
+ * example, instead of a single 'content' collection with a 'type' flag, we use
+ * separate /products and /inquiries collections. This makes rules simpler, more
+ * secure, and prevents unintended data leakage through list queries.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // -------------------------------------------------------------------------
+    // Helper Functions
+    // -------------------------------------------------------------------------
+
+    /**
+     * Checks if the user is authenticated.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * Checks if the authenticated user's UID matches the provided userId.
+     * This is the primary function for enforcing document ownership.
+     */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    /**
+     * Checks for ownership on an existing document.
+     * Used for update and delete operations to prevent acting on non-existent data.
+     */
+    function isExistingOwner(userId) {
+      return isOwner(userId) && resource != null;
+    }
+
+    // -------------------------------------------------------------------------
+    // Collection Rules
+    // -------------------------------------------------------------------------
+
+    /**
+     * @description  Rules for the product catalog. Products are public and readable by anyone.
+     * @path         /products/{productId}
+     * @allow        (get) Any user, signed in or not, can read a single product document.
+     * @deny         (create) Any user attempting to create a new product. Writes are disabled.
+     * @principle    Public Read with Owner-Only Writes. Writes are currently blocked because the schema lacks an ownership field.
+     */
+    match /products/{productId} {
+      allow get: if true;
+      allow list: if true;
+
+      // CRITICAL: Cannot implement owner-only writes. The 'Product' entity is missing an 'ownerId' or 'authorId' field.
+      // Writes are disabled to prevent unauthorized data modification.
+      allow create: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+      allow update: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+      allow delete: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+    }
+
+    /**
+     * @description  Rules for the inquiries collection, which acts as a "drop-box".
+     * @path         /inquiries/{inquiryId}
+     * @allow        (create) Any user, including anonymous visitors, can submit an inquiry.
+     * @deny         (get) Any user attempting to read an inquiry after it has been submitted.
+     * @principle    Write-Only Access. This allows data submission while protecting the privacy of all submitted information from other clients.
+     */
+    match /inquiries/{inquiryId} {
+      allow create: if true;
+      allow get: if false;
+      allow list: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    /**
+     * @description  Rules for user-specific preferences, such as theme settings.
+     * @path         /user_preferences/{userId}
+     * @allow        (create) A signed-in user creates their own preferences document (`/user_preferences/my-uid`).
+     * @deny         (get) A user (`user-A`) attempts to read the preferences of another user (`user-B`).
+     * @principle    Strict Ownership. Restricts all access to a user's own data tree, identified by their UID.
+     */
+    match /user_preferences/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(userId);
+    }
+  }
+}

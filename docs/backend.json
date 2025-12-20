@@ -1,0 +1,166 @@
+{
+  "entities": {
+    "Product": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Product",
+      "type": "object",
+      "description": "Represents a product in the apparel catalog.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Product entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the product."
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the product."
+        },
+        "category": {
+          "type": "string",
+          "description": "Category of the product (Knitwear, Woven, Denim, Sweater)."
+        },
+        "segment": {
+          "type": "string",
+          "description": "Segment of the product (Menswear, Womenswear, Kids & Newborn, Unisex)."
+        },
+        "sourcingModel": {
+          "type": "string",
+          "description": "Sourcing model of the product (Manufacturer / Trading Partner)."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the product image.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "category",
+        "segment",
+        "sourcingModel",
+        "imageUrl"
+      ]
+    },
+    "Inquiry": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Inquiry",
+      "type": "object",
+      "description": "Represents an inquiry submitted through the contact form.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Inquiry entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the person submitting the inquiry."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the person submitting the inquiry.",
+          "format": "email"
+        },
+        "message": {
+          "type": "string",
+          "description": "Message content of the inquiry."
+        },
+        "submissionDate": {
+          "type": "string",
+          "description": "Date and time when the inquiry was submitted.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "email",
+        "message",
+        "submissionDate"
+      ]
+    },
+    "UserPreferences": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserPreferences",
+      "type": "object",
+      "description": "Stores user-specific preferences, such as theme (dark/light mode).",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the UserPreferences entity."
+        },
+        "theme": {
+          "type": "string",
+          "description": "User's preferred theme (light or dark)."
+        }
+      },
+      "required": [
+        "id",
+        "theme"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/products/{productId}",
+        "definition": {
+          "entityName": "Product",
+          "schema": {
+            "$ref": "#/backend/entities/Product"
+          },
+          "description": "Stores product details for the apparel catalog.",
+          "params": [
+            {
+              "name": "productId",
+              "description": "Unique identifier for the product."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/inquiries/{inquiryId}",
+        "definition": {
+          "entityName": "Inquiry",
+          "schema": {
+            "$ref": "#/backend/entities/Inquiry"
+          },
+          "description": "Stores contact form inquiries submitted through the website.",
+          "params": [
+            {
+              "name": "inquiryId",
+              "description": "Unique identifier for the inquiry."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/user_preferences/{userId}",
+        "definition": {
+          "entityName": "UserPreferences",
+          "schema": {
+            "$ref": "#/backend/entities/UserPreferences"
+          },
+          "description": "Stores user-specific preferences, such as theme (dark/light mode).",
+          "params": [
+            {
+              "name": "userId",
+              "description": "Unique identifier for the user."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to securely manage product catalog data, user preferences, and contact form inquiries for MSS Group BD. Authorization independence is achieved by avoiding hierarchical `get()` calls in security rules and relying solely on `request.auth.uid` and denormalized data where necessary. Segregation ensures each collection has a homogeneous security posture. The membership map pattern is not directly applicable in this scenario as there's no collaborative data access, however the principle of explicitly defining access is maintained. QAPs are supported through structural segregation, particularly for inquiries which are stored separately and accessible only with appropriate credentials. The design prioritizes clarity, predictability, and adherence to the defined tech stack and style guidelines."
+  }
+}
