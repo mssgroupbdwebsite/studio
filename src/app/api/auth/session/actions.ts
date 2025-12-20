@@ -47,6 +47,10 @@ export async function createAccount(email: string, password: string):Promise<{su
       role
     });
 
+    if (isFirstUser) {
+        await auth.setCustomUserClaims(userRecord.uid, { admin: true });
+    }
+
     return { success: true, userId: userRecord.uid };
   } catch (error) {
     console.error('Error creating account:', error);
