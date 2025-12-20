@@ -5,7 +5,7 @@ import {useRouter} from 'next/navigation';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Logo} from '@/components/layout/logo';
-import {signInWithEmailAndPassword, useUser} from '@/firebase';
+import {signInWithEmailAndPassword} from '@/firebase';
 import {Loader2} from 'lucide-react';
 import {createAccount, createSession} from '@/app/api/auth/session/actions';
 import {useToast} from '@/hooks/use-toast';
@@ -27,9 +27,13 @@ export default function LoginPage() {
       const userCredential = await signInWithEmailAndPassword(email, password);
       const idToken = await userCredential.user.getIdToken();
       const result = await createSession(idToken);
+      
       if (result.success) {
+        // The middleware will handle the redirection to /admin
+        // We can push to a "success" page or just refresh to let middleware kick in.
         router.push('/admin');
       } else {
+        // This case was not handled properly before.
         throw new Error(result.error || 'Failed to create session.');
       }
     } catch (error) {
@@ -38,7 +42,9 @@ export default function LoginPage() {
         title: "Sign-in Failed",
         description: (error as Error).message,
       });
-      setIsSubmitting(false);
+    } finally {
+        // This ensures the button is re-enabled on failure.
+        setIsSubmitting(false);
     }
   };
 
