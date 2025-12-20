@@ -31,12 +31,25 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function DELETE() {
+export async function DELETE(request: NextRequest) {
   const response = NextResponse.json({status: 'success'}, {status: 200});
+  const sessionCookieName = 'session';
+  const cookie = request.cookies.get(sessionCookieName);
+
+  if (cookie) {
+    try {
+      const decodedClaims = await getAuth(app).verifySessionCookie(cookie.value, true);
+      await getAuth(app).revokeRefreshTokens(decodedClaims.sub);
+    } catch(error) {
+      console.error("Error revoking refresh tokens:", error);
+    }
+  }
+
   response.cookies.set({
-    name: 'session',
+    name: sessionCookieName,
     value: '',
     expires: new Date(0),
   });
+
   return response;
 }

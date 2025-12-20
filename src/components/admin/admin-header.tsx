@@ -17,7 +17,8 @@ import {PanelLeft, Home, ShoppingBag, Package, Users, BarChart2, Settings} from 
 import {Avatar, AvatarFallback} from '@/components/ui/avatar';
 import {siteConfig} from '@/config/site';
 import {Logo} from '../layout/logo';
-import {signOut} from '@/app/api/auth/session/actions';
+import {signOut} from '@/lib/firebase/auth';
+import {deleteSession} from '@/app/api/auth/session/actions';
 import {getAuth} from 'firebase/auth';
 import {useEffect, useState} from 'react';
 import type {User} from 'firebase/auth';
@@ -42,6 +43,7 @@ function UserNav() {
   }, []);
 
   const handleSignOut = async () => {
+    await deleteSession();
     await signOut();
     router.push('/login');
   };

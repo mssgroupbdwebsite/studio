@@ -2,50 +2,28 @@
 'use server';
 import {getAuth} from 'firebase/auth';
 import {cookies} from 'next/headers';
+import {app} from '@/lib/firebase/server-config'; // Use server config
+import {getAuth as getAdminAuth} from 'firebase-admin/auth';
 
-export async function createSession() {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  if (!user) {
-    return {success: false, error: 'No user signed in.'};
-  }
-
-  const idToken = await user.getIdToken();
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/session`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Cookie: cookies().toString(),
-    },
-    body: JSON.stringify({idToken}),
-  });
-
-  if (!res.ok) {
+export async function createSession(idToken: string) {
+  const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
+  try {
+    const sessionCookie = await getAdminAuth(app).createSessionCookie(idToken, {expiresIn});
+    const options = {
+      name: 'session',
+      value: sessionCookie,
+      maxAge: expiresIn,
+      httpOnly: true,
+      secure: true,
+    };
+    cookies().set(options);
+    return {success: true};
+  } catch (error) {
+    console.error('Error creating session cookie:', error);
     return {success: false, error: 'Failed to create session.'};
   }
-
-  const newCookies = res.headers.getSetCookie();
-  if (newCookies) {
-    newCookies.forEach(c => {
-      const [name, ...valueParts] = c.split('=');
-      const [value] = valueParts.join('=').split(';');
-      cookies().set(name, value, {
-        httpOnly: true,
-        secure: true,
-        maxAge: 60 * 60 * 24 * 5,
-      });
-    });
-  }
-
-  return {success: true};
 }
 
-export async function signOut() {
-  await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/session`, {
-    method: 'DELETE',
-    headers: {
-      Cookie: cookies().toString(),
-    },
-  });
+export async function deleteSession() {
   cookies().delete('session');
 }

@@ -33,12 +33,12 @@ export default function LoginPage() {
     const unsubscribe = onAuthStateChanged(auth, async user => {
       if (user) {
         setStatus('authenticating');
-        const result = await createSession();
+        const idToken = await user.getIdToken();
+        const result = await createSession(idToken);
         if (result.success) {
           router.push('/admin');
         } else {
-          // Handle session creation failure
-          console.error('Failed to create session');
+          console.error('Failed to create session:', result.error);
           setStatus('unauthenticated');
         }
       } else {
@@ -48,6 +48,16 @@ export default function LoginPage() {
 
     return () => unsubscribe();
   }, [router]);
+
+  const handleSignIn = async () => {
+    setStatus('authenticating');
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      console.error('Sign in error:', error);
+      setStatus('unauthenticated');
+    }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background">
@@ -65,10 +75,7 @@ export default function LoginPage() {
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={() => {
-                  setStatus('authenticating');
-                  signInWithGoogle();
-                }}
+                onClick={handleSignIn}
               >
                 <GoogleIcon />
                 Sign in with Google
