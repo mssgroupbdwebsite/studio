@@ -3,26 +3,32 @@
 
 import { firebaseConfig } from '@/firebase/config';
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore'
+import { getAuth, Auth } from 'firebase/auth';
+import { getFirestore, Firestore } from 'firebase/firestore';
 
-// IMPORTANT: DO NOT MODIFY THIS FUNCTION
-export function initializeFirebase() {
-  if (getApps().length) {
-    return getSdks(getApp());
-  }
+// --- Centralized Firebase Initialization ---
 
-  const firebaseApp = initializeApp(firebaseConfig);
-  return getSdks(firebaseApp);
+let firebaseApp: FirebaseApp;
+let auth: Auth;
+let firestore: Firestore;
+
+// Check if Firebase has already been initialized
+if (!getApps().length) {
+  // If not initialized, initialize it
+  firebaseApp = initializeApp(firebaseConfig);
+} else {
+  // If already initialized, get the existing app
+  firebaseApp = getApp();
 }
 
-export function getSdks(firebaseApp: FirebaseApp) {
-  return {
-    firebaseApp,
-    auth: getAuth(firebaseApp),
-    firestore: getFirestore(firebaseApp)
-  };
-}
+// Get the Auth and Firestore services
+auth = getAuth(firebaseApp);
+firestore = getFirestore(firebaseApp);
+
+// Export the initialized services for use in other parts of the app
+export { firebaseApp, auth, firestore };
+
+// --- Exports for Providers and Hooks ---
 
 export * from './provider';
 export * from './client-provider';
