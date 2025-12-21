@@ -1,4 +1,3 @@
-
 'use client';
 
 import {useState} from 'react';
@@ -26,7 +25,7 @@ export default function LoginPage() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    if (!auth) { // Although auth is initialized, this is a good safety check
+    if (!auth) {
         toast({
             variant: "destructive",
             title: "Sign-in Failed",
