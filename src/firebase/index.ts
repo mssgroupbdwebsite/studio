@@ -3,11 +3,18 @@
 
 // Centralize initialization logic, but don't run it automatically.
 import { firebaseConfig } from '@/firebase/config';
-import { initializeApp, getApps, getApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
+import { getAuth, type Auth } from 'firebase/auth';
+import { getFirestore, type Firestore } from 'firebase/firestore';
 
-function initializeServices() {
+// Define a type for the services for clarity.
+export type FirebaseServices = {
+  firebaseApp: FirebaseApp;
+  auth: Auth;
+  firestore: Firestore;
+};
+
+function initializeServices(): FirebaseServices {
     const firebaseApp = !getApps().length
         ? initializeApp(firebaseConfig)
         : getApp();

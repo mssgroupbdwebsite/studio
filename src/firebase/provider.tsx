@@ -140,15 +140,20 @@ export const useFirebase = (): FirebaseServicesAndUser => {
     firestore: context.firestore,
     auth: context.auth,
     user: context.user,
-    isUserLoading: context.isUserLoading,
+isUserLoading: context.isUserLoading,
     userError: context.userError,
   };
 };
 
-/** Hook to access Firebase Auth instance. */
-export const useAuth = (): Auth => {
-  const { auth } = useFirebase();
-  return auth;
+/** Hook to access Firebase Auth instance. Returns null if not ready. */
+export const useAuth = (): Auth | null => {
+  const context = useContext(FirebaseContext);
+  if (context === undefined) {
+    // This can happen on first render, before context is available.
+    // It's better to return null and let components handle it.
+    return null;
+  }
+  return context.auth;
 };
 
 /** Hook to access Firestore instance. */
@@ -180,6 +185,10 @@ export function useMemoFirebase<T>(factory: () => T, deps: DependencyList): T | 
  * @returns {UserHookResult} Object with user, isUserLoading, userError.
  */
 export const useUser = (): UserHookResult => { // Renamed from useAuthUser
-  const { user, isUserLoading, userError } = useFirebase(); // Leverages the main hook
+  const context = useContext(FirebaseContext);
+   if (context === undefined) {
+    return { user: null, isUserLoading: true, userError: null };
+  }
+  const { user, isUserLoading, userError } = context;
   return { user, isUserLoading, userError };
 };

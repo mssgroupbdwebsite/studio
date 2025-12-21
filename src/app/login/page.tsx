@@ -21,7 +21,8 @@ export default function LoginPage() {
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const router = useRouter();
   const { toast } = useToast();
-  const auth = useAuth();
+  // useAuth can now potentially return null if Firebase isn't ready.
+  const auth = useAuth(); 
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,6 +84,8 @@ export default function LoginPage() {
     }
   };
 
+  const isAuthReady = !!auth;
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-background">
       <Card className="mx-auto w-full max-w-sm">
@@ -108,6 +111,7 @@ export default function LoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                disabled={!isAuthReady}
               />
             </div>
             <div className="space-y-2">
@@ -119,9 +123,10 @@ export default function LoginPage() {
                 minLength={6}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                disabled={!isAuthReady}
               />
             </div>
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
+            <Button type="submit" className="w-full" disabled={isSubmitting || !isAuthReady}>
               {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {mode === 'signin' ? 'Sign In' : 'Sign Up'}
             </Button>
@@ -130,14 +135,14 @@ export default function LoginPage() {
             {mode === 'signin' ? (
               <>
                 No account?{' '}
-                <Button variant="link" className="p-0" onClick={() => setMode('signup')}>
+                <Button variant="link" className="p-0" onClick={() => setMode('signup')} disabled={!isAuthReady}>
                   Sign up
                 </Button>
               </>
             ) : (
               <>
                 Already have an account?{' '}
-                <Button variant="link" className="p-0" onClick={() => setMode('signin')}>
+                <Button variant="link" className="p-0" onClick={() => setMode('signin')} disabled={!isAuthReady}>
                   Sign in
                 </Button>
               </>

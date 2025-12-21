@@ -12,13 +12,28 @@ interface FirebaseClientProviderProps {
 export function FirebaseClientProvider({ children }: FirebaseClientProviderProps) {
   // useMemo ensures that Firebase is only initialized once per application lifecycle.
   // This is the core of the fix.
-  const { firebaseApp, auth, firestore } = useMemo(() => initializeServices(), []);
+  const services = useMemo(() => {
+    try {
+      return initializeServices();
+    } catch (error) {
+      console.error("Failed to initialize Firebase:", error);
+      // Failed to initialize Firebase services, render without Firebase
+      return { firebaseApp: null, auth: null, firestore: null };
+    }
+  }, []);
+
+  if (!services.firebaseApp || !services.auth || !services.firestore) {
+    // If initialization failed, render children without Firebase context.
+    // This allows the app to still function, but Firebase features will be disabled
+    // and a useful error will be logged to the console.
+    return <>{children}</>;
+  }
 
   return (
     <FirebaseProvider
-      firebaseApp={firebaseApp}
-      auth={auth}
-      firestore={firestore}
+      firebaseApp={services.firebaseApp}
+      auth={services.auth}
+      firestore={services.firestore}
     >
       {children}
     </FirebaseProvider>
