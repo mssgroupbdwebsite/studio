@@ -31,9 +31,9 @@ export async function deleteSession() {
 export async function createAccount(email: string, password: string):Promise<{success: boolean, error?: string, userId?: string}> {
   const { auth, firestore } = getAdminServices();
   try {
-    const usersCollection = firestore.collection('users');
-    const existingUsers = await usersCollection.limit(1).get();
-    const isFirstUser = existingUsers.empty;
+    // Check if any user exists to determine if this is the first signup
+    const listUsersResult = await auth.listUsers(1);
+    const isFirstUser = listUsersResult.users.length === 0;
     const role = isFirstUser ? 'admin' : 'user';
 
     const userRecord = await auth.createUser({
@@ -47,6 +47,7 @@ export async function createAccount(email: string, password: string):Promise<{su
       role
     });
 
+    // If it's the first user, set a custom claim to make them an admin
     if (isFirstUser) {
         await auth.setCustomUserClaims(userRecord.uid, { admin: true });
     }

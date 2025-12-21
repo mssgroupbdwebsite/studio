@@ -1,40 +1,22 @@
-// Centralize initialization logic.
-import { firebaseConfig } from '@/firebase/config';
-import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
-import { getAuth, type Auth, signOut as firebaseSignOut } from 'firebase/auth';
-import { getFirestore, type Firestore } from 'firebase/firestore';
 
-// Define a type for the services for clarity.
-export type FirebaseServices = {
-  firebaseApp: FirebaseApp;
-  auth: Auth;
-  firestore: Firestore;
-};
+// This file is a central hub for re-exporting Firebase-related modules.
+// It ensures that components can import from a single, consistent location.
 
-// Initialize Firebase app if it hasn't been already.
-const firebaseApp = !getApps().length
-    ? initializeApp(firebaseConfig)
-    : getApp();
+// Firebase SDK initializers and config
+export * from './config';
+export * from './client-init'; // Exports initialized app, auth, firestore
 
-const auth = getAuth(firebaseApp);
-const firestore = getFirestore(firebaseApp);
-
-/**
- * Signs the user out.
- * @param auth The Firebase Auth instance.
- */
-export async function signOut(auth: Auth): Promise<void> {
-  await firebaseSignOut(auth);
-}
-
-// Export the initialized services directly.
-export { firebaseApp, auth, firestore };
-
-// Re-export everything else that components might need.
+// React context providers and hooks
 export * from './provider';
 export * from './client-provider';
+
+// Firestore-specific hooks
 export * from './firestore/use-collection';
 export * from './firestore/use-doc';
+
+// Non-blocking fire-and-forget database operations
 export * from './non-blocking-updates';
+
+// Custom error classes for better debugging
 export * from './errors';
 export * from './error-emitter';

@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -16,7 +17,8 @@ import {PanelLeft, Home, ShoppingBag, Package, Users, BarChart2, Settings} from 
 import {Avatar, AvatarFallback} from '@/components/ui/avatar';
 import {siteConfig} from '@/config/site';
 import {Logo} from '../layout/logo';
-import { useUser, signOut, useAuth } from '@/firebase';
+import { useUser, useAuth } from '@/firebase';
+import { signOut } from 'firebase/auth';
 import {deleteSession} from '@/app/api/auth/session/actions';
 import {Skeleton} from '../ui/skeleton';
 

@@ -144,7 +144,7 @@ export default function AdminInquiriesPage() {
                         {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-16 w-full" />)}
                     </div>
                 )}
-                {!isLoading && inquiries && (
+                {!isLoading && inquiries && inquiries.length > 0 && (
                      <div className="rounded-md border">
                          <Table>
                             <TableHeader>
