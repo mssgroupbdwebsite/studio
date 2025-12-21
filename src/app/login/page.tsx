@@ -7,7 +7,7 @@ import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Logo} from '@/components/layout/logo';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useAuth } from '@/firebase'; // Correctly use the hook
+import { useAuth } from '@/firebase/provider';
 import {Loader2} from 'lucide-react';
 import {createAccount, createSession} from '@/app/api/auth/session/actions';
 import {useToast} from '@/hooks/use-toast';
@@ -21,15 +21,13 @@ export default function LoginPage() {
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const router = useRouter();
   const { toast } = useToast();
-  const auth = useAuth(); // Use the hook to safely access the auth instance
+  const { auth, isAuthReady } = useAuth(); // Use the hook to safely access the auth instance and its ready state
   
-  const isAuthReady = !!auth;
-
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    if (!isAuthReady) {
+    if (!isAuthReady || !auth) {
         toast({
             variant: "destructive",
             title: "Sign-in Failed",
@@ -85,6 +83,8 @@ export default function LoginPage() {
     }
   };
 
+  const formDisabled = isSubmitting || !isAuthReady;
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-background">
       <Card className="mx-auto w-full max-w-sm">
@@ -110,7 +110,7 @@ export default function LoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                disabled={isSubmitting || !isAuthReady}
+                disabled={formDisabled}
               />
             </div>
             <div className="space-y-2">
@@ -122,11 +122,11 @@ export default function LoginPage() {
                 minLength={6}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                disabled={isSubmitting || !isAuthReady}
+                disabled={formDisabled}
               />
             </div>
-            <Button type="submit" className="w-full" disabled={isSubmitting || !isAuthReady}>
-              {(isSubmitting || !isAuthReady) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            <Button type="submit" className="w-full" disabled={formDisabled}>
+              {formDisabled && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {mode === 'signin' ? 'Sign In' : 'Sign Up'}
             </Button>
           </form>
@@ -134,14 +134,14 @@ export default function LoginPage() {
             {mode === 'signin' ? (
               <>
                 No account?{' '}
-                <Button variant="link" className="p-0" onClick={() => setMode('signup')} disabled={isSubmitting || !isAuthReady}>
+                <Button variant="link" className="p-0" onClick={() => setMode('signup')} disabled={formDisabled}>
                   Sign up
                 </Button>
               </>
             ) : (
               <>
                 Already have an account?{' '}
-                <Button variant="link" className="p-0" onClick={() => setMode('signin')} disabled={isSubmitting || !isAuthReady}>
+                <Button variant="link" className="p-0" onClick={() => setMode('signin')} disabled={formDisabled}>
                   Sign in
                 </Button>
               </>

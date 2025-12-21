@@ -19,6 +19,7 @@ export interface FirebaseContextState {
   firebaseApp: FirebaseApp | null;
   firestore: Firestore | null;
   auth: Auth | null;
+  isAuthReady: boolean;
   user: User | null;
   isUserLoading: boolean;
   userError: Error | null;
@@ -71,6 +72,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
     firebaseApp,
     firestore,
     auth,
+    isAuthReady: !!auth, // Is ready if the auth object exists
     user: userState.user,
     isUserLoading: userState.isLoading,
     userError: userState.error,
@@ -93,10 +95,12 @@ function useFirebaseContext() {
   return context;
 }
 
-/** Hook to access Firebase Auth instance. Returns null if not ready. */
-export const useAuth = (): Auth | null => {
-  return useFirebaseContext().auth;
+/** Hook to access Firebase Auth instance and readiness. Returns null if not ready. */
+export const useAuth = (): { auth: Auth | null; isAuthReady: boolean } => {
+    const { auth, isAuthReady } = useFirebaseContext();
+    return { auth, isAuthReady };
 };
+
 
 /** Hook to access Firestore instance. Returns null if not ready. */
 export const useFirestore = (): Firestore | null => {
