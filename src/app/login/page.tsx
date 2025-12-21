@@ -22,12 +22,14 @@ export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
   const auth = useAuth(); // Use the hook to safely access the auth instance
+  
+  const isAuthReady = !!auth;
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    if (!auth) {
+    if (!isAuthReady) {
         toast({
             variant: "destructive",
             title: "Sign-in Failed",
@@ -82,8 +84,6 @@ export default function LoginPage() {
       setIsSubmitting(false);
     }
   };
-  
-  const isAuthReady = !!auth;
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background">

@@ -7,13 +7,22 @@ export async function middleware(request: NextRequest) {
 
   // If there's no session cookie, just continue
   if (!sessionCookie) {
-    return NextResponse.next();
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
   try {
     const { auth } = getAdminServices();
     // Verify the session cookie. This checks for revocation.
     const decodedToken = await auth.verifySessionCookie(sessionCookie.value, true);
+
+    // If verification is successful, check for admin claim
+    if (decodedToken.admin !== true) {
+      // Not an admin, redirect to login with an error
+      const loginUrl = new URL('/login', request.url);
+      loginUrl.searchParams.set('error', 'unauthorized');
+      return NextResponse.redirect(loginUrl);
+    }
+
 
     // If verification is successful, the user is authenticated.
     // We can add the user's info to the request headers for use in server components if needed.
