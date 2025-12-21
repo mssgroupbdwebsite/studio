@@ -7,8 +7,7 @@ import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Logo} from '@/components/layout/logo';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-// Import the initialized auth instance directly
-import { auth } from '@/firebase';
+import { useAuth } from '@/firebase';
 import {Loader2} from 'lucide-react';
 import {createAccount, createSession} from '@/app/api/auth/session/actions';
 import {useToast} from '@/hooks/use-toast';
@@ -22,13 +21,22 @@ export default function LoginPage() {
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const router = useRouter();
   const { toast } = useToast();
-  // The 'auth' instance is now imported directly, not from a hook
+  const auth = useAuth();
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // The auth instance is guaranteed to be available here
+    if (!auth) {
+        toast({
+            variant: "destructive",
+            title: "Sign-in Failed",
+            description: "Authentication service is not available. Please try again later.",
+        });
+        setIsSubmitting(false);
+        return;
+    }
+
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const idToken = await userCredential.user.getIdToken();
