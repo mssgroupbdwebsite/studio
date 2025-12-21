@@ -1,18 +1,18 @@
 
 'use client';
 
-import React, { type ReactNode } from 'react';
+import React, { useMemo, type ReactNode } from 'react';
 import { FirebaseProvider } from '@/firebase/provider';
-// Import the already-initialized services
-import { firebaseApp, auth, firestore } from '@/firebase';
+import { initializeServices } from '@/firebase'; // Import the new function
 
 interface FirebaseClientProviderProps {
   children: ReactNode;
 }
 
 export function FirebaseClientProvider({ children }: FirebaseClientProviderProps) {
-  // No need for useMemo or initializeApp call here anymore.
-  // The services are initialized once when index.ts is loaded.
+  // useMemo ensures that Firebase is only initialized once per application lifecycle.
+  // This is the core of the fix.
+  const { firebaseApp, auth, firestore } = useMemo(() => initializeServices(), []);
 
   return (
     <FirebaseProvider
