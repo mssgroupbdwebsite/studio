@@ -5,7 +5,14 @@ import { getAdminServices } from '@/firebase/server-init';
 
 export async function POST(request: NextRequest) {
   const { auth } = getAdminServices();
-  const {idToken} = await request.json();
+  
+  // Get the ID token from the Authorization header
+  const authorization = request.headers.get('Authorization');
+  let idToken: string | undefined;
+
+  if (authorization?.startsWith('Bearer ')) {
+      idToken = authorization.split('Bearer ')[1];
+  }
 
   if (!idToken) {
     return NextResponse.json({error: 'No ID token provided.'}, {status: 400});
@@ -20,14 +27,21 @@ export async function POST(request: NextRequest) {
       value: sessionCookie,
       maxAge: expiresIn,
       httpOnly: true,
-      secure: true,
+      secure: true, // Set to true if using https
     };
     const response = NextResponse.json({status: 'success'}, {status: 200});
     response.cookies.set(options);
     return response;
-  } catch (error) {
-    console.error('Error creating session cookie:', error);
-    return NextResponse.json({error: 'Failed to create session'}, {status: 401});
+  } catch (error: any) {
+    console.error(
+        'Error creating session cookie:',
+        {
+            code: error.code,
+            message: error.message,
+            stack: error.stack,
+        }
+    );
+    return NextResponse.json({error: 'Failed to create session. See server logs for details.'}, {status: 401});
   }
 }
 
