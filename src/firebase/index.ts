@@ -1,6 +1,4 @@
 
-'use client';
-
 // Centralize initialization logic.
 import { firebaseConfig } from '@/firebase/config';
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';

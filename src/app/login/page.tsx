@@ -7,7 +7,7 @@ import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Logo} from '@/components/layout/logo';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useAuth } from '@/firebase';
+import { auth } from '@/firebase'; // Import auth directly
 import {Loader2} from 'lucide-react';
 import {createAccount, createSession} from '@/app/api/auth/session/actions';
 import {useToast} from '@/hooks/use-toast';
@@ -21,14 +21,12 @@ export default function LoginPage() {
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const router = useRouter();
   const { toast } = useToast();
-  // useAuth can now potentially return null if Firebase isn't ready.
-  const clientAuth = useAuth(); 
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    if (!clientAuth) {
+    if (!auth) { // Although auth is initialized, this is a good safety check
         toast({
             variant: "destructive",
             title: "Sign-in Failed",
@@ -39,7 +37,7 @@ export default function LoginPage() {
     }
 
     try {
-        const userCredential = await signInWithEmailAndPassword(clientAuth, email, password);
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const idToken = await userCredential.user.getIdToken();
         const sessionResult = await createSession(idToken);
 
@@ -84,8 +82,6 @@ export default function LoginPage() {
     }
   };
 
-  const isAuthReady = !!clientAuth;
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-background">
       <Card className="mx-auto w-full max-w-sm">
@@ -111,7 +107,7 @@ export default function LoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                disabled={!isAuthReady}
+                disabled={isSubmitting}
               />
             </div>
             <div className="space-y-2">
@@ -123,10 +119,10 @@ export default function LoginPage() {
                 minLength={6}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                disabled={!isAuthReady}
+                disabled={isSubmitting}
               />
             </div>
-            <Button type="submit" className="w-full" disabled={isSubmitting || !isAuthReady}>
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {mode === 'signin' ? 'Sign In' : 'Sign Up'}
             </Button>
@@ -135,14 +131,14 @@ export default function LoginPage() {
             {mode === 'signin' ? (
               <>
                 No account?{' '}
-                <Button variant="link" className="p-0" onClick={() => setMode('signup')} disabled={!isAuthReady}>
+                <Button variant="link" className="p-0" onClick={() => setMode('signup')} disabled={isSubmitting}>
                   Sign up
                 </Button>
               </>
             ) : (
               <>
                 Already have an account?{' '}
-                <Button variant="link" className="p-0" onClick={() => setMode('signin')} disabled={!isAuthReady}>
+                <Button variant="link" className="p-0" onClick={() => setMode('signin')} disabled={isSubmitting}>
                   Sign in
                 </Button>
               </>
