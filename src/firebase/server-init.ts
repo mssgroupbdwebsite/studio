@@ -1,5 +1,5 @@
 
-import { initializeApp, getApps, getApp, App, cert } from 'firebase-admin/app';
+import { initializeApp, getApps, getApp, App } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
 
@@ -7,13 +7,13 @@ const appName = 'firebase-admin-app-singleton';
 let app: App;
 
 // Ensure the app is initialized only once.
-if (!getApps().some(app => app.name === appName)) {
+if (getApps().length === 0) {
   // When running in a Google Cloud environment like App Hosting,
   // initializeApp() with no arguments automatically uses Application
   // Default Credentials.
-  app = initializeApp({}, appName);
+  app = initializeApp();
 } else {
-  app = getApp(appName);
+  app = getApp();
 }
 
 const adminAuth = getAuth(app);
