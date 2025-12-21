@@ -7,7 +7,7 @@ import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Logo} from '@/components/layout/logo';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth, useAuth } from '@/firebase';
+import { useAuth } from '@/firebase';
 import {Loader2} from 'lucide-react';
 import {createAccount, createSession} from '@/app/api/auth/session/actions';
 import {useToast} from '@/hooks/use-toast';
