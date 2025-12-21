@@ -26,6 +26,15 @@ export default function LoginPage() {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    if (!auth) {
+        toast({
+            variant: "destructive",
+            title: "Sign-in Failed",
+            description: "Authentication service is not available. Please try again later.",
+        });
+        setIsSubmitting(false);
+        return;
+    }
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const idToken = await userCredential.user.getIdToken();
