@@ -1,4 +1,6 @@
 
+'use client';
+
 import { products } from '@/lib/products-data';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ProductsDataTable } from './_components/products-data-table';
