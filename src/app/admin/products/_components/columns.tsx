@@ -3,7 +3,7 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import type { Product } from "@/lib/products-data"
-import { MoreHorizontal, EyeOff, Eye, Edit } from "lucide-react"
+import { MoreHorizontal, EyeOff, Eye, Edit, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -16,6 +16,7 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { ProductFormDialog } from './product-form-dialog';
 import { ToggleVisibilityDialog } from "./toggle-visibility-dialog";
+import { DeleteProductDialog } from "./delete-product-dialog"
 
 export const columns: ColumnDef<Product>[] = [
   {
@@ -78,6 +79,13 @@ export const columns: ColumnDef<Product>[] = [
                     {isHiding ? 'Hide' : 'Show'}
                   </button>
                 </ToggleVisibilityDialog>
+                 <DropdownMenuSeparator />
+                <DeleteProductDialog product={product}>
+                   <button className="relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full text-destructive">
+                    <Trash2 className="h-4 w-4" />
+                    Delete
+                  </button>
+                </DeleteProductDialog>
             </DropdownMenuContent>
             </DropdownMenu>
         </div>

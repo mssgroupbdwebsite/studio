@@ -60,3 +60,15 @@ export async function toggleProductVisibility(productId: string, willBeHidden: b
     revalidatePath('/admin/products');
     return { success: true };
 }
+
+export async function deleteProduct(productId: string) {
+    if (!productId) {
+        return { success: false, error: "Product ID is required." };
+    }
+
+    // In a real app, you would delete this from a database.
+    // For now, we just log it and revalidate.
+    console.log(`Deleting product ${productId} (no-op)`);
+    revalidatePath('/admin/products');
+    return { success: true };
+}
