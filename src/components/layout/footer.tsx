@@ -2,62 +2,101 @@
 import Link from 'next/link';
 import { siteConfig } from '@/config/site';
 import { Logo } from './logo';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Send, Linkedin, Facebook, Instagram } from 'lucide-react';
+
+const socialLinks = [
+    { name: 'LinkedIn', icon: Linkedin, href: '#' },
+    { name: 'Facebook', icon: Facebook, href: '#' },
+    { name: 'Instagram', icon: Instagram, href: '#' },
+];
 
 export function Footer() {
   return (
-    <footer className="border-t bg-secondary/50">
-      <div className="container py-12 md:py-16">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
-          {/* Branding Section */}
-          <div className="md:col-span-4 lg:col-span-5">
-            <div className="flex flex-col items-start gap-4">
-              <Link href="/" className="flex items-center space-x-2">
-                <Logo className="h-8 w-8 text-primary" />
-                <span className="text-lg font-bold font-headline">{siteConfig.name}</span>
-              </Link>
-              <p className="text-sm text-muted-foreground max-w-xs">
-                Your trusted, full-service apparel sourcing and manufacturing partner in Bangladesh. We deliver high-quality knitwear, woven garments, denim, and sweaters with a commitment to ethical practices and sustainability.
-              </p>
-            </div>
+    <footer className="bg-background border-t">
+      <div className="container py-16 md:py-24">
+        {/* Newsletter Section */}
+        <div className="grid lg:grid-cols-2 gap-8 items-center bg-muted p-8 rounded-2xl">
+          <div>
+             <h3 className="text-2xl md:text-3xl font-bold font-headline text-foreground">Stay Connected</h3>
+             <p className="mt-2 text-muted-foreground">Get the latest industry insights, product updates, and company news delivered right to your inbox.</p>
           </div>
-          
-          {/* Links Section */}
-          <div className="md:col-span-8 lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8">
-            <div>
-              <h3 className="font-semibold font-headline">Navigation</h3>
-              <ul className="mt-4 space-y-2">
-                {siteConfig.mainNav.map((item) => (
-                  <li key={item.href}>
-                    <Link href={item.href!} className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                      {item.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold font-headline">Company</h3>
-              <ul className="mt-4 space-y-2">
-                <li><Link href="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">About Us</Link></li>
-                <li><Link href="/quality" className="text-sm text-muted-foreground hover:text-primary transition-colors">Quality & Compliance</Link></li>
-                <li><Link href="/sustainability" className="text-sm text-muted-foreground hover:text-primary transition-colors">Sustainability</Link></li>
-                <li><Link href="/blog" className="text-sm text-muted-foreground hover:text-primary transition-colors">Blog</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold font-headline">Legal</h3>
-              <ul className="mt-4 space-y-2">
-                <li><Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary transition-colors">Privacy Policy</Link></li>
-                <li><Link href="/disclaimer" className="text-sm text-muted-foreground hover:text-primary transition-colors">Disclaimer</Link></li>
-                 <li><Link href="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">Contact Us</Link></li>
-              </ul>
-            </div>
-          </div>
+          <form className="flex w-full max-w-md items-center space-x-2">
+            <Input type="email" placeholder="Enter your email" className="h-12 flex-1" />
+            <Button type="submit" size="lg" className="h-12">
+              Subscribe <Send className="ml-2 h-4 w-4" />
+            </Button>
+          </form>
         </div>
         
-        {/* Sub-footer */}
-        <div className="mt-12 border-t pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} {siteConfig.name}. All Rights Reserved.</p>
+        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
+            {/* Branding Column */}
+            <div className="col-span-2 lg:col-span-1">
+                <Link href="/" className="flex items-center space-x-2">
+                    <Logo className="h-8 w-8 text-primary" />
+                    <span className="text-lg font-bold font-headline">{siteConfig.name}</span>
+                </Link>
+                <p className="mt-4 text-sm text-muted-foreground">
+                    Your trusted, full-service apparel sourcing and manufacturing partner in Bangladesh.
+                </p>
+                <div className="mt-6 flex space-x-4">
+                    {socialLinks.map(social => (
+                        <Link key={social.name} href={social.href} className="text-muted-foreground hover:text-primary transition-colors">
+                            <social.icon className="h-5 w-5" />
+                            <span className="sr-only">{social.name}</span>
+                        </Link>
+                    ))}
+                </div>
+            </div>
+
+            {/* Link Columns */}
+            <div className="text-sm">
+                <h3 className="font-semibold font-headline">Navigation</h3>
+                <ul className="mt-4 space-y-3">
+                    {siteConfig.mainNav.map((item) => (
+                      <li key={item.href}>
+                        <Link href={item.href!} className="text-muted-foreground hover:text-primary transition-colors">
+                          {item.title}
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
+            </div>
+
+            <div className="text-sm">
+                <h3 className="font-semibold font-headline">Company</h3>
+                <ul className="mt-4 space-y-3">
+                    <li><Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">About Us</Link></li>
+                    <li><Link href="/quality" className="text-muted-foreground hover:text-primary transition-colors">Quality & Compliance</Link></li>
+                    <li><Link href="/sustainability" className="text-muted-foreground hover:text-primary transition-colors">Sustainability</Link></li>
+                    <li><Link href="/blog" className="text-muted-foreground hover:text-primary transition-colors">Blog</Link></li>
+                </ul>
+            </div>
+
+            <div className="text-sm">
+                <h3 className="font-semibold font-headline">Legal</h3>
+                <ul className="mt-4 space-y-3">
+                    <li><Link href="/privacy-policy" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</Link></li>
+                    <li><Link href="/disclaimer" className="text-muted-foreground hover:text-primary transition-colors">Disclaimer</Link></li>
+                    <li><Link href="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact Us</Link></li>
+                </ul>
+            </div>
+             <div className="text-sm">
+              <h3 className="font-semibold font-headline">Contact</h3>
+              <ul className="mt-4 space-y-3">
+                <li className="text-muted-foreground">Uttara, Dhaka-1230, Bangladesh</li>
+                <li className="text-muted-foreground hover:text-primary transition-colors"><a href="mailto:info@mssgroupbd.com">info@mssgroupbd.com</a></li>
+                <li className="text-muted-foreground hover:text-primary transition-colors"><a href="tel:+8801234567890">+880 1234-567890</a></li>
+              </ul>
+            </div>
+        </div>
+      </div>
+      
+       {/* Sub-footer */}
+      <div className="border-t bg-muted/50">
+        <div className="container text-center py-6 text-sm text-muted-foreground">
+            <p>&copy; {new Date().getFullYear()} {siteConfig.name}. All Rights Reserved.</p>
         </div>
       </div>
     </footer>
