@@ -26,9 +26,11 @@ import { addProduct, updateProduct, ProductFormValues } from "../actions";
 import { productCategories, productSegments } from "@/config/products";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { Loader2, UploadCloud, Image as ImageIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import type { ProductWithImage } from '../actions';
+import { CldUploadWidget } from "next-cloudinary";
+import Image from "next/image";
 
 const productSchema = z.object({
     id: z.string().optional(),
@@ -86,6 +88,8 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
       });
     }
   }
+  
+  const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
   return (
     <Form {...form}>
@@ -116,20 +120,57 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
             </FormItem>
           )}
         />
+        
         <FormField
             control={form.control}
             name="imageUrl"
             render={({ field }) => (
                 <FormItem>
-                <FormLabel>Image URL</FormLabel>
-                <FormControl>
-                    <Input placeholder="https://res.cloudinary.com/..." {...field} />
+                <FormLabel>Product Image</FormLabel>
+                 <FormControl>
+                    <CldUploadWidget
+                        uploadPreset={uploadPreset}
+                        onSuccess={(result: any) => {
+                            form.setValue('imageUrl', result.info.secure_url);
+                             toast({
+                                title: "Image Uploaded",
+                                description: "The image URL has been set.",
+                             });
+                        }}
+                    >
+                        {({ open }) => (
+                            <div>
+                                {field.value ? (
+                                     <div className="relative aspect-video rounded-md overflow-hidden cursor-pointer" onClick={() => open()}>
+                                        <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                                            <p className="text-white text-sm font-semibold">Click to change image</p>
+                                        </div>
+                                        <Image src={field.value} alt="Uploaded product image" fill className="object-cover" />
+                                    </div>
+                                ) : (
+                                    <div 
+                                        onClick={() => open()}
+                                        className="flex flex-col items-center justify-center gap-4 p-8 border-2 border-dashed rounded-lg cursor-pointer hover:bg-accent hover:border-primary transition-colors"
+                                    >
+                                        <UploadCloud className="w-12 h-12 text-muted-foreground" />
+                                        <p className="text-center text-muted-foreground text-sm">
+                                            Drag & drop an image here, or <br/>
+                                            <span className="text-primary font-semibold">click to browse files</span>
+                                        </p>
+                                    </div>
+                                )}
+                                {/* Hidden input to hold the value for the form */}
+                                <Input type="hidden" {...field} />
+                            </div>
+                        )}
+                    </CldUploadWidget>
                 </FormControl>
-                <FormDescription>Upload an image in the Media Library and paste the URL here.</FormDescription>
+                <FormDescription>Upload an image for the product.</FormDescription>
                 <FormMessage />
                 </FormItem>
             )}
         />
+
         <div className="grid grid-cols-2 gap-4">
             <FormField
             control={form.control}
