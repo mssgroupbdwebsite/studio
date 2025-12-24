@@ -12,8 +12,8 @@ const indicators = [
   },
   {
     icon: <Award className="h-10 w-10 text-primary" />,
-    title: 'Proven Experience',
-    description: 'Over 15 years of industry leadership.',
+    title: 'Visionary Leadership',
+    description: 'Pioneering the future of apparel manufacturing.',
   },
   {
     icon: <ShieldCheck className="h-10 w-10 text-primary" />,

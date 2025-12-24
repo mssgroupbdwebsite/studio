@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import Image from 'next/image';
@@ -181,7 +180,7 @@ export default function CompanyPageComponent() {
                 <span className="text-primary font-semibold uppercase tracking-wider">Who We Are</span>
                 <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mt-2">Redefining Apparel Manufacturing</h2>
                 <p className="text-lg text-muted-foreground leading-relaxed mt-4">
-                  MSS Group BD is a leading apparel manufacturer and retailer based in Bangladesh, established in 2005. We specialize in delivering high-quality clothing solutions to international and domestic markets, providing end-to-end services including product sourcing, design, manufacturing, and delivery.
+                  MSS Group BD is a leading apparel manufacturer and retailer based in Bangladesh, established in 2025. We specialize in delivering high-quality clothing solutions to international and domestic markets, providing end-to-end services including product sourcing, design, manufacturing, and delivery.
                 </p>
                 <div className="grid sm:grid-cols-2 gap-6 pt-6 mt-6 border-t">
                   <div className="flex items-start gap-3">
