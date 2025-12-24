@@ -15,13 +15,17 @@ interface ProductsPageClientProps {
 
 export function ProductsPageClient({ products: initialProducts }: ProductsPageClientProps) {
   const [products, setProducts] = useState<ProductWithImage[]>(initialProducts);
-  const [loading, setLoading] = useState(true);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    // This effect runs only on the client, after the component has mounted.
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     // This effect ensures that the state is updated when the props change,
     // which happens after a server action and router.refresh().
     setProducts(initialProducts);
-    setLoading(false);
   }, [initialProducts]);
 
   return (
@@ -31,11 +35,11 @@ export function ProductsPageClient({ products: initialProducts }: ProductsPageCl
                 <h1 className="text-3xl font-bold tracking-tight font-headline">Products</h1>
                 <p className="text-muted-foreground">Manage your product catalog.</p>
             </div>
-            <AddProductDialog />
+            {isClient ? <AddProductDialog /> : <Skeleton className="h-10 w-[145px]" />}
         </div>
       <Card>
         <CardContent className="p-6">
-          {loading ? (
+          {!isClient ? (
             <div className="space-y-4">
                 <div className="flex items-center space-x-4">
                     <Skeleton className="h-12 w-1/3" />
