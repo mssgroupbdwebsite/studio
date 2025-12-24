@@ -1,15 +1,8 @@
 
 import type { Metadata, Viewport } from 'next';
-import { Toaster } from '@/components/ui/toaster';
-import { ThemeProvider } from '@/components/theme-provider';
 import { siteConfig } from '@/config/site';
-import { cn } from '@/lib/utils';
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
-import { PageProgressBar } from '@/components/layout/page-progress-bar';
-import { CookieConsent } from '@/components/layout/cookie-consent';
 import './globals.css';
-import { FirebaseClientProvider } from '@/firebase/client-provider';
+import { AppLayout } from './app-layout';
 
 export const metadata: Metadata = {
   title: {
@@ -57,6 +50,7 @@ export const viewport: Viewport = {
   ],
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -76,28 +70,8 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body
-        className={cn(
-          'min-h-screen bg-background font-body antialiased'
-        )}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <FirebaseClientProvider>
-            <PageProgressBar />
-            <div className="relative flex min-h-screen flex-col">
-              <Header />
-              <main className="flex-1">{children}</main>
-              <Footer />
-            </div>
-            <Toaster />
-            <CookieConsent />
-          </FirebaseClientProvider>
-        </ThemeProvider>
+      <body>
+          <AppLayout>{children}</AppLayout>
       </body>
     </html>
   );
