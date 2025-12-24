@@ -28,6 +28,7 @@ import { addProduct, updateProduct, ProductFormValues } from "../actions";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 
 const productSchema = z.object({
     id: z.string().optional(),
@@ -36,10 +37,11 @@ const productSchema = z.object({
     segment: z.enum(productSegments),
     sourcingModel: z.enum(['Manufacturer', 'Trading Partner']),
     imageId: z.string().min(1, "Image is required"),
+    description: z.string().min(1, "Description is required"),
 });
 
 interface ProductFormProps {
-  product?: Omit<Product, 'image'>;
+  product?: Product;
   onSuccess?: () => void;
 }
 
@@ -50,13 +52,14 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
     resolver: zodResolver(productSchema),
     defaultValues: product ? {
       ...product,
-      // imageId is already part of product, no need to extract
+      description: product.image.description,
     } : {
       name: "",
       category: "Knitwear",
       segment: "Menswear",
       sourcingModel: "Manufacturer",
       imageId: "",
+      description: "",
     },
   });
 
@@ -71,6 +74,7 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
     if (result.success) {
       toast({
         title: `Product ${isEditing ? 'updated' : 'added'} successfully`,
+        description: `"${data.name}" has been saved.`,
       });
       onSuccess?.();
       router.refresh();
@@ -78,7 +82,7 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
       toast({
         variant: "destructive",
         title: `Failed to ${isEditing ? 'update' : 'add'} product`,
-        description: "An error occurred. Please try again.",
+        description: result.error || "An error occurred. Please try again.",
       });
     }
   }
@@ -94,6 +98,19 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
               <FormLabel>Product Name</FormLabel>
               <FormControl>
                 <Input placeholder="e.g. Men's Knit Polo" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea placeholder="Describe the product..." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -190,7 +207,7 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
         
         <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
             {form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isEditing ? "Update Product" : "Add Product"}
+          {isEditing ? "Save Changes" : "Add Product"}
         </Button>
       </form>
     </Form>

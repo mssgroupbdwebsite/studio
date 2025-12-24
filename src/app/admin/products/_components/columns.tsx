@@ -2,8 +2,8 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { Product } from "@/lib/products-data"
-import { MoreHorizontal, EyeOff } from "lucide-react"
+import type { Product } from "@/lib/products-data"
+import { MoreHorizontal, EyeOff, Eye, Edit } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -14,6 +14,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge"
+import { ProductFormDialog } from './product-form-dialog';
+import { ToggleVisibilityDialog } from "./toggle-visibility-dialog";
 
 export const columns: ColumnDef<Product>[] = [
   {
@@ -22,7 +24,7 @@ export const columns: ColumnDef<Product>[] = [
     cell: ({ row }) => {
         const product = row.original;
         return (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 font-medium">
                 {product.hidden && <EyeOff className="h-4 w-4 text-muted-foreground" title="This product is hidden" />}
                 <span>{product.name}</span>
             </div>
@@ -49,6 +51,9 @@ export const columns: ColumnDef<Product>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
+      const product = row.original
+      const isHiding = !product.hidden
+
       return (
         <div className="text-right">
             <DropdownMenu>
@@ -61,10 +66,18 @@ export const columns: ColumnDef<Product>[] = [
             <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem disabled>Edit</DropdownMenuItem>
-                <DropdownMenuItem disabled>
-                    Hide
-                </DropdownMenuItem>
+                <ProductFormDialog product={product}>
+                  <button className="relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full">
+                    <Edit className="h-4 w-4" />
+                    Edit
+                  </button>
+                </ProductFormDialog>
+                <ToggleVisibilityDialog product={product}>
+                   <button className="relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full">
+                    {isHiding ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {isHiding ? 'Hide' : 'Show'}
+                  </button>
+                </ToggleVisibilityDialog>
             </DropdownMenuContent>
             </DropdownMenu>
         </div>

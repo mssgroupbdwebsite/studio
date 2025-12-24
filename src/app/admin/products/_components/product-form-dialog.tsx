@@ -14,7 +14,7 @@ import { ProductForm } from "./product-form";
 import type { Product } from '@/lib/products-data';
 
 interface ProductFormDialogProps {
-    product: Omit<Product, 'image'>;
+    product: Product;
     children: React.ReactNode;
 }
 

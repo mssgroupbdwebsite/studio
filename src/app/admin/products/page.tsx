@@ -1,27 +1,25 @@
 
-'use client';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Package } from 'lucide-react';
+import { products } from '@/lib/products-data';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { ProductsDataTable } from './_components/products-data-table';
+import { columns } from './_components/columns';
+import { AddProductDialog } from './_components/add-product-dialog';
 
 export default function AdminProductsPage() {
-
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle>Products</CardTitle>
-           {/* The AddProductDialog was removed as it depends on Firebase actions */}
+    <div className="p-4 md:p-6 space-y-6">
+       <div className="flex items-center justify-between">
+            <div>
+                <h1 className="text-3xl font-bold tracking-tight font-headline">Products</h1>
+                <p className="text-muted-foreground">Manage your product catalog.</p>
+            </div>
+            <AddProductDialog />
         </div>
-      </CardHeader>
-      <CardContent>
-         <div className="text-center py-16 border-2 border-dashed rounded-lg">
-            <Package className="mx-auto h-12 w-12 text-muted-foreground" />
-            <h3 className="mt-4 text-lg font-semibold">No Products Found</h3>
-            <p className="mt-2 text-sm text-muted-foreground">
-                The connection to the products database has been removed.
-            </p>
-        </div>
-      </CardContent>
-    </Card>
+      <Card>
+        <CardContent className="p-6">
+          <ProductsDataTable columns={columns} data={products} />
+        </CardContent>
+      </Card>
+    </div>
   );
 }
