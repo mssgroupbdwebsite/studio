@@ -1,3 +1,4 @@
+
 import { PlaceHolderImages, type ImagePlaceholder } from './placeholder-images';
 // We no longer import the static JSON file, as data will come from Firestore.
 
@@ -31,5 +32,5 @@ const findImage = (id: string): ImagePlaceholder => {
 export const products: Product[] = [];
 
 
-export const productCategories: readonly ProductCategory[] = ['Knitwear', 'Woven', 'Denim', 'Sweater'];
-export const productSegments: readonly ProductSegment[] = ['Menswear', 'Womenswear', 'Kids & Newborn', 'Unisex'];
+export const productCategories = ['Knitwear', 'Woven', 'Denim', 'Sweater'] as const;
+export const productSegments = ['Menswear', 'Womenswear', 'Kids & Newborn', 'Unisex'] as const;

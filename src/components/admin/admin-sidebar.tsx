@@ -14,7 +14,7 @@ const navItems = [
   { href: '#', label: 'Orders', icon: ShoppingBag, disabled: true },
   { href: '#', label: 'Customers', icon: Users, disabled: true },
   { href: '#', label: 'Analytics', icon: BarChart2, disabled: true },
-  { href: '#', label: 'Settings', icon: Settings, disabled: true },
+  { href: '/admin/settings', label: 'Settings', icon: Settings, disabled: true },
 ];
 
 export function AdminSidebar() {
@@ -37,7 +37,7 @@ export function AdminSidebar() {
                   href={href}
                   className={cn(
                     'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary',
-                    pathname === href && 'bg-muted text-primary',
+                    pathname.startsWith(href) && href !== '#' && 'bg-muted text-primary',
                     disabled && 'pointer-events-none opacity-50'
                   )}
                 >
