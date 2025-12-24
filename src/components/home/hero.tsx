@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { siteConfig } from '@/config/site';
 import { ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 50 },
@@ -22,9 +22,15 @@ const stagger = {
 };
 
 export function Hero() {
+  const { scrollYProgress } = useScroll();
+  const parallaxY = useTransform(scrollYProgress, [0, 0.5], ['0%', '50%']);
+
   return (
     <section className="relative h-[80vh] md:h-[calc(100vh-56px)] flex items-center">
-      <div className="absolute inset-0">
+      <motion.div 
+        className="absolute inset-0"
+        style={{ y: parallaxY }}
+      >
         <Image
           src="https://picsum.photos/seed/hero-bg/1800/1200"
           alt="Abstract background image"
@@ -36,7 +42,7 @@ export function Hero() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/50 to-transparent" />
-      </div>
+      </motion.div>
       <div className="relative z-10 p-4 container mx-auto">
         <motion.div
           initial="hidden"

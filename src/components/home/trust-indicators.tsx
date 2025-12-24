@@ -39,7 +39,7 @@ const fadeUp = {
 const stagger = {
   visible: {
     transition: {
-      staggerChildren: 0.15,
+      staggerChildren: 0.1,
     },
   },
 };
@@ -63,6 +63,8 @@ export function TrustIndicators() {
               key={index}
               variants={fadeUp}
               className="flex flex-col items-center gap-3 text-center"
+              whileHover={{ y: -5, scale: 1.05 }}
+              transition={{ type: 'spring', stiffness: 300 }}
             >
               {indicator.icon}
               <p className="font-semibold text-sm text-secondary-foreground">

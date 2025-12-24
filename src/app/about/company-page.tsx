@@ -225,10 +225,10 @@ export default function CompanyPageComponent() {
               <motion.div key={value.text} variants={fadeUp} className="flex flex-col items-center gap-4">
                 <motion.div 
                   className="flex h-20 w-20 items-center justify-center rounded-full bg-secondary shadow-lg border"
-                  whileHover={{ rotateY: 180, scale: 1.1 }}
+                  whileHover={{ scale: 1.1, rotate: 15 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <div className="text-primary" style={{ backfaceVisibility: "hidden" }}>{value.icon}</div>
+                  <div className="text-primary">{value.icon}</div>
                 </motion.div>
                 <p className="font-semibold text-center text-sm">{value.text}</p>
               </motion.div>
