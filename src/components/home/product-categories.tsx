@@ -7,9 +7,17 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Waves, Layers, Shirt, User } from 'lucide-react';
 import { productCategories } from '@/config/products';
 import { motion } from 'framer-motion';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
+import { cn } from '@/lib/utils';
 
 const categoryIcons: { [key: string]: React.ReactNode } = {
-  Knitwear: <Waves className="h-8 w-8 text-primary" />,
+  Knit: <Waves className="h-8 w-8 text-primary" />,
   Woven: <Layers className="h-8 w-8 text-primary" />,
   Denim: <Shirt className="h-8 w-8 text-primary" />,
   Sweater: <User className="h-8 w-8 text-primary" />,
@@ -28,7 +36,12 @@ const stagger = {
   },
 };
 
+const topRowCategories = productCategories.slice(0, 4);
+const bottomRowCategories = productCategories.slice(4, 8);
+
 export function ProductCategories() {
+  const allCategories = [...topRowCategories, ...bottomRowCategories];
+
   return (
     <motion.section
       initial="hidden"
@@ -48,23 +61,39 @@ export function ProductCategories() {
             manufacture a wide spectrum of apparel across several key categories.
           </p>
         </motion.div>
-        <motion.div variants={stagger} className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {productCategories.map((category) => (
-            <motion.div key={category} variants={fadeUp}>
-              <Card className="text-center group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-primary h-full">
-                <CardHeader className="items-center p-8">
-                  <div className="mb-4">
-                    {categoryIcons[category] || <Shirt className="h-8 w-8 text-primary" />}
+        
+        <motion.div variants={fadeUp} className="mt-16">
+           <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent>
+              {allCategories.map((category) => (
+                <CarouselItem key={category} className="md:basis-1/2 lg:basis-1/3">
+                  <div className="p-1">
+                     <Card className="text-center group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-primary h-full">
+                      <CardHeader className="items-center p-8">
+                        <div className="mb-4">
+                          {categoryIcons[category] || <Shirt className="h-8 w-8 text-primary" />}
+                        </div>
+                        <CardTitle className="font-headline text-xl">{category}</CardTitle>
+                        <CardDescription className="pt-2">
+                          High-quality {category.toLowerCase()} garments for all seasons.
+                        </CardDescription>
+                      </CardHeader>
+                    </Card>
                   </div>
-                  <CardTitle className="font-headline text-xl">{category}</CardTitle>
-                  <CardDescription className="pt-2">
-                    High-quality {category.toLowerCase()} garments for all seasons.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            </motion.div>
-          ))}
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden lg:inline-flex" />
+            <CarouselNext className="hidden lg:inline-flex" />
+          </Carousel>
         </motion.div>
+
         <motion.div variants={fadeUp} className="mt-16 text-center">
           <Button asChild size="lg">
             <Link href="/products">
