@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import type { BlogPost } from '@/app/admin/blogs/actions';
 import { Card } from '@/components/ui/card';
 import { format } from 'date-fns';
-import { Briefcase, Clock, Inbox, MoreHorizontal, Edit } from 'lucide-react';
+import { Briefcase, Clock, Inbox, MoreHorizontal, Edit, ExternalLink } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from 'next/link';
 import {
@@ -62,9 +62,13 @@ function BlogCard({ post }: { post: BlogPost }) {
                                 </button>
                            </EditPostDialog>
                         </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                             <Link href={`/blog/${post.slug}`} target="_blank">View Post</Link>
-                        </DropdownMenuItem>
+                         {post.slug && (
+                            <DropdownMenuItem asChild>
+                                 <Link href={`/blog/${post.slug}`} target="_blank" className="flex items-center gap-2">
+                                     <ExternalLink className="h-4 w-4" /> View Post
+                                 </Link>
+                            </DropdownMenuItem>
+                        )}
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="p-0">
                             <DeletePostButton postId={post.id} />
