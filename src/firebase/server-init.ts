@@ -6,18 +6,23 @@ import { firebaseConfig } from '@/firebase/config';
 
 let app: App;
 
-const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT
-  ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
-  : undefined;
+// Safely parse the service account from the environment variable.
+const serviceAccountString = process.env.FIREBASE_SERVICE_ACCOUNT;
+let serviceAccount;
+if (serviceAccountString) {
+  try {
+    serviceAccount = JSON.parse(serviceAccountString);
+  } catch (e) {
+    console.error('Error parsing FIREBASE_SERVICE_ACCOUNT JSON:', e);
+  }
+}
 
 // Ensure the app is initialized only once.
 if (getApps().length === 0) {
-  // When running in a Google Cloud environment like App Hosting,
-  // initializeApp() with no arguments automatically uses Application
-  // Default Credentials. However, we'll provide explicit config for robustness.
   app = initializeApp({
     projectId: firebaseConfig.projectId,
-    // credential: serviceAccount ? cert(serviceAccount) : undefined, // Use default credentials if service account not provided
+    // Explicitly use the service account credential if it exists.
+    credential: serviceAccount ? cert(serviceAccount) : undefined,
   });
 } else {
   app = getApp();
