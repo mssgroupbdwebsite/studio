@@ -1,7 +1,7 @@
 
 'use client';
 
-import { CheckCircle2, Users, ShieldCheck, Truck } from 'lucide-react';
+import { CheckCircle2, Users, ShieldCheck, Truck, BarChart, Palette } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 
@@ -29,6 +29,18 @@ const capabilitiesList = [
     title: 'Streamlined Logistics',
     description:
       'From factory floor to your warehouse, we manage all logistics, ensuring timely and cost-effective delivery of your goods.',
+  },
+   {
+    icon: <Palette className="h-8 w-8 text-primary" />,
+    title: 'Product Design & Development',
+    description:
+      'Our R&D team helps with trend analysis, material innovation, and sample development to create market-leading products.',
+  },
+    {
+    icon: <BarChart className="h-8 w-8 text-primary" />,
+    title: 'Market & Trend Analysis',
+    description:
+      'We provide valuable insights into market trends and consumer behavior to help you make informed decisions for your collections.',
   },
 ];
 
@@ -65,7 +77,7 @@ export function Capabilities() {
             apparel supply chain with precision and expertise.
           </p>
         </motion.div>
-        <motion.div variants={stagger} className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <motion.div variants={stagger} className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {capabilitiesList.map((capability, index) => (
             <motion.div key={index} variants={fadeUp} className="flex items-start gap-6 p-6">
               <div className="flex-shrink-0 mt-1">{capability.icon}</div>

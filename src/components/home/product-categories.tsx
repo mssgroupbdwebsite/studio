@@ -36,11 +36,9 @@ const stagger = {
   },
 };
 
-const topRowCategories = productCategories.slice(0, 4);
-const bottomRowCategories = productCategories.slice(4, 8);
+const displayedCategories = productCategories.slice(0, 12);
 
 export function ProductCategories() {
-  const allCategories = [...topRowCategories, ...bottomRowCategories];
 
   return (
     <motion.section
@@ -71,7 +69,7 @@ export function ProductCategories() {
             className="w-full"
           >
             <CarouselContent>
-              {allCategories.map((category) => (
+              {displayedCategories.map((category) => (
                 <CarouselItem key={category} className="md:basis-1/2 lg:basis-1/3">
                   <div className="p-1">
                      <Card className="text-center group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-primary h-full">

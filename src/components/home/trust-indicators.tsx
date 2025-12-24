@@ -1,7 +1,7 @@
 
 'use client';
 
-import { Globe, Award, ShieldCheck, TrendingUp } from 'lucide-react';
+import { Globe, Award, ShieldCheck, TrendingUp, Users, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const indicators = [
@@ -21,6 +21,14 @@ const indicators = [
     icon: <TrendingUp className="h-8 w-8 text-primary" />,
     text: 'Trusted by Leading Brands',
   },
+  {
+    icon: <Users className="h-8 w-8 text-primary" />,
+    text: 'Dedicated Merchandising Teams',
+  },
+    {
+    icon: <Zap className="h-8 w-8 text-primary" />,
+    text: 'Flexible Production Models',
+    },
 ];
 
 const fadeUp = {
@@ -31,7 +39,7 @@ const fadeUp = {
 const stagger = {
   visible: {
     transition: {
-      staggerChildren: 0.2,
+      staggerChildren: 0.15,
     },
   },
 };
@@ -48,7 +56,7 @@ export function TrustIndicators() {
       <div className="container mx-auto px-4 md:px-6">
         <motion.div
           variants={stagger}
-          className="grid grid-cols-2 md:grid-cols-4 gap-y-8 gap-x-4 justify-items-center py-12"
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-y-8 gap-x-4 justify-items-center py-12"
         >
           {indicators.map((indicator, index) => (
             <motion.div
