@@ -20,11 +20,6 @@ const contactInfo = [
         value: 'Uttara, Dhaka-1230, Bangladesh',
     },
     {
-        icon: <Phone size={24} className="text-primary" />,
-        title: 'Phone',
-        value: '+880 1234-567890',
-    },
-    {
         icon: <Mail size={24} className="text-primary" />,
         title: 'Email',
         value: 'info@mssgroupbd.com',

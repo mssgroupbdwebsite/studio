@@ -38,7 +38,7 @@ export function Footer() {
                     <span className="text-lg font-bold font-headline">{siteConfig.name}</span>
                 </Link>
                 <p className="mt-4 text-sm text-muted-foreground">
-                    Your trusted, full-service apparel sourcing and manufacturing partner in Bangladesh.
+                    Your trusted, full-service apparel sourcing and manufacturing partner in Bangladesh. We deliver high-quality products with a commitment to ethical practices and sustainability.
                 </p>
                 <div className="mt-6 flex space-x-4">
                     {socialLinks.map(social => (
@@ -87,7 +87,6 @@ export function Footer() {
               <ul className="mt-4 space-y-3">
                 <li className="text-muted-foreground">Uttara, Dhaka-1230, Bangladesh</li>
                 <li className="text-muted-foreground hover:text-primary transition-colors"><a href="mailto:info@mssgroupbd.com">info@mssgroupbd.com</a></li>
-                <li className="text-muted-foreground hover:text-primary transition-colors"><a href="tel:+8801234567890">+880 1234-567890</a></li>
               </ul>
             </div>
         </div>
