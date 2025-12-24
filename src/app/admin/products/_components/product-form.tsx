@@ -141,9 +141,6 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
                         options={{
                             sources: ['local'],
                             multiple: false,
-                            cropping: false,
-                            folder: 'mss-group-products',
-                            clientAllowedFormats: ['png', 'jpeg', 'jpg', 'webp'],
                         }}
                     >
                         {({ open }) => (
