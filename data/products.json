@@ -1,23 +1,4 @@
-
 [
-  {
-    "id": "prod_1",
-    "name": "Classic Pique Polo",
-    "category": "Knitwear",
-    "segment": "Menswear",
-    "sourcingModel": "Manufacturer",
-    "imageId": "product-knit-polo",
-    "hidden": false
-  },
-  {
-    "id": "prod_2",
-    "name": "Organic Cotton T-Shirt",
-    "category": "Knitwear",
-    "segment": "Unisex",
-    "sourcingModel": "Trading Partner",
-    "imageId": "product-knit-tshirt",
-    "hidden": false
-  },
   {
     "id": "prod_3",
     "name": "Womens Knit Top",

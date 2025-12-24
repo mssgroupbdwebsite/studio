@@ -3,13 +3,13 @@
 
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
-import { addProductToFile, updateProductInFile, deleteProductFromFile } from '@/lib/products-data';
+import { addProductToFile, updateProductInFile, deleteProductFromFile, deleteMultipleProductsFromFile } from '@/lib/products-data';
 import type { ImagePlaceholder } from '@/lib/placeholder-images';
 import { productCategories, productSegments } from '@/config/products';
 
 
-export type ProductCategory = 'Knitwear' | 'Woven' | 'Denim' | 'Sweater';
-export type ProductSegment = 'Menswear' | 'Womenswear' | 'Kids & Newborn' | 'Unisex';
+export type ProductCategory = typeof productCategories[number];
+export type ProductSegment = typeof productSegments[number];
 export type SourcingModel = 'Manufacturer' | 'Trading Partner';
 
 export interface Product {
@@ -109,5 +109,20 @@ export async function deleteProduct(productId: string) {
         return { success: false, error: 'Product not found.' };
     } catch (e: any) {
         return { success: false, error: e.message || 'Failed to delete product.' };
+    }
+}
+
+export async function deleteSelectedProducts(productIds: string[]) {
+    if (!productIds || productIds.length === 0) {
+        return { success: false, error: "No product IDs provided." };
+    }
+
+    try {
+        await deleteMultipleProductsFromFile(productIds);
+        revalidatePath('/admin/products');
+        revalidatePath('/products');
+        return { success: true };
+    } catch (e: any) {
+        return { success: false, error: e.message || 'Failed to delete products.' };
     }
 }

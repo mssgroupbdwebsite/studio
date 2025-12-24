@@ -86,3 +86,15 @@ export async function deleteProductFromFile(productId: string): Promise<boolean>
     }
     return false;
 }
+
+export async function deleteMultipleProductsFromFile(productIds: string[]): Promise<boolean> {
+    let products = await readProductsFromFile();
+    const initialLength = products.length;
+    products = products.filter(p => !productIds.includes(p.id));
+
+    if (products.length < initialLength) {
+        await writeProductsToFile(products);
+        return true;
+    }
+    return false;
+}

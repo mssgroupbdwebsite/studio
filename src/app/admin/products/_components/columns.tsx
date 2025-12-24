@@ -16,9 +16,32 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { ProductFormDialog } from './product-form-dialog';
 import { ToggleVisibilityDialog } from "./toggle-visibility-dialog";
-import { DeleteProductDialog } from "./delete-product-dialog"
+import { DeleteProductDialog } from "./delete-product-dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export const columns: ColumnDef<ProductWithImage>[] = [
+    {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "name",
     header: "Name",
