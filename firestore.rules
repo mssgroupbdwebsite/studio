@@ -7,97 +7,44 @@ service cloud.firestore {
      * Core Philosophy: This ruleset establishes a clear separation between publicly
      * readable content and private, admin-managed data. The core security model
      * allows any user, including unauthenticated visitors, to read product and
-     * company information and to submit inquiries. All write operations (creating,
-     * updating, deleting) and access to sensitive data (like inquiries) are
-     * restricted to administrators.
+     * company information. All write operations (creating,
+     * updating, deleting) are disabled on the client side.
      *
-     * Data Structure: The data is organized into three distinct, top-level
+     * Data Structure: The data is organized into two distinct, top-level
      * collections:
      * - /products: Public catalog of all products.
      * - /companyProfiles: Public information about the company.
-     * - /inquiries: A private "dropbox" for contact form submissions.
      *
      * Key Security Decisions:
-     * - Public Read, Admin Write: `products` and `companyProfiles` are globally
+     * - Public Read, No Writes: `products` and `companyProfiles` are globally
      *   readable to support the public-facing website. All modifications are
-     *   locked down, intended for future implementation of an admin role.
-     * - Inquiry Dropbox: The `inquiries` collection allows any user (even
-     *   anonymous ones) to create a document, mimicking a public contact form.
-     *   However, reading, updating, or deleting these inquiries is strictly
-     *   prohibited for anyone but an administrator.
-     * - No Admin Role Defined: The provided application requirements mention
-     *   "authorized admins" but do not define how to identify one. Therefore,
-     *   this ruleset uses a placeholder `isAdmin()` function that currently
-     *   returns `false`, effectively disabling all administrative actions. A
-     *   developer must implement the logic in this function to enable writes.
+     *   locked down from the client.
      *
      * Denormalization for Authorization: This ruleset does not require
-     * denormalization as access controls are collection-wide (public vs. admin)
-     * rather than based on per-document ownership.
+     * denormalization as access controls are collection-wide.
      *
      * Structural Segregation: The use of separate top-level collections for
-     * public data (`products`, `companyProfiles`) and private data (`inquiries`)
-     * provides a strong security boundary, ensuring that sensitive information
-     * cannot be accidentally listed or accessed by unauthorized users.
+     * `products` and `companyProfiles` provides a strong security boundary.
      */
-
-    // Helper Functions
-
-    /**
-     * Placeholder function to identify an administrator.
-     * CRITICAL: This must be implemented with actual business logic, such as
-     * checking a custom claim or looking up a user's role in a separate
-     * 'admins' collection.
-     */
-    function isAdmin() {
-      // TODO: Implement admin role check. For example, check for a custom claim:
-      // return request.auth.token.admin == true;
-      return false;
-    }
 
     /**
      * @description Publicly readable product catalog.
      * @path /products/{productId}
      * @allow (get) Any user, signed-in or not, can read a specific product.
-     * @deny (create) A non-admin user attempts to create a new product document.
-     * @principle Public read access for catalog data, with writes restricted to admins.
+     * @deny (create) All client-side writes are denied.
+     * @principle Public read access for catalog data, with all writes disabled.
      */
     match /products/{productId} {
       allow get: if true;
       allow list: if true;
-      allow create: if isAdmin();
-      allow update: if isAdmin() && resource != null;
-      allow delete: if isAdmin() && resource != null;
+      allow write: if false;
     }
 
     /**
      * @description Publicly readable company profile information.
      * @path /companyProfiles/{companyProfileId}
      * @allow (list) Any user, signed-in or not, can list all company profiles.
-     * @deny (update) A non-admin user attempts to modify the company's mission statement.
-     * @principle Public read access for company info, with writes restricted to admins.
+     * @deny (update) All client-side writes are denied.
+     * @principle Public read access for company info, with all writes disabled.
      */
-    match /companyProfiles/{companyProfileId} {
-      allow get: if true;
-      allow list: if true;
-      allow create: if isAdmin();
-      allow update: if isAdmin() && resource != null;
-      allow delete: if isAdmin() && resource != null;
-    }
-
-    /**
-     * @description Secure dropbox for user-submitted inquiries.
-     * @path /inquiries/{inquiryId}
-     * @allow (create) An anonymous user successfully submits the contact form.
-     * @deny (get) A signed-in, non-admin user attempts to read an inquiry they submitted.
-     * @principle Allows public write-once access while making the resulting data private and admin-only.
-     */
-    match /inquiries/{inquiryId} {
-      allow get: if isAdmin();
-      allow list: if isAdmin();
-      allow create: if true;
-      allow update: if isAdmin() && resource != null;
-      allow delete: if isAdmin() && resource != null;
-    }
-  }
-}
+    match /companyProfiles

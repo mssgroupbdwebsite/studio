@@ -1,4 +1,3 @@
-
 import { PlaceHolderImages, type ImagePlaceholder } from './placeholder-images';
 // We no longer import the static JSON file, as data will come from Firestore.
 

@@ -46,43 +46,6 @@
         "imageUrl"
       ]
     },
-    "Inquiry": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "Inquiry",
-      "type": "object",
-      "description": "Represents an inquiry submitted through the contact form.",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the Inquiry entity."
-        },
-        "name": {
-          "type": "string",
-          "description": "Name of the person submitting the inquiry."
-        },
-        "email": {
-          "type": "string",
-          "description": "Email address of the person submitting the inquiry.",
-          "format": "email"
-        },
-        "message": {
-          "type": "string",
-          "description": "The message content of the inquiry."
-        },
-        "submissionDate": {
-          "type": "string",
-          "description": "Date and time when the inquiry was submitted.",
-          "format": "date-time"
-        }
-      },
-      "required": [
-        "id",
-        "name",
-        "email",
-        "message",
-        "submissionDate"
-      ]
-    },
     "CompanyProfile": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "CompanyProfile",
@@ -121,7 +84,6 @@
   },
   "auth": {
     "providers": [
-      "password",
       "anonymous"
     ]
   },
@@ -158,24 +120,8 @@
             }
           ]
         }
-      },
-      {
-        "path": "/inquiries/{inquiryId}",
-        "definition": {
-          "entityName": "Inquiry",
-          "schema": {
-            "$ref": "#/backend/entities/Inquiry"
-          },
-          "description": "Stores inquiries submitted via the contact form. Access restricted to authorized admins. inquiryId is the unique inquiry ID.",
-          "params": [
-            {
-              "name": "inquiryId",
-              "description": "Unique identifier for the inquiry."
-            }
-          ]
-        }
       }
     ],
-    "reasoning": "The Firestore structure is designed to support the MSS Group BD application, focusing on products, company profiles, and inquiries. It emphasizes security, scalability, and ease of debugging. Authorization Independence is achieved by avoiding hierarchical `get()` calls in security rules. Each top-level collection serves a distinct purpose, simplifying security rule definition. Segregation is used to separate different types of data into different collections based on their distinct security needs (e.g., public product data vs. private inquiry submissions). Products and company profiles are designed for public read access while inquiries are secured to prevent unauthorized access. No denormalization is needed as read access is public for products and company profiles. This structure ensures that listing operations (`list`) are secure by restricting them based on the role and specific use-case for each collection. Inquiries leverage submissionDate to enable listing by time windows."
+    "reasoning": "The Firestore structure is designed to support the MSS Group BD application, focusing on products and company profiles. It emphasizes security, scalability, and ease of debugging. Authorization Independence is achieved by avoiding hierarchical `get()` calls in security rules. Each top-level collection serves a distinct purpose, simplifying security rule definition. Segregation is used to separate different types of data into different collections based on their distinct security needs. Products and company profiles are designed for public read access."
   }
 }

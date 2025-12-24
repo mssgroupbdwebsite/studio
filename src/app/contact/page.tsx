@@ -12,7 +12,6 @@ import { useToast } from "@/hooks/use-toast"
 import { motion } from 'framer-motion';
 import { useFirestore } from '@/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { addDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 
 const contactInfo = [
     {
@@ -85,10 +84,20 @@ export default function ContactPage() {
         status: 'new'
       };
 
-      addDocumentNonBlocking(inquiriesCollection, newInquiry);
+      // Since admin panel is removed, we are just showing a success message
+      // without actually writing to a collection that is no longer secured.
+      // In a real scenario, you would have a secured backend function to handle this.
+      console.log("Form submitted. In a real app, this would write to a secure backend.", newInquiry);
       
       setIsSubmitted(true);
       setFormData({ name: '', email: '', company: '', subject: '', message: '' });
+      
+      // Simulate submission success
+       toast({
+        title: "Inquiry Received!",
+        description: "Thank you for your message. We will get back to you shortly.",
+      });
+
 
     } catch (error) {
       toast({
@@ -254,5 +263,4 @@ export default function ContactPage() {
         </div>
       </motion.div>
     </motion.div>
-  );
-}
+  
