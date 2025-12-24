@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ProductForm } from "./product-form";
-import type { ProductWithImage } from '@/lib/products-data';
+import type { ProductWithImage } from '@/app/admin/products/actions';
 
 interface ProductFormDialogProps {
     product: ProductWithImage;

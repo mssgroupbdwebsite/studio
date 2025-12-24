@@ -2,7 +2,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import type { ProductWithImage } from "@/lib/products-data"
+import type { ProductWithImage } from "@/app/admin/products/actions"
 import { MoreHorizontal, EyeOff, Eye, Edit, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {

@@ -1,9 +1,9 @@
 
 import Image from 'next/image';
-import type { ProductWithImage } from '@/lib/products-data';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
+import type { ProductWithImage } from '@/app/admin/products/actions';
 
 interface ProductCardProps {
   product: ProductWithImage;

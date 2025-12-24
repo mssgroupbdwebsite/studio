@@ -3,7 +3,28 @@
 
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
-import { productCategories, productSegments, addProductToFile, updateProductInFile, deleteProductFromFile, updateProduct as updateProductInFileAgain } from '@/lib/products-data';
+import { addProductToFile, updateProductInFile, deleteProductFromFile } from '@/lib/products-data';
+import type { ImagePlaceholder } from '@/lib/placeholder-images';
+import { productCategories, productSegments } from '@/config/products';
+
+
+export type ProductCategory = 'Knitwear' | 'Woven' | 'Denim' | 'Sweater';
+export type ProductSegment = 'Menswear' | 'Womenswear' | 'Kids & Newborn' | 'Unisex';
+export type SourcingModel = 'Manufacturer' | 'Trading Partner';
+
+export interface Product {
+  id: string;
+  name: string;
+  category: ProductCategory;
+  segment: ProductSegment;
+  sourcingModel: SourcingModel;
+  imageId: string; 
+  hidden?: boolean;
+}
+
+export interface ProductWithImage extends Product {
+    image: ImagePlaceholder;
+}
 
 const productSchema = z.object({
     id: z.string().optional(),
@@ -31,6 +52,7 @@ export async function addProduct(data: ProductFormValues) {
     // as it belongs to the image. This logic can be adjusted if needed.
     await addProductToFile({ ...productData, imageId, hidden: false });
     revalidatePath('/admin/products');
+    revalidatePath('/products');
     return { success: true };
   } catch (e: any) {
     return { success: false, error: e.message || 'Failed to add product.' };
@@ -50,6 +72,7 @@ export async function updateProduct(data: ProductFormValues) {
         await updateProductInFile(id, productData);
         // Here you might also want a way to update the image description if that's intended
         revalidatePath('/admin/products');
+        revalidatePath('/products');
         return { success: true };
     } catch (e: any) {
         return { success: false, error: e.message || 'Failed to update product.' };

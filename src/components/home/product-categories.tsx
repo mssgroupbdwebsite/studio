@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Waves, Layers, Shirt, User } from 'lucide-react';
-import { productCategories } from '@/lib/products-data';
+import { productCategories } from '@/config/products';
 import { motion } from 'framer-motion';
 
 const categoryIcons: { [key: string]: React.ReactNode } = {

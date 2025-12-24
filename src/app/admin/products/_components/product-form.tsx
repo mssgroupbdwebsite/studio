@@ -23,12 +23,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { productCategories, productSegments, ProductWithImage } from "@/lib/products-data";
 import { addProduct, updateProduct, ProductFormValues } from "../actions";
+import { productCategories, productSegments } from "@/config/products";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
+import type { ProductWithImage } from '../actions';
 
 const productSchema = z.object({
     id: z.string().optional(),
@@ -77,8 +78,8 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
         description: `"${data.name}" has been saved.`,
       });
       onSuccess?.();
-      // Full page reload to get new data from server actions
-      window.location.reload();
+      // Revalidate path is called in server action, router.refresh() will refetch data
+      router.refresh();
     } else {
       toast({
         variant: "destructive",

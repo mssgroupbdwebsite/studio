@@ -1,27 +1,11 @@
 
+'use server';
+
 import fs from 'fs/promises';
 import path from 'path';
 import { PlaceHolderImages, type ImagePlaceholder } from './placeholder-images';
 import initialProducts from '../../data/products.json';
-
-export type ProductCategory = 'Knitwear' | 'Woven' | 'Denim' | 'Sweater';
-export type ProductSegment = 'Menswear' | 'Womenswear' | 'Kids & Newborn' | 'Unisex';
-export type SourcingModel = 'Manufacturer' | 'Trading Partner';
-
-export interface Product {
-  id: string;
-  name: string;
-  category: ProductCategory;
-  segment: ProductSegment;
-  sourcingModel: SourcingModel;
-  imageId: string; 
-  hidden?: boolean;
-}
-
-export interface ProductWithImage extends Product {
-    image: ImagePlaceholder;
-}
-
+import type { Product, ProductWithImage } from '@/app/admin/products/actions';
 
 const dataFilePath = path.join(process.cwd(), 'data', 'products.json');
 
@@ -102,6 +86,3 @@ export async function deleteProductFromFile(productId: string): Promise<boolean>
     }
     return false;
 }
-
-export const productCategories = ['Knitwear', 'Woven', 'Denim', 'Sweater'] as const;
-export const productSegments = ['Menswear', 'Womenswear', 'Kids & Newborn', 'Unisex'] as const;

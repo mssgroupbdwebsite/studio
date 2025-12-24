@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { ProductWithImage } from '@/lib/products-data';
+import type { ProductWithImage } from '@/app/admin/products/actions';
 import { Card, CardContent } from '@/components/ui/card';
 import { ProductsDataTable } from './products-data-table';
 import { columns } from './columns';
@@ -15,10 +15,14 @@ interface ProductsPageClientProps {
 
 export function ProductsPageClient({ products: initialProducts }: ProductsPageClientProps) {
   const [products, setProducts] = useState<ProductWithImage[]>(initialProducts);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Since data is passed as props, useEffect is no longer needed for initial fetching.
-  // We keep the state in case we want to update it on the client after an action.
+  useEffect(() => {
+    // This effect ensures that the state is updated when the props change,
+    // which happens after a server action and router.refresh().
+    setProducts(initialProducts);
+    setLoading(false);
+  }, [initialProducts]);
 
   return (
     <div className="p-4 md:p-6 space-y-6">

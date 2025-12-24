@@ -15,7 +15,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toggleProductVisibility } from '../actions';
 import { useToast } from '@/hooks/use-toast';
-import type { Product } from '@/lib/products-data';
+import type { Product } from '@/app/admin/products/actions';
+import { useRouter } from 'next/navigation';
+
 
 interface ToggleVisibilityDialogProps {
     product: Pick<Product, 'id' | 'name' | 'hidden'>;
@@ -24,6 +26,7 @@ interface ToggleVisibilityDialogProps {
 
 export function ToggleVisibilityDialog({ product, children }: ToggleVisibilityDialogProps) {
   const { toast } = useToast();
+  const router = useRouter();
 
   const isHiding = !product.hidden;
   const actionText = isHiding ? "Hide" : "Show";
@@ -38,8 +41,7 @@ export function ToggleVisibilityDialog({ product, children }: ToggleVisibilityDi
         title: `Product visibility updated`,
         description: `"${product.name}" is now ${isHiding ? 'hidden' : 'visible'}.`,
       });
-      // Full page reload to get new data
-      window.location.reload();
+      router.refresh();
     } else {
       toast({
         variant: "destructive",

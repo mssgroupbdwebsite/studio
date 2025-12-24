@@ -2,12 +2,13 @@
 'use client';
 
 import { useState } from 'react';
-import { productCategories, productSegments, type ProductCategory, type ProductSegment, type ProductWithImage } from '@/lib/products-data';
 import { ProductCard } from './product-card';
 import { Button } from '@/components/ui/button';
 import { ListFilter, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import type { ProductCategory, ProductSegment, ProductWithImage } from '@/app/admin/products/actions';
+import { productCategories, productSegments } from '@/config/products';
 
 const stagger = {
   visible: {

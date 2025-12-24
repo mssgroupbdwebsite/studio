@@ -4,7 +4,7 @@
 import { ProductCatalog } from '@/components/products/product-catalog';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
-import { ProductWithImage } from '@/lib/products-data';
+import type { ProductWithImage } from '@/app/admin/products/actions';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 50 },
