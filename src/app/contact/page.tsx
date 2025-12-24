@@ -243,7 +243,4 @@ export default function ContactPage() {
       </motion.div>
     </motion.div>
   );
-
-    
-
-
+}
