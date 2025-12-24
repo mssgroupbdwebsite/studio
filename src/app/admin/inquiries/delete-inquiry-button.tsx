@@ -15,34 +15,42 @@ import {
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { deleteInquiry } from "./actions";
 
 export function DeleteInquiryButton({ inquiryId }: { inquiryId: string }) {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const handleDelete = async () => {
-    const result = await deleteInquiry(inquiryId);
-    if (result.success) {
-      toast({
-        title: "Inquiry Deleted",
-        description: "The inquiry has been successfully removed.",
-      });
-      setOpen(false);
-    } else {
-      toast({
-        variant: "destructive",
-        title: "Deletion Failed",
-        description: result.error || "An error occurred. Please try again.",
-      });
-    }
+    startTransition(async () => {
+      const result = await deleteInquiry(inquiryId);
+      if (result.success) {
+        toast({
+          title: "Inquiry Deleted",
+          description: "The inquiry has been successfully removed.",
+        });
+        setOpen(false);
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Deletion Failed",
+          description: result.error || "An error occurred. Please try again.",
+        });
+      }
+    });
   };
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-8 w-8 mt-1 text-muted-foreground hover:text-destructive">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="h-8 w-8 text-muted-foreground hover:text-destructive"
+          aria-label="Delete inquiry"
+        >
           <Trash2 className="h-4 w-4" />
         </Button>
       </AlertDialogTrigger>
@@ -54,14 +62,16 @@ export function DeleteInquiryButton({ inquiryId }: { inquiryId: string }) {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDelete} className="bg-destructive hover:bg-destructive/90">
-            Yes, delete
+          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+          <AlertDialogAction 
+            onClick={handleDelete} 
+            className="bg-destructive hover:bg-destructive/90"
+            disabled={isPending}
+          >
+            {isPending ? 'Deleting...' : 'Yes, delete'}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );
 }
-
-    
