@@ -143,7 +143,7 @@ export default function ContactPage() {
                     Standard lead times for bulk orders range from 45 to 90 days depending on fabric and trim availability.
                   </p>
                   <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li className="flex items-center"><span className="font-semibold text-foreground w-36">Minimum Order:</span> 1000 Pcs/Style</li>
+                    <li className="flex items-center"><span className="font-semibold text-foreground w-36">Minimum Order:</span> 100 Pcs/Style</li>
                     <li className="flex items-center"><span className="font-semibold text-foreground w-36">Sample Lead Time:</span> 7-14 Days</li>
                     <li className="flex items-center"><span className="font-semibold text-foreground w-36">Payment Terms:</span> L/C at sight, TT</li>
                   </ul>
@@ -245,4 +245,5 @@ export default function ContactPage() {
   );
 
     
+
 
