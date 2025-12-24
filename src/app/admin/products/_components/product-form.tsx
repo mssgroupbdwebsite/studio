@@ -28,6 +28,7 @@ import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import type { ProductWithImage } from '../actions';
+import { useEffect } from "react";
 
 const productSchema = z.object({
     id: z.string().optional(),
@@ -62,6 +63,25 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
   });
 
   const isEditing = !!product;
+
+  useEffect(() => {
+    // This effect will run when the 'product' prop changes.
+    // It resets the form with the new product's data, ensuring
+    // the form fields are always in sync with the item being edited.
+    if (product) {
+      form.reset(product);
+    } else {
+      // If we are in "add new" mode, reset to default empty values.
+      form.reset({
+        name: "",
+        category: "Knitwear",
+        segment: "Menswear",
+        sourcingModel: "Manufacturer",
+        imageUrl: "",
+        description: "",
+      });
+    }
+  }, [product, form]);
 
   async function onSubmit(data: ProductFormValues) {
     const action = isEditing ? updateProduct : addProduct;
