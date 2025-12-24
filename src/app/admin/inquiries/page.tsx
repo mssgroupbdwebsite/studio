@@ -1,12 +1,11 @@
 
 import { getInquiries, Inquiry } from '@/lib/inquiries';
 import { formatDistanceToNow } from 'date-fns';
-import { Mail, Briefcase, Clock, Inbox, ChevronDown, Sparkles } from 'lucide-react';
+import { Mail, Briefcase, Clock, Inbox, ChevronDown } from 'lucide-react';
 import { DeleteInquiryButton } from './delete-inquiry-button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import Link from 'next/link';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import {
   Accordion,
   AccordionContent,
@@ -23,7 +22,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
-import { InquiryAnalysis } from './inquiry-analysis';
 
 export const revalidate = 0; // Don't cache this page
 
@@ -59,7 +57,6 @@ function InquiryCard({ inquiry }: { inquiry: Inquiry }) {
                                 <Clock className="h-3 w-3" />
                                 <span>{formatDistanceToNow(new Date(inquiry.submittedAt), { addSuffix: true })}</span>
                             </div>
-                            <InquiryAnalysis inquiry={inquiry} />
                             <AccordionTrigger className="p-2 rounded-full hover:bg-accent [&[data-state=open]]:-rotate-180 transition-transform duration-300">
                                 <ChevronDown className="h-5 w-5" />
                             </AccordionTrigger>
