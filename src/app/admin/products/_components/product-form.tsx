@@ -182,7 +182,7 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
                     <FormControl>
                     <SelectTrigger>
                         <SelectValue placeholder="Select a sourcing model" />
-                    </Trigger>
+                    </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                     <SelectItem value="Manufacturer">Manufacturer</SelectItem>
