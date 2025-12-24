@@ -1,3 +1,43 @@
 
-export const productCategories = ['Knitwear', 'Woven', 'Denim', 'Sweater'] as const;
-export const productSegments = ['Menswear', 'Womenswear', 'Kids & Newborn', 'Unisex'] as const;
+export const productCategories = [
+  'Knit',
+  'Woven',
+  'Sweater',
+  'Denim',
+  'Lingerie',
+  'Boxer',
+  'Track Suit',
+  'Overall',
+  'Pullover',
+  'T-Shirt',
+  'Polo',
+  'Shirt',
+  'Jacket',
+  'Sweatshirt',
+  'Jogger',
+  'Bottoms',
+  'Blouse',
+  'Dress',
+  'Leggings',
+  'Pants',
+  'Jumper',
+  'Romper',
+  'Towel',
+  'Footwear',
+  'Leather Goods',
+  'Accessories',
+  'Trims & Packaging',
+] as const;
+
+export const productSegments = [
+  'Menswear',
+  'Womenswear',
+  'Kids & Newborn',
+  'Unisex',
+  'Promotional',
+  'Casual Wear',
+  'Formal Wear',
+  'Sportswear',
+  'Workwear',
+  'Sleepwear',
+] as const;
