@@ -26,7 +26,7 @@ import { addProduct, updateProduct, ProductFormValues } from "../actions";
 import { productCategories, productSegments } from "@/config/products";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { Loader2, UploadCloud, Image as ImageIcon } from "lucide-react";
+import { Loader2, UploadCloud } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import type { ProductWithImage } from '../actions';
 import { CldUploadWidget } from "next-cloudinary";
@@ -131,11 +131,17 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
                     <CldUploadWidget
                         uploadPreset={uploadPreset}
                         onSuccess={(result: any) => {
-                            form.setValue('imageUrl', result.info.secure_url);
-                             toast({
-                                title: "Image Uploaded",
-                                description: "The image URL has been set.",
-                             });
+                            if (result.event === 'success') {
+                                form.setValue('imageUrl', result.info.secure_url);
+                                toast({
+                                    title: "Image Uploaded",
+                                    description: "The image URL has been set.",
+                                });
+                            }
+                        }}
+                        options={{
+                            sources: ['local', 'url', 'camera'],
+                            multiple: false
                         }}
                     >
                         {({ open }) => (
