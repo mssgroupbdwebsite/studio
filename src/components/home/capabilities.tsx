@@ -1,8 +1,7 @@
-
 'use client';
 
 import { CheckCircle2, Users, ShieldCheck, Truck, BarChart, Palette } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 
 const capabilitiesList = [
@@ -79,16 +78,20 @@ export function Capabilities() {
         </motion.div>
         <motion.div variants={stagger} className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {capabilitiesList.map((capability, index) => (
-            <motion.div key={index} variants={fadeUp} className="flex items-start gap-6 p-6">
-              <div className="flex-shrink-0 mt-1">{capability.icon}</div>
-              <div>
-                <h3 className="font-headline text-xl font-bold">
-                  {capability.title}
-                </h3>
-                <p className="pt-2 text-muted-foreground">
-                  {capability.description}
-                </p>
-              </div>
+            <motion.div key={index} variants={fadeUp}>
+                <Card className="p-6 h-full shadow-md hover:shadow-xl hover:-translate-y-1 transition-all bg-secondary/30">
+                  <CardHeader className="p-0 mb-4 flex-row items-center gap-4">
+                    <div className="flex-shrink-0 text-primary">{capability.icon}</div>
+                    <CardTitle className="font-headline text-xl font-bold">
+                        {capability.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-0">
+                     <p className="text-muted-foreground">
+                        {capability.description}
+                    </p>
+                  </CardContent>
+                </Card>
             </motion.div>
           ))}
         </motion.div>

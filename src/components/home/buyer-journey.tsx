@@ -1,9 +1,9 @@
-
 'use client';
 
 import { Handshake, Package, Search, Factory, ArrowRight } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useSpring } from 'framer-motion';
+import { useRef } from 'react';
 
 const journeySteps = [
   {
@@ -42,8 +42,17 @@ const stagger = {
 };
 
 export function BuyerJourney() {
+    const ref = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["start end", "end start"]
+    });
+    const pathLength = useSpring(scrollYProgress, { stiffness: 400, damping: 90 });
+
+
   return (
     <motion.section
+      ref={ref}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
@@ -60,20 +69,44 @@ export function BuyerJourney() {
                 We've streamlined the apparel sourcing process into a seamless, transparent, and efficient experience for our partners.
             </p>
         </motion.div>
-        <div className="relative mt-16">
-          <div className="absolute left-1/2 top-7 hidden h-px w-full max-w-3xl -translate-x-1/2 bg-border lg:block" aria-hidden="true" />
-          <motion.div variants={stagger} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+        
+        <div className="relative mt-20">
+          <motion.div 
+            className="absolute left-1/2 top-0 bottom-0 w-1 bg-primary/30"
+            style={{ scaleY: pathLength, originY: 0 }}
+          />
+          <div className="relative grid grid-cols-1 gap-16">
             {journeySteps.map((step, index) => (
-              <motion.div key={index} variants={fadeUp} className="flex flex-col items-center text-center">
-                  <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-background text-primary ring-8 ring-background shadow-md">
-                      {step.icon}
-                  </div>
-                  <h3 className="font-headline text-xl font-bold">{`Step ${index+1}`}</h3>
-                  <h4 className="mt-1 text-lg font-semibold">{step.title}</h4>
+              <motion.div
+                key={index}
+                className="grid md:grid-cols-[1fr_auto_1fr] items-center gap-8"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className={`flex flex-col ${index % 2 === 0 ? 'md:text-right' : 'md:text-left md:order-3'}`}>
+                  <p className="text-primary font-bold">{`Step ${index + 1}`}</p>
+                  <h3 className="text-2xl font-bold font-headline">{step.title}</h3>
                   <p className="mt-2 text-muted-foreground">{step.description}</p>
+                </div>
+                
+                <div className="hidden md:flex justify-center md:order-2">
+                    <div className="relative h-14 w-14 flex items-center justify-center rounded-full bg-background text-primary shadow-lg ring-8 ring-background">
+                      {step.icon}
+                    </div>
+                </div>
+                 <div className="flex md:hidden justify-start items-center gap-4">
+                     <div className="relative h-14 w-14 flex items-center justify-center rounded-full bg-background text-primary shadow-lg ring-8 ring-background">
+                      {step.icon}
+                    </div>
+                </div>
+
+                <div className={`hidden md:block ${index % 2 === 0 ? 'md:order-3' : 'md:order-1'}`} />
+
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
     </motion.section>

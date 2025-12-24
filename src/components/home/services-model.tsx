@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -52,8 +51,8 @@ export function ServicesModel() {
         </motion.div>
         <motion.div variants={stagger} className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
           {serviceModels.map((model, index) => (
-            <motion.div key={index} variants={fadeUp}>
-              <Card className="p-8 text-center shadow-lg hover:shadow-xl transition-shadow group border-2 border-transparent hover:border-primary/50 h-full">
+            <motion.div key={index} variants={fadeUp} whileHover={{ y: -8 }}>
+              <Card className="p-8 text-center shadow-lg hover:shadow-2xl transition-shadow group border-2 border-transparent hover:border-primary/50 h-full bg-background/50 backdrop-blur-sm">
                   <CardHeader className="items-center">
                       <div className="mb-6 bg-primary/10 p-4 rounded-full group-hover:scale-110 transition-transform duration-300">
                           {model.icon}
