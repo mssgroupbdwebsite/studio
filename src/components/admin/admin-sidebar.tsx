@@ -14,7 +14,7 @@ const navItems = [
   { href: '#', label: 'Orders', icon: ShoppingBag, disabled: true },
   { href: '#', label: 'Customers', icon: Users, disabled: true },
   { href: '#', label: 'Analytics', icon: BarChart2, disabled: true },
-  { href: '#', label: 'Settings', icon: Settings, disabled: true },
+  { href: '/admin/settings', label: 'Settings', icon: Settings, disabled: false },
 ];
 
 export function AdminSidebar() {
