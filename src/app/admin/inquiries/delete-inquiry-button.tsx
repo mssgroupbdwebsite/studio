@@ -45,14 +45,10 @@ export function DeleteInquiryButton({ inquiryId }: { inquiryId: string }) {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="h-8 w-8 text-muted-foreground hover:text-destructive"
-          aria-label="Delete inquiry"
-        >
-          <Trash2 className="h-4 w-4" />
-        </Button>
+          <button className="relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 text-destructive w-full">
+            <Trash2 className="h-4 w-4" />
+            Delete Inquiry
+          </button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

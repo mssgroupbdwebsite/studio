@@ -1,12 +1,29 @@
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { getInquiries, Inquiry } from '@/lib/inquiries';
 import { formatDistanceToNow } from 'date-fns';
-import { Mail, Briefcase, User, Clock, Inbox } from 'lucide-react';
+import { Mail, Briefcase, Clock, Inbox, ChevronDown, Sparkles } from 'lucide-react';
 import { DeleteInquiryButton } from './delete-inquiry-button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Button } from '@/components/ui/button';
+import { MoreHorizontal } from 'lucide-react';
+import { InquiryAnalysis } from './inquiry-analysis';
 
 export const revalidate = 0; // Don't cache this page
 
@@ -14,42 +31,67 @@ function InquiryCard({ inquiry }: { inquiry: Inquiry }) {
     const initial = inquiry.name.charAt(0).toUpperCase();
 
     return (
-        <Card className="hover:shadow-md transition-shadow">
-            <CardHeader className="flex flex-row items-start gap-4 space-y-0 pb-4">
-                <Avatar className="h-10 w-10 border">
-                    <AvatarFallback>{initial}</AvatarFallback>
-                </Avatar>
-                <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                        <div className='flex-1'>
-                            <p className="font-semibold">{inquiry.name}</p>
-                            <Link href={`mailto:${inquiry.email}`} className="text-sm text-muted-foreground flex items-center gap-2 hover:text-primary transition-colors w-fit">
-                                <Mail className="h-3 w-3" />
-                                <span>{inquiry.email}</span>
-                            </Link>
+        <Card className="group relative transition-all duration-300 ease-in-out hover:shadow-2xl hover:border-primary/50">
+             <div className="absolute -inset-0.5 rounded-lg bg-gradient-to-r from-primary to-accent opacity-0 transition-opacity duration-300 group-hover:opacity-75 blur"></div>
+            <div className="relative bg-card rounded-lg">
+                <Accordion type="single" collapsible>
+                    <AccordionItem value="item-1" className="border-b-0">
+                        <div className="flex items-center p-4">
+                            <Avatar className="h-10 w-10 border">
+                                <AvatarFallback>{initial}</AvatarFallback>
+                            </Avatar>
+                            <div className="ml-4 flex-1">
+                                <p className="font-semibold text-foreground">{inquiry.name}</p>
+                                <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                                    <Link href={`mailto:${inquiry.email}`} className="flex items-center gap-1.5 hover:text-primary transition-colors">
+                                        <Mail className="h-3 w-3" />
+                                        <span>{inquiry.email}</span>
+                                    </Link>
+                                    {inquiry.company && (
+                                        <span className="flex items-center gap-1.5">
+                                            <Briefcase className="h-3 w-3" />
+                                            {inquiry.company}
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="text-xs text-muted-foreground flex items-center gap-2 flex-shrink-0 mx-4">
+                                <Clock className="h-3 w-3" />
+                                <span>{formatDistanceToNow(new Date(inquiry.submittedAt), { addSuffix: true })}</span>
+                            </div>
+                            <InquiryAnalysis inquiry={inquiry} />
+                            <AccordionTrigger className="p-2 rounded-full hover:bg-accent [&[data-state=open]]:-rotate-180 transition-transform duration-300">
+                                <ChevronDown className="h-5 w-5" />
+                            </AccordionTrigger>
+                             <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" size="icon" className="h-8 w-8 ml-2">
+                                        <MoreHorizontal className="h-4 w-4" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem asChild>
+                                        <Link href={`mailto:${inquiry.email}`}>Reply via Email</Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem disabled>Mark as Read</DropdownMenuItem>
+                                     <DropdownMenuSeparator />
+                                     <DropdownMenuItem className="p-0">
+                                         <DeleteInquiryButton inquiryId={inquiry.id} />
+                                     </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                         </div>
-                         <div className="text-xs text-muted-foreground flex items-center gap-2 flex-shrink-0">
-                           <Clock className="h-3 w-3" />
-                           {formatDistanceToNow(new Date(inquiry.submittedAt), { addSuffix: true })}
-                        </div>
-                    </div>
-                     {inquiry.company && (
-                        <p className="text-xs text-muted-foreground flex items-center gap-2 mt-1">
-                            <Briefcase className="h-3 w-3" />
-                            {inquiry.company}
-                        </p>
-                    )}
-                </div>
-                 <DeleteInquiryButton inquiryId={inquiry.id} />
-            </CardHeader>
-            <CardContent>
-                <div className="border-t pt-4">
-                    <Badge variant="secondary" className="mb-2">{inquiry.subject}</Badge>
-                    <p className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">
-                        {inquiry.message}
-                    </p>
-                </div>
-            </CardContent>
+                        <AccordionContent>
+                            <div className="prose prose-sm dark:prose-invert max-w-none px-6 pb-4 border-t pt-4">
+                                <h4 className="font-semibold text-primary">{inquiry.subject}</h4>
+                                <p className="text-muted-foreground">{inquiry.message}</p>
+                            </div>
+                        </AccordionContent>
+                    </AccordionItem>
+                </Accordion>
+            </div>
         </Card>
     )
 }
@@ -59,12 +101,16 @@ export default async function AdminInquiriesPage() {
     const inquiries = await getInquiries();
 
     return (
-        <Card className="border-0 md:border">
-            <CardHeader>
-                <CardTitle>Inbox</CardTitle>
-                <CardDescription>View and manage contact form submissions.</CardDescription>
-            </CardHeader>
-            <CardContent>
+        <div className="relative min-h-full">
+            {/* Background pattern */}
+            <div className="absolute inset-0 bg-grid-slate-100/[0.05] [mask-image:linear-gradient(to_bottom,white_10%,transparent_90%)] dark:bg-grid-slate-900/[0.05]"></div>
+            
+            <div className="relative p-4 sm:p-6">
+                <div className="mb-8">
+                    <h1 className="text-3xl font-bold tracking-tight font-headline">Inbox</h1>
+                    <p className="text-muted-foreground">View and manage contact form submissions.</p>
+                </div>
+                
                 {inquiries.length > 0 ? (
                     <div className="space-y-4">
                         {inquiries.map((inquiry) => (
@@ -72,15 +118,15 @@ export default async function AdminInquiriesPage() {
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center py-16 border-2 border-dashed rounded-lg">
-                        <Inbox className="mx-auto h-12 w-12 text-muted-foreground" />
-                        <h3 className="mt-4 text-lg font-semibold">No Inquiries Yet</h3>
-                        <p className="mt-2 text-sm text-muted-foreground">
+                    <div className="text-center py-24 border-2 border-dashed rounded-lg bg-card/50">
+                        <Inbox className="mx-auto h-16 w-16 text-muted-foreground/50" strokeWidth={1}/>
+                        <h3 className="mt-6 text-xl font-semibold">Inbox Zero</h3>
+                        <p className="mt-2 text-muted-foreground">
                             New submissions from the contact form will appear here.
                         </p>
                     </div>
                 )}
-            </CardContent>
-        </Card>
+            </div>
+        </div>
     );
 }
