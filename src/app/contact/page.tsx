@@ -10,6 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from "@/hooks/use-toast"
 import { motion } from 'framer-motion';
+import { submitInquiry } from './actions';
+import type { Inquiry } from '@/lib/inquiries';
 
 const contactInfo = [
     {
@@ -44,7 +46,7 @@ const stagger = {
 
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Omit<Inquiry, 'id' | 'submittedAt'>>({
     name: '',
     email: '',
     company: '',
@@ -64,23 +66,23 @@ export default function ContactPage() {
     setIsSubmitting(true);
     
     try {
-      // Since admin panel is removed, we are just showing a success message
-      // without actually writing to a collection that is no longer secured.
-      // In a real scenario, you would have a secured backend function to handle this.
-      console.log("Form submitted. In a real app, this would write to a secure backend.", formData);
-      
-      // Simulate network request
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const result = await submitInquiry(formData);
 
-      setIsSubmitted(true);
-      setFormData({ name: '', email: '', company: '', subject: '', message: '' });
-      
-       toast({
-        title: "Inquiry Received!",
-        description: "Thank you for your message. We will get back to you shortly.",
-      });
-
-
+      if (result.success) {
+        setIsSubmitted(true);
+        setFormData({ name: '', email: '', company: '', subject: '', message: '' });
+        
+         toast({
+          title: "Inquiry Received!",
+          description: "Thank you for your message. We will get back to you shortly.",
+        });
+      } else {
+         toast({
+            variant: "destructive",
+            title: "Submission Failed",
+            description: result.error || "Could not submit your inquiry. Please try again.",
+        })
+      }
     } catch (error) {
       toast({
         variant: "destructive",
@@ -246,3 +248,5 @@ export default function ContactPage() {
       </motion.div>
     </motion.div>
   );
+
+    
