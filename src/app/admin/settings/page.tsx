@@ -19,11 +19,6 @@ const users = [
     email: "admin@example.com",
     role: "Administrator",
   },
-  {
-    name: "Jane Doe",
-    email: "jane.doe@example.com",
-    role: "Viewer",
-  },
 ]
 
 export default function SettingsPage() {
