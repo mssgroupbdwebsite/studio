@@ -14,7 +14,7 @@ export function Footer() {
               <span className="text-lg font-bold font-headline">{siteConfig.name}</span>
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs">
-              Your trusted partner in apparel sourcing and manufacturing.
+              Your trusted partner in apparel sourcing and manufacturing, delivering quality garments with a commitment to sustainability and ethical practices.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-8 md:col-span-2 md:grid-cols-3">
