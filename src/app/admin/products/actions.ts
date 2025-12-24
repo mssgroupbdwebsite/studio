@@ -3,11 +3,7 @@
 
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
-import { productCategories, productSegments } from '@/lib/products-data';
-
-// Since we cannot directly write to files in a serverless environment,
-// these actions will serve as placeholders that log the intended action.
-// In a real application, these would interact with a database.
+import { productCategories, productSegments, addProductToFile, updateProductInFile, deleteProductFromFile, updateProduct as updateProductInFileAgain } from '@/lib/products-data';
 
 const productSchema = z.object({
     id: z.string().optional(),
@@ -28,37 +24,51 @@ export async function addProduct(data: ProductFormValues) {
       return { success: false, error: "Invalid data provided." };
   }
 
-  // In a real app, you would save this to a database.
-  // For now, we just log it and revalidate.
-  console.log("Add product called (no-op):", validation.data);
-  revalidatePath('/admin/products');
-  return { success: true };
+  const { description, imageId, ...productData } = validation.data;
+
+  try {
+    // Note: We're not saving the flat 'description' field to the main product,
+    // as it belongs to the image. This logic can be adjusted if needed.
+    await addProductToFile({ ...productData, imageId, hidden: false });
+    revalidatePath('/admin/products');
+    return { success: true };
+  } catch (e: any) {
+    return { success: false, error: e.message || 'Failed to add product.' };
+  }
 }
 
 export async function updateProduct(data: ProductFormValues) {
     const validation = productSchema.safeParse(data);
 
-    if (!validation.success) {
-      return { success: false, error: "Invalid data provided." };
+    if (!validation.success || !data.id) {
+      return { success: false, error: "Invalid data or missing product ID." };
     }
     
-    // In a real app, you would update this in a database.
-    // For now, we just log it and revalidate.
-    console.log("Update product called (no-op):", validation.data);
-    revalidatePath('/admin/products');
-    return { success: true };
+    const { id, description, ...productData } = validation.data;
+
+    try {
+        await updateProductInFile(id, productData);
+        // Here you might also want a way to update the image description if that's intended
+        revalidatePath('/admin/products');
+        return { success: true };
+    } catch (e: any) {
+        return { success: false, error: e.message || 'Failed to update product.' };
+    }
 }
 
 export async function toggleProductVisibility(productId: string, willBeHidden: boolean) {
     if (!productId) {
         return { success: false, error: "Product ID is required." };
     }
-
-    // In a real app, you would update this in a database.
-    // For now, we just log it and revalidate.
-    console.log(`Toggling visibility for ${productId} to ${willBeHidden ? 'hidden' : 'visible'} (no-op)`);
-    revalidatePath('/admin/products');
-    return { success: true };
+    
+    try {
+        await updateProductInFile(productId, { hidden: willBeHidden });
+        revalidatePath('/admin/products');
+        revalidatePath('/products');
+        return { success: true };
+    } catch (e: any) {
+        return { success: false, error: e.message || 'Failed to update product visibility.' };
+    }
 }
 
 export async function deleteProduct(productId: string) {
@@ -66,9 +76,15 @@ export async function deleteProduct(productId: string) {
         return { success: false, error: "Product ID is required." };
     }
 
-    // In a real app, you would delete this from a database.
-    // For now, we just log it and revalidate.
-    console.log(`Deleting product ${productId} (no-op)`);
-    revalidatePath('/admin/products');
-    return { success: true };
+    try {
+        const deleted = await deleteProductFromFile(productId);
+        if (deleted) {
+            revalidatePath('/admin/products');
+            revalidatePath('/products');
+            return { success: true };
+        }
+        return { success: false, error: 'Product not found.' };
+    } catch (e: any) {
+        return { success: false, error: e.message || 'Failed to delete product.' };
+    }
 }

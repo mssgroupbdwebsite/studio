@@ -1,12 +1,12 @@
 
 import Image from 'next/image';
-import type { Product } from '@/lib/products-data';
+import type { ProductWithImage } from '@/lib/products-data';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
 interface ProductCardProps {
-  product: Product;
+  product: ProductWithImage;
 }
 
 const cardVariants = {

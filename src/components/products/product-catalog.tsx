@@ -2,13 +2,12 @@
 'use client';
 
 import { useState } from 'react';
-import { productCategories, productSegments, type ProductCategory, type ProductSegment, type Product } from '@/lib/products-data';
+import { productCategories, productSegments, type ProductCategory, type ProductSegment, type ProductWithImage } from '@/lib/products-data';
 import { ProductCard } from './product-card';
 import { Button } from '@/components/ui/button';
 import { ListFilter, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { PlaceHolderImages, type ImagePlaceholder } from '@/lib/placeholder-images';
 
 const stagger = {
   visible: {
@@ -18,32 +17,16 @@ const stagger = {
   },
 };
 
-const findImage = (id: string): ImagePlaceholder | undefined => {
-  return PlaceHolderImages.find((img) => img.id === id);
-};
-
-const fallbackImage: ImagePlaceholder = {
-    id: "fallback",
-    description: "A high-quality apparel item.",
-    imageUrl: "https://picsum.photos/seed/placeholder/600/800",
-    imageHint: "apparel"
-};
-
-
 interface ProductCatalogProps {
-  productsData: Omit<Product, 'image'>[];
+  productsData: ProductWithImage[];
 }
 
 export function ProductCatalog({ productsData }: ProductCatalogProps) {
   const [categoryFilter, setCategoryFilter] = useState<ProductCategory | 'all'>('all');
   const [segmentFilter, setSegmentFilter] = useState<ProductSegment | 'all'>('all');
 
-  const productsWithImages: Product[] = productsData.map(p => ({
-    ...p,
-    image: findImage(p.imageId) || fallbackImage,
-  }));
-
-  const filteredProducts = productsWithImages.filter((product) => {
+  const filteredProducts = productsData.filter((product) => {
+    if (product.hidden) return false;
     const categoryMatch = categoryFilter === 'all' || product.category === categoryFilter;
     const segmentMatch = segmentFilter === 'all' || product.segment === segmentFilter;
     return categoryMatch && segmentMatch;

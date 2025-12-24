@@ -2,15 +2,17 @@
 import type { Metadata } from 'next';
 import { siteConfig } from '@/config/site';
 import ProductsPageComponent from './products-page';
+import { getProducts } from '@/lib/products-data';
 
 export const metadata: Metadata = {
   title: `Product Catalog - ${siteConfig.name}`,
   description: `Explore our extensive product catalog, including knitwear, woven, denim, and sweater for all segments. Sourced via our manufacturer and trading partner network.`,
 };
 
-// Revalidate this page every 60 seconds
-export const revalidate = 60;
+export const revalidate = 0; // Revalidate on every request
 
-export default function ProductsPage() {
-  return <ProductsPageComponent />;
+export default async function ProductsPage() {
+  const products = await getProducts();
+  const visibleProducts = products.filter(p => !p.hidden);
+  return <ProductsPageComponent products={visibleProducts} />;
 }

@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { productCategories, productSegments, Product } from "@/lib/products-data";
+import { productCategories, productSegments, ProductWithImage } from "@/lib/products-data";
 import { addProduct, updateProduct, ProductFormValues } from "../actions";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
@@ -41,7 +41,7 @@ const productSchema = z.object({
 });
 
 interface ProductFormProps {
-  product?: Product;
+  product?: ProductWithImage;
   onSuccess?: () => void;
 }
 
@@ -77,7 +77,8 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
         description: `"${data.name}" has been saved.`,
       });
       onSuccess?.();
-      router.refresh();
+      // Full page reload to get new data from server actions
+      window.location.reload();
     } else {
       toast({
         variant: "destructive",

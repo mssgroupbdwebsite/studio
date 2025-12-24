@@ -2,7 +2,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import type { Product } from "@/lib/products-data"
+import type { ProductWithImage } from "@/lib/products-data"
 import { MoreHorizontal, EyeOff, Eye, Edit, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -18,7 +18,7 @@ import { ProductFormDialog } from './product-form-dialog';
 import { ToggleVisibilityDialog } from "./toggle-visibility-dialog";
 import { DeleteProductDialog } from "./delete-product-dialog"
 
-export const columns: ColumnDef<Product>[] = [
+export const columns: ColumnDef<ProductWithImage>[] = [
   {
     accessorKey: "name",
     header: "Name",

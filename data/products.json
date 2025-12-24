@@ -1,0 +1,147 @@
+
+[
+  {
+    "id": "prod_1",
+    "name": "Classic Pique Polo",
+    "category": "Knitwear",
+    "segment": "Menswear",
+    "sourcingModel": "Manufacturer",
+    "imageId": "product-knit-polo",
+    "hidden": false
+  },
+  {
+    "id": "prod_2",
+    "name": "Organic Cotton T-Shirt",
+    "category": "Knitwear",
+    "segment": "Unisex",
+    "sourcingModel": "Trading Partner",
+    "imageId": "product-knit-tshirt",
+    "hidden": false
+  },
+  {
+    "id": "prod_3",
+    "name": "Womens Knit Top",
+    "category": "Knitwear",
+    "segment": "Womenswear",
+    "sourcingModel": "Manufacturer",
+    "imageId": "product-knit-top-women",
+    "hidden": false
+  },
+  {
+    "id": "prod_4",
+    "name": "Elegant Knit Cardigan",
+    "category": "Knitwear",
+    "segment": "Womenswear",
+    "sourcingModel": "Trading Partner",
+    "imageId": "product-knit-cardigan",
+    "hidden": false
+  },
+  {
+    "id": "prod_5",
+    "name": "Fleece Zip-Up Hoodie",
+    "category": "Knitwear",
+    "segment": "Unisex",
+    "sourcingModel": "Manufacturer",
+    "imageId": "product-knit-hoodie",
+    "hidden": false
+  },
+  {
+    "id": "prod_6",
+    "name": "Mens Formal Woven Shirt",
+    "category": "Woven",
+    "segment": "Menswear",
+    "sourcingModel": "Trading Partner",
+    "imageId": "product-woven-shirt-men",
+    "hidden": false
+  },
+  {
+    "id": "prod_7",
+    "name": "Stretch Chino Pants",
+    "category": "Woven",
+    "segment": "Menswear",
+    "sourcingModel": "Manufacturer",
+    "imageId": "product-woven-chinos",
+    "hidden": false
+  },
+  {
+    "id": "prod_8",
+    "name": "Flowy Woven Blouse",
+    "category": "Woven",
+    "segment": "Womenswear",
+    "sourcingModel": "Trading Partner",
+    "imageId": "product-woven-blouse",
+    "hidden": false
+  },
+  {
+    "id": "prod_9",
+    "name": "Summer Woven Dress",
+    "category": "Woven",
+    "segment": "Womenswear",
+    "sourcingModel": "Manufacturer",
+    "imageId": "product-woven-dress",
+    "hidden": false
+  },
+  {
+    "id": "prod_10",
+    "name": "Mens Straight-Fit Jeans",
+    "category": "Denim",
+    "segment": "Menswear",
+    "sourcingModel": "Trading Partner",
+    "imageId": "product-denim-jeans-men",
+    "hidden": false
+  },
+  {
+    "id": "prod_11",
+    "name": "Womens Denim Jacket",
+    "category": "Denim",
+    "segment": "Womenswear",
+    "sourcingModel": "Manufacturer",
+    "imageId": "product-denim-jacket-women",
+    "hidden": false
+  },
+  {
+    "id": "prod_12",
+    "name": "Wool-Blend Pullover",
+    "category": "Sweater",
+    "segment": "Unisex",
+    "sourcingModel": "Trading Partner",
+    "imageId": "product-sweater-pullover",
+    "hidden": false
+  },
+  {
+    "id": "prod_13",
+    "name": "Baby Knit Onesie",
+    "category": "Knitwear",
+    "segment": "Kids & Newborn",
+    "sourcingModel": "Manufacturer",
+    "imageId": "product-knit-onesie",
+    "hidden": false
+  },
+  {
+    "id": "prod_14",
+    "name": "Toddler Woven Shorts",
+    "category": "Woven",
+    "segment": "Kids & Newborn",
+    "sourcingModel": "Trading Partner",
+    "imageId": "product-woven-toddler-shorts",
+    "hidden": false
+  },
+  {
+    "id": "prod_15",
+    "name": "Kids Crewneck Sweater",
+    "category": "Sweater",
+    "segment": "Kids & Newborn",
+    "sourcingModel": "Manufacturer",
+    "imageId": "product-sweater-kids",
+    "hidden": false
+  },
+  {
+    "id": "prod_16",
+    "name": "Kids Durable Denim Jeans",
+    "category": "Denim",
+    "segment": "Kids & Newborn",
+    "sourcingModel": "Trading Partner",
+    "imageId": "product-denim-kids-jeans",
+    "hidden": false
+  }
+]

@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { deleteProduct } from '../actions';
 import { useToast } from '@/hooks/use-toast';
-import { useRouter } from 'next/navigation';
 import type { Product } from '@/lib/products-data';
 
 interface DeleteProductDialogProps {
@@ -25,7 +24,6 @@ interface DeleteProductDialogProps {
 
 export function DeleteProductDialog({ product, children }: DeleteProductDialogProps) {
   const { toast } = useToast();
-  const router = useRouter();
 
   async function handleDelete() {
     const result = await deleteProduct(product.id);
@@ -34,7 +32,8 @@ export function DeleteProductDialog({ product, children }: DeleteProductDialogPr
         title: `Product Deleted`,
         description: `"${product.name}" has been permanently deleted.`,
       });
-      router.refresh();
+      // Full page reload to get new data
+      window.location.reload();
     } else {
       toast({
         variant: "destructive",
