@@ -1,4 +1,3 @@
-
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -140,10 +139,11 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
                             }
                         }}
                         options={{
-                            sources: ['local', 'url', 'camera'],
+                            sources: ['local'],
                             multiple: false,
                             cropping: false,
-                            folder: 'mss-group-products'
+                            folder: 'mss-group-products',
+                            clientAllowedFormats: ['png', 'jpeg', 'jpg', 'webp'],
                         }}
                     >
                         {({ open }) => (
@@ -250,5 +250,3 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
     </Form>
   );
 }
-
-    
