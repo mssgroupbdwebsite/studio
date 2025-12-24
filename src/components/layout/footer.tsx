@@ -85,7 +85,7 @@ export function Footer() {
              <div className="text-sm">
               <h3 className="font-semibold font-headline">Contact</h3>
               <ul className="mt-4 space-y-3">
-                <li className="text-muted-foreground">Uttara, Dhaka-1230, Bangladesh</li>
+                <li className="text-muted-foreground">House # 04(4th Floor), Road # 04 Sector # 01, Uttara, Dhaka-1230.</li>
                 <li className="text-muted-foreground hover:text-primary transition-colors"><a href="mailto:info@mssgroupbd.com">info@mssgroupbd.com</a></li>
               </ul>
             </div>

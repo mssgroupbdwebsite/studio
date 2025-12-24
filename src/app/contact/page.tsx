@@ -17,7 +17,7 @@ const contactInfo = [
     {
         icon: <MapPin size={24} className="text-primary" />,
         title: 'Headquarters',
-        value: 'Uttara, Dhaka-1230, Bangladesh',
+        value: 'House # 04(4th Floor), Road # 04 Sector # 01, Uttara, Dhaka-1230.',
     },
     {
         icon: <Mail size={24} className="text-primary" />,
@@ -245,3 +245,4 @@ export default function ContactPage() {
   );
 
     
+
