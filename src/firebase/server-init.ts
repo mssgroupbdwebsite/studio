@@ -20,9 +20,8 @@ if (serviceAccountString) {
 // Ensure the app is initialized only once.
 if (getApps().length === 0) {
   app = initializeApp({
-    projectId: firebaseConfig.projectId,
-    // Explicitly use the service account credential if it exists.
     credential: serviceAccount ? cert(serviceAccount) : undefined,
+    projectId: firebaseConfig.projectId,
   });
 } else {
   app = getApp();

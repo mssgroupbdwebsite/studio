@@ -2,86 +2,22 @@
 'use client';
 
 import Link from 'next/link';
-import {useRouter} from 'next/navigation';
-import {Sheet, SheetContent, SheetTrigger} from '@/components/ui/sheet';
-import {Button} from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import {PanelLeft, Home, ShoppingBag, Package, Users, BarChart2, Settings} from 'lucide-react';
-import {Avatar, AvatarFallback} from '@/components/ui/avatar';
-import {siteConfig} from '@/config/site';
-import {Logo} from '../layout/logo';
-import {useUser} from '@/firebase/provider';
-import {signOut} from 'firebase/auth';
-import { useAuth } from '@/firebase';
-import {deleteSession} from '@/app/api/auth/session/actions';
-import {Skeleton} from '../ui/skeleton';
+import { useRouter } from 'next/navigation';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
+import { PanelLeft, Home, ShoppingBag, Package, Users, BarChart2, Settings } from 'lucide-react';
+import { siteConfig } from '@/config/site';
+import { Logo } from '../layout/logo';
 
 const navItems = [
-  {href: '/admin/inquiries', label: 'Inquiries', icon: Home},
-  {href: '/admin/products', label: 'Products', icon: Package},
-  {href: '#', label: 'Orders', icon: ShoppingBag, disabled: true},
-  {href: '#', label: 'Customers', icon: Users, disabled: true},
-  {href: '#', label: 'Analytics', icon: BarChart2, disabled: true},
-  {href: '/admin/settings', label: 'Settings', icon: Settings},
+  { href: '/admin/inquiries', label: 'Inquiries', icon: Home },
+  { href: '/admin/products', label: 'Products', icon: Package },
+  { href: '#', label: 'Orders', icon: ShoppingBag, disabled: true },
+  { href: '#', label: 'Customers', icon: Users, disabled: true },
+  { href: '#', label: 'Analytics', icon: BarChart2, disabled: true },
+  { href: '/admin/settings', label: 'Settings', icon: Settings, disabled: true },
 ];
 
-function UserNav() {
-  const { user, isUserLoading } = useUser();
-  const router = useRouter();
-  const auth = useAuth();
-
-  const handleSignOut = async () => {
-    if (auth) {
-      await signOut(auth);
-      await deleteSession();
-      router.push('/login');
-    }
-  };
-
-  const getInitials = (name?: string | null) => {
-    if (!name) return 'U';
-    const names = name.split(' ');
-    if (names.length > 1) {
-      return `${names[0][0]}${names[names.length - 1][0]}`;
-    }
-    return names[0].substring(0, 2);
-  };
-  
-  if (isUserLoading) {
-      return <Skeleton className="h-8 w-8 rounded-full" />;
-  }
-
-  if (!user) return null;
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar className="h-8 w-8">
-            <AvatarFallback>{getInitials(user.displayName || user.email)}</AvatarFallback>
-          </Avatar>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
-        <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{user.displayName || 'User'}</p>
-            <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
-          </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleSignOut}>Log out</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
 
 export function AdminHeader() {
   return (
@@ -117,12 +53,6 @@ export function AdminHeader() {
           </nav>
         </SheetContent>
       </Sheet>
-
-      <div className="relative ml-auto flex-1 md:grow-0">
-        {/* Can add a search bar here later */}
-      </div>
-
-      <UserNav />
     </header>
   );
 }

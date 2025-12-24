@@ -1,84 +1,47 @@
 
 'use client';
 
-import {useState} from 'react';
-import {useRouter} from 'next/navigation';
-import {Button} from '@/components/ui/button';
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
-import {Logo} from '@/components/layout/logo';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useAuth } from '@/firebase';
-import {Loader2} from 'lucide-react';
-import {createAccount, createSession} from '@/app/api/auth/session/actions';
-import {useToast} from '@/hooks/use-toast';
-import {Input} from '@/components/ui/input';
-import {Label} from '@/components/ui/label';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Logo } from '@/components/layout/logo';
+import { Loader2 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+
+// These are now for demonstration on the client, the real check is in middleware
+const DEMO_USER = 'admin';
+const DEMO_PASS = 'admin';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const router = useRouter();
   const { toast } = useToast();
-  const auth = useAuth();
 
-  const handleSignIn = async (e: React.FormEvent) => {
+  const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    if (!auth) {
-        toast({
-            variant: "destructive",
-            title: "Sign-in Failed",
-            description: "Authentication service is not available. Please try again later.",
-        });
-        setIsSubmitting(false);
-        return;
-    }
 
-    try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        const idToken = await userCredential.user.getIdToken();
-        const sessionResult = await createSession(idToken);
-
-        if (sessionResult.success) {
-            router.push('/admin');
-        } else {
-            throw new Error(sessionResult.error || 'Failed to create session.');
-        }
-    } catch (error) {
-        toast({
-            variant: "destructive",
-            title: "Sign-in Failed",
-            description: (error as Error).message,
-        });
-    } finally {
-        setIsSubmitting(false);
-    }
-  };
-
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    try {
-      const result = await createAccount(email, password);
-      if (result.success) {
-        toast({
-          title: "Account Created!",
-          description: "Please sign in with your new credentials.",
-        });
-        setMode('signin');
-      } else {
-        throw new Error(result.error || 'Failed to create account.');
-      }
-    } catch (error) {
-       toast({
-        variant: "destructive",
-        title: "Sign-up Failed",
-        description: (error as Error).message,
+    // This is just a client-side check for user feedback.
+    // The actual security is handled by Basic Auth in the middleware.
+    if (username === DEMO_USER && password === DEMO_PASS) {
+      toast({
+        title: 'Login Successful',
+        description: 'Redirecting to the admin panel...',
       });
-    } finally {
+      // Redirect to the admin page. The browser will handle the Basic Auth prompt
+      // automatically on the next request to a protected route.
+      router.push('/admin');
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Login Failed',
+        description: 'Invalid username or password.',
+      });
       setIsSubmitting(false);
     }
   };
@@ -90,24 +53,24 @@ export default function LoginPage() {
           <div className="flex justify-center mb-4">
             <Logo />
           </div>
-          <CardTitle className="text-2xl">{mode === 'signin' ? 'Admin Access' : 'Create Account'}</CardTitle>
+          <CardTitle className="text-2xl">Admin Access</CardTitle>
           <CardDescription>
-            {mode === 'signin'
-              ? 'Sign in to manage your application.'
-              : 'The first user to sign up will be the admin.'}
+            Enter your credentials to manage the application.
+            <br />
+            (user: admin, pass: admin)
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={mode === 'signin' ? handleSignIn : handleSignUp} className="space-y-4">
+          <form onSubmit={handleSignIn} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="username">Username</Label>
               <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
+                id="username"
+                type="text"
+                placeholder="admin"
                 required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
             <div className="space-y-2">
@@ -116,33 +79,16 @@ export default function LoginPage() {
                 id="password"
                 type="password"
                 required
-                minLength={6}
+                placeholder="admin"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {mode === 'signin' ? 'Sign In' : 'Sign Up'}
+              Sign In
             </Button>
           </form>
-          <div className="mt-4 text-center text-sm">
-            {mode === 'signin' ? (
-              <>
-                No account?{' '}
-                <Button variant="link" className="p-0" onClick={() => setMode('signup')}>
-                  Sign up
-                </Button>
-              </>
-            ) : (
-              <>
-                Already have an account?{' '}
-                <Button variant="link" className="p-0" onClick={() => setMode('signin')}>
-                  Sign in
-                </Button>
-              </>
-            )}
-          </div>
         </CardContent>
       </Card>
     </div>
