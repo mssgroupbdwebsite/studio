@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, ShoppingBag, BarChart2, Users, Settings, Package } from 'lucide-react';
+import { Home, ShoppingBag, BarChart2, Users, Settings, Package, Image as ImageIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Logo } from '../layout/logo';
 import { siteConfig } from '@/config/site';
@@ -11,6 +11,7 @@ import { siteConfig } from '@/config/site';
 const navItems = [
   { href: '/admin/inquiries', label: 'Inquiries', icon: Home },
   { href: '/admin/products', label: 'Products', icon: Package },
+  { href: '/media', label: 'Media Library', icon: ImageIcon },
   { href: '#', label: 'Orders', icon: ShoppingBag, disabled: true },
   { href: '#', label: 'Customers', icon: Users, disabled: true },
   { href: '#', label: 'Analytics', icon: BarChart2, disabled: true },

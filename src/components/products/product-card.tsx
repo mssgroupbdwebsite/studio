@@ -50,11 +50,10 @@ export function ProductCard({ product }: ProductCardProps) {
           <CardContent className="p-0">
             <div className="relative aspect-[3/4] w-full overflow-hidden">
               <Image
-                src={product.image.imageUrl}
-                alt={product.image.description}
+                src={product.imageUrl}
+                alt={product.description}
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-110"
-                data-ai-hint={product.image.imageHint}
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
               />
             </div>
@@ -68,7 +67,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 {product.name}
               </h3>
               <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-                {product.image.description}
+                {product.description}
               </p>
             </div>
           </CardFooter>

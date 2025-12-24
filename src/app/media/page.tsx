@@ -37,6 +37,39 @@ export default function MediaPage() {
     });
   };
 
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+  const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+
+  if (!cloudName || !uploadPreset || cloudName === "<Your Cloud Name>") {
+    return (
+         <div className="container mx-auto py-10">
+            <Card className="max-w-4xl mx-auto">
+                <CardHeader>
+                    <CardTitle>Configuration Missing</CardTitle>
+                    <CardDescription>
+                        Please configure your Cloudinary credentials to use the Media Library.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="p-6 border-2 border-dashed rounded-lg text-center">
+                        <p className="text-muted-foreground">
+                            You need to add your Cloudinary Cloud Name and Upload Preset to your environment variables.
+                        </p>
+                        <p className="text-sm mt-2 text-muted-foreground/80">
+                            Create a `.env.local` file and add the following:
+                        </p>
+                        <pre className="mt-4 p-4 rounded-md bg-muted text-sm text-left overflow-x-auto">
+                            <code>
+                                {`NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="YOUR_CLOUD_NAME"\nNEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET="YOUR_UPLOAD_PRESET"`}
+                            </code>
+                        </pre>
+                    </div>
+                </CardContent>
+            </Card>
+        </div>
+    )
+  }
+
   return (
     <div className="container mx-auto py-10">
       <Card className="max-w-4xl mx-auto">
@@ -48,7 +81,7 @@ export default function MediaPage() {
             </div>
             <CldUploadButton
               onSuccess={handleUploadSuccess}
-              uploadPreset="<Your Upload Preset>" // IMPORTANT: Replace with your Cloudinary upload preset name
+              uploadPreset={uploadPreset}
               className="bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium"
             >
               Upload Image
@@ -72,14 +105,14 @@ export default function MediaPage() {
                      <div className="relative w-full">
                         <Input
                             readOnly
-                            value={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/${resource.public_id}`}
+                            value={`https://res.cloudinary.com/${cloudName}/image/upload/${resource.public_id}`}
                             className="text-xs pr-8"
                         />
                         <Button
                             size="icon"
                             variant="ghost"
                             className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8"
-                            onClick={() => copyToClipboard(`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/${resource.public_id}`)}
+                            onClick={() => copyToClipboard(`https://res.cloudinary.com/${cloudName}/image/upload/${resource.public_id}`)}
                         >
                             <Copy className="h-4 w-4" />
                         </Button>

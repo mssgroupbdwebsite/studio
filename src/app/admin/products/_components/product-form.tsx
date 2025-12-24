@@ -22,7 +22,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { addProduct, updateProduct, ProductFormValues } from "../actions";
 import { productCategories, productSegments } from "@/config/products";
 import { useToast } from "@/hooks/use-toast";
@@ -37,7 +36,7 @@ const productSchema = z.object({
     category: z.enum(productCategories),
     segment: z.enum(productSegments),
     sourcingModel: z.enum(['Manufacturer', 'Trading Partner']),
-    imageId: z.string().min(1, "Image is required"),
+    imageUrl: z.string().min(1, "Image is required").url("Must be a valid URL"),
     description: z.string().min(1, "Description is required"),
 });
 
@@ -53,13 +52,12 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
     resolver: zodResolver(productSchema),
     defaultValues: product ? {
       ...product,
-      description: product.image.description,
     } : {
       name: "",
       category: "Knitwear",
       segment: "Menswear",
       sourcingModel: "Manufacturer",
-      imageId: "",
+      imageUrl: "",
       description: "",
     },
   });
@@ -118,6 +116,20 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
             </FormItem>
           )}
         />
+        <FormField
+            control={form.control}
+            name="imageUrl"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Image URL</FormLabel>
+                <FormControl>
+                    <Input placeholder="https://res.cloudinary.com/..." {...field} />
+                </FormControl>
+                <FormDescription>Upload an image in the Media Library and paste the URL here.</FormDescription>
+                <FormMessage />
+                </FormItem>
+            )}
+        />
         <div className="grid grid-cols-2 gap-4">
             <FormField
             control={form.control}
@@ -160,52 +172,27 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
             )}
             />
         </div>
-        <div className="grid grid-cols-2 gap-4">
-            <FormField
-                control={form.control}
-                name="sourcingModel"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Sourcing Model</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Select a sourcing model" />
-                        </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                        <SelectItem value="Manufacturer">Manufacturer</SelectItem>
-                        <SelectItem value="Trading Partner">Trading Partner</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <FormMessage />
-                    </FormItem>
-                )}
-            />
-            <FormField
-                control={form.control}
-                name="imageId"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Image</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Select an image" />
-                        </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                            {PlaceHolderImages.map(img => (
-                                <SelectItem key={img.id} value={img.id}>{img.id.replace('product-', '')}</SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                    <FormDescription>From placeholder-images.json</FormDescription>
-                    <FormMessage />
-                    </FormItem>
-                )}
-            />
-        </div>
+        <FormField
+            control={form.control}
+            name="sourcingModel"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Sourcing Model</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                    <SelectTrigger>
+                        <SelectValue placeholder="Select a sourcing model" />
+                    </Trigger>
+                    </FormControl>
+                    <SelectContent>
+                    <SelectItem value="Manufacturer">Manufacturer</SelectItem>
+                    <SelectItem value="Trading Partner">Trading Partner</SelectItem>
+                    </SelectContent>
+                </Select>
+                <FormMessage />
+                </FormItem>
+            )}
+        />
         
         <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
             {form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

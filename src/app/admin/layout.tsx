@@ -1,16 +1,9 @@
 
 import { AdminSidebar } from '@/components/admin/admin-sidebar';
 import { AdminHeader } from '@/components/admin/admin-header';
-import { ThemeProvider } from '@/components/theme-provider';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="dark"
-      enableSystem
-      disableTransitionOnChange
-    >
       <div className="flex h-screen w-full bg-muted/40">
         <AdminSidebar />
         <div className="flex flex-col flex-1">
@@ -20,6 +13,5 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </main>
         </div>
       </div>
-    </ThemeProvider>
   );
 }

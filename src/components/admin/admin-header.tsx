@@ -5,13 +5,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { PanelLeft, Home, ShoppingBag, Package, Users, BarChart2, Settings } from 'lucide-react';
+import { PanelLeft, Home, ShoppingBag, Package, Users, BarChart2, Settings, Image as ImageIcon } from 'lucide-react';
 import { siteConfig } from '@/config/site';
 import { Logo } from '../layout/logo';
 
 const navItems = [
   { href: '/admin/inquiries', label: 'Inquiries', icon: Home },
   { href: '/admin/products', label: 'Products', icon: Package },
+  { href: '/media', label: 'Media Library', icon: ImageIcon },
   { href: '#', label: 'Orders', icon: ShoppingBag, disabled: true },
   { href: '#', label: 'Customers', icon: Users, disabled: true },
   { href: '#', label: 'Analytics', icon: BarChart2, disabled: true },

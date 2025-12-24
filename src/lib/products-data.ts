@@ -3,7 +3,6 @@
 
 import fs from 'fs/promises';
 import path from 'path';
-import { PlaceHolderImages, type ImagePlaceholder } from './placeholder-images';
 import initialProducts from '../../data/products.json';
 import type { Product, ProductWithImage } from '@/app/admin/products/actions';
 
@@ -25,24 +24,13 @@ async function writeProductsToFile(products: Product[]): Promise<void> {
     await fs.writeFile(dataFilePath, JSON.stringify(products, null, 2), 'utf-8');
 }
 
-
-const findImage = (id: string): ImagePlaceholder | undefined => {
-  return PlaceHolderImages.find((img) => img.id === id);
-};
-
-const fallbackImage: ImagePlaceholder = {
-    id: "fallback",
-    description: "A high-quality apparel item.",
-    imageUrl: "https://picsum.photos/seed/placeholder/600/800",
-    imageHint: "apparel"
-};
-
 export async function getProducts(): Promise<ProductWithImage[]> {
     const products = await readProductsFromFile();
-    return products.map(p => ({
-        ...p,
-        image: findImage(p.imageId) || fallbackImage
-    })).sort((a, b) => Number(a.id.split('_')[1]) - Number(b.id.split('_')[1]));
+    return products.sort((a, b) => {
+        const idA = a.id?.split('_')[1] ? Number(a.id.split('_')[1]) : 0;
+        const idB = b.id?.split('_')[1] ? Number(b.id.split('_')[1]) : 0;
+        return idA - idB;
+    });
 };
 
 export async function addProductToFile(productData: Omit<Product, 'id'>): Promise<Product> {

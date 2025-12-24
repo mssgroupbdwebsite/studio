@@ -4,9 +4,7 @@
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { addProductToFile, updateProductInFile, deleteProductFromFile, deleteMultipleProductsFromFile } from '@/lib/products-data';
-import type { ImagePlaceholder } from '@/lib/placeholder-images';
 import { productCategories, productSegments } from '@/config/products';
-
 
 export type ProductCategory = typeof productCategories[number];
 export type ProductSegment = typeof productSegments[number];
@@ -18,13 +16,13 @@ export interface Product {
   category: ProductCategory;
   segment: ProductSegment;
   sourcingModel: SourcingModel;
-  imageId: string; 
+  imageUrl: string; 
+  description: string;
   hidden?: boolean;
 }
 
-export interface ProductWithImage extends Product {
-    image: ImagePlaceholder;
-}
+// This type is used on the client, so it doesn't contain the full image object.
+export interface ProductWithImage extends Product {}
 
 const productSchema = z.object({
     id: z.string().optional(),
@@ -32,7 +30,7 @@ const productSchema = z.object({
     category: z.enum(productCategories),
     segment: z.enum(productSegments),
     sourcingModel: z.enum(['Manufacturer', 'Trading Partner']),
-    imageId: z.string().min(1, "Image is required"),
+    imageUrl: z.string().min(1, "Image is required").url("Must be a valid URL."),
     description: z.string().min(1, "Description is required"),
 });
 
@@ -45,12 +43,8 @@ export async function addProduct(data: ProductFormValues) {
       return { success: false, error: "Invalid data provided." };
   }
 
-  const { description, imageId, ...productData } = validation.data;
-
   try {
-    // Note: We're not saving the flat 'description' field to the main product,
-    // as it belongs to the image. This logic can be adjusted if needed.
-    await addProductToFile({ ...productData, imageId, hidden: false });
+    await addProductToFile({ ...validation.data, hidden: false });
     revalidatePath('/admin/products');
     revalidatePath('/products');
     return { success: true };
@@ -66,11 +60,10 @@ export async function updateProduct(data: ProductFormValues) {
       return { success: false, error: "Invalid data or missing product ID." };
     }
     
-    const { id, description, ...productData } = validation.data;
+    const { id, ...productData } = validation.data;
 
     try {
         await updateProductInFile(id, productData);
-        // Here you might also want a way to update the image description if that's intended
         revalidatePath('/admin/products');
         revalidatePath('/products');
         return { success: true };
