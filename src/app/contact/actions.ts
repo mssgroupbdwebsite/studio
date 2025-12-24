@@ -23,5 +23,3 @@ export async function submitInquiry(formData: Omit<Inquiry, 'id' | 'submittedAt'
         return { success: false, error: 'An error occurred while submitting your inquiry.' };
     }
 }
-
-    

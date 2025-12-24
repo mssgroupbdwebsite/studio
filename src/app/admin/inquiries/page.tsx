@@ -1,7 +1,7 @@
 
 import { getInquiries, Inquiry } from '@/lib/inquiries';
 import { formatDistanceToNow } from 'date-fns';
-import { Mail, Briefcase, Clock, Inbox, ChevronDown } from 'lucide-react';
+import { Mail, Briefcase, Clock, Inbox, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import { DeleteInquiryButton } from './delete-inquiry-button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import Link from 'next/link';
@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export const revalidate = 0; // Don't cache this page
 
@@ -93,9 +94,34 @@ function InquiryCard({ inquiry }: { inquiry: Inquiry }) {
     )
 }
 
+function PaginationControls({ currentPage, totalPages }: { currentPage: number, totalPages: number }) {
+    const hasPrev = currentPage > 1;
+    const hasNext = currentPage < totalPages;
 
-export default async function AdminInquiriesPage() {
-    const inquiries = await getInquiries();
+    return (
+        <div className="flex items-center justify-center gap-6 mt-8">
+            <Button asChild variant="outline" disabled={!hasPrev}>
+                <Link href={`/admin/inquiries?page=${currentPage - 1}`} className={cn(!hasPrev && "pointer-events-none")}>
+                    <ChevronLeft className="h-4 w-4 mr-2" />
+                    Previous
+                </Link>
+            </Button>
+            <span className="text-sm font-medium text-muted-foreground">
+                Page {currentPage} of {totalPages}
+            </span>
+            <Button asChild variant="outline" disabled={!hasNext}>
+                 <Link href={`/admin/inquiries?page=${currentPage + 1}`} className={cn(!hasNext && "pointer-events-none")}>
+                    Next
+                    <ChevronRight className="h-4 w-4 ml-2" />
+                </Link>
+            </Button>
+        </div>
+    )
+}
+
+export default async function AdminInquiriesPage({ searchParams }: { searchParams?: { page?: string }}) {
+    const currentPage = Number(searchParams?.page) || 1;
+    const { inquiries, totalPages } = await getInquiries({ page: currentPage, limit: 10 });
 
     return (
         <div className="relative min-h-full">
@@ -109,11 +135,16 @@ export default async function AdminInquiriesPage() {
                 </div>
                 
                 {inquiries.length > 0 ? (
-                    <div className="space-y-4">
-                        {inquiries.map((inquiry) => (
-                           <InquiryCard key={inquiry.id} inquiry={inquiry} />
-                        ))}
-                    </div>
+                    <>
+                        <div className="space-y-4">
+                            {inquiries.map((inquiry) => (
+                               <InquiryCard key={inquiry.id} inquiry={inquiry} />
+                            ))}
+                        </div>
+                        {totalPages > 1 && (
+                            <PaginationControls currentPage={currentPage} totalPages={totalPages} />
+                        )}
+                    </>
                 ) : (
                     <div className="text-center py-24 border-2 border-dashed rounded-lg bg-card/50">
                         <Inbox className="mx-auto h-16 w-16 text-muted-foreground/50" strokeWidth={1}/>
