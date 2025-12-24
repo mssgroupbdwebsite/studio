@@ -32,9 +32,8 @@ export { firebaseApp, auth, firestore };
 
 export * from './provider';
 export * from './client-provider';
+// The hooks below are kept for potential future use but are not actively used by the app currently.
 export * from './firestore/use-collection';
 export * from './firestore/use-doc';
-export * from './non-blocking-updates';
-// non-blocking-login is removed as it's part of the old auth system
 export * from './errors';
 export * from './error-emitter';

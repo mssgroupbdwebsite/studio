@@ -10,8 +10,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from "@/hooks/use-toast"
 import { motion } from 'framer-motion';
-import { useFirestore } from '@/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const contactInfo = [
     {
@@ -56,7 +54,6 @@ export default function ContactPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
-  const firestore = useFirestore();
 
   const handleValueChange = (name: keyof typeof formData, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -66,33 +63,18 @@ export default function ContactPage() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    if (!firestore) {
-        toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Firestore is not available. Please try again later.",
-        });
-        setIsSubmitting(false);
-        return;
-    }
-
     try {
-      const inquiriesCollection = collection(firestore, 'inquiries');
-      const newInquiry = {
-        ...formData,
-        submissionDate: serverTimestamp(),
-        status: 'new'
-      };
-
       // Since admin panel is removed, we are just showing a success message
       // without actually writing to a collection that is no longer secured.
       // In a real scenario, you would have a secured backend function to handle this.
-      console.log("Form submitted. In a real app, this would write to a secure backend.", newInquiry);
+      console.log("Form submitted. In a real app, this would write to a secure backend.", formData);
       
+      // Simulate network request
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
       setIsSubmitted(true);
       setFormData({ name: '', email: '', company: '', subject: '', message: '' });
       
-      // Simulate submission success
        toast({
         title: "Inquiry Received!",
         description: "Thank you for your message. We will get back to you shortly.",
@@ -263,4 +245,4 @@ export default function ContactPage() {
         </div>
       </motion.div>
     </motion.div>
-  
+  );

@@ -4,9 +4,7 @@
 import { ProductCatalog } from '@/components/products/product-catalog';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
-import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
-import { collection, query, where } from 'firebase/firestore';
-import type { Product } from '@/lib/products-data';
+import { products } from '@/lib/products-data'; // Use static data
 import { Skeleton } from '@/components/ui/skeleton';
 
 const fadeUp = {
@@ -18,14 +16,7 @@ export default function ProductsPageComponent() {
   const { scrollYProgress } = useScroll();
   const parallaxY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
   
-  const firestore = useFirestore();
-  const productsQuery = useMemoFirebase(() => {
-    if (!firestore) return null;
-    // Query for products that are NOT hidden
-    return query(collection(firestore, 'products'), where('hidden', '!=', true));
-  }, [firestore]);
-
-  const { data: products, isLoading } = useCollection<Omit<Product, 'image'>>(productsQuery);
+  const isLoading = false; // Data is now static, so not loading
 
   return (
     <motion.div

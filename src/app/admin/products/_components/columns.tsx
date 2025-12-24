@@ -3,7 +3,7 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { Product } from "@/lib/products-data"
-import { MoreHorizontal, Eye, EyeOff } from "lucide-react"
+import { MoreHorizontal, EyeOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -14,9 +14,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge"
-import { ProductFormDialog } from "./product-form-dialog"
-import { ToggleVisibilityDialog } from "./toggle-visibility-dialog"
-import { cn } from "@/lib/utils"
 
 export const columns: ColumnDef<Product>[] = [
   {
@@ -52,8 +49,6 @@ export const columns: ColumnDef<Product>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const product = row.original
-      const isHidden = product.hidden
       return (
         <div className="text-right">
             <DropdownMenu>
@@ -66,18 +61,10 @@ export const columns: ColumnDef<Product>[] = [
             <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <ProductFormDialog product={product}>
-                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>Edit</DropdownMenuItem>
-                </ProductFormDialog>
-                <ToggleVisibilityDialog product={product}>
-                    <DropdownMenuItem 
-                        onSelect={(e) => e.preventDefault()} 
-                        className={cn("flex items-center gap-2", isHidden ? "text-green-600" : "text-orange-600")}
-                    >
-                        {isHidden ? <Eye /> : <EyeOff />}
-                        {isHidden ? "Show" : "Hide"}
-                    </DropdownMenuItem>
-                </ToggleVisibilityDialog>
+                <DropdownMenuItem disabled>Edit</DropdownMenuItem>
+                <DropdownMenuItem disabled>
+                    Hide
+                </DropdownMenuItem>
             </DropdownMenuContent>
             </DropdownMenu>
         </div>
