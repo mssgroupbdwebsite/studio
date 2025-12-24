@@ -132,7 +132,7 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
                         uploadPreset={uploadPreset}
                         onSuccess={(result: any) => {
                             if (result.event === 'success') {
-                                form.setValue('imageUrl', result.info.secure_url);
+                                form.setValue('imageUrl', result.info.secure_url, { shouldValidate: true });
                                 toast({
                                     title: "Image Uploaded",
                                     description: "The image URL has been set.",
@@ -141,7 +141,9 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
                         }}
                         options={{
                             sources: ['local', 'url', 'camera'],
-                            multiple: false
+                            multiple: false,
+                            cropping: false,
+                            folder: 'mss-group-products'
                         }}
                     >
                         {({ open }) => (
@@ -156,22 +158,21 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
                                 ) : (
                                     <div 
                                         onClick={() => open()}
-                                        className="flex flex-col items-center justify-center gap-4 p-8 border-2 border-dashed rounded-lg cursor-pointer hover:bg-accent hover:border-primary transition-colors"
+                                        className="flex flex-col items-center justify-center gap-2 p-8 border-2 border-dashed rounded-lg cursor-pointer hover:bg-accent hover:border-primary transition-colors aspect-video"
                                     >
                                         <UploadCloud className="w-12 h-12 text-muted-foreground" />
-                                        <p className="text-center text-muted-foreground text-sm">
-                                            Drag & drop an image here, or <br/>
-                                            <span className="text-primary font-semibold">click to browse files</span>
+                                        <p className="text-center font-semibold text-muted-foreground">
+                                            Add Image
                                         </p>
+                                        <p className="text-xs text-muted-foreground">Click to browse or drag & drop</p>
                                     </div>
                                 )}
-                                {/* Hidden input to hold the value for the form */}
+                                {/* Hidden input to hold the value for the form and validation */}
                                 <Input type="hidden" {...field} />
                             </div>
                         )}
                     </CldUploadWidget>
                 </FormControl>
-                <FormDescription>Upload an image for the product.</FormDescription>
                 <FormMessage />
                 </FormItem>
             )}
@@ -249,3 +250,5 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
     </Form>
   );
 }
+
+    
