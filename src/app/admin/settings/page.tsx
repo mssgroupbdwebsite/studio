@@ -16,7 +16,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 const users = [
   {
     name: "Admin User",
-    email: "admin@example.com",
+    email: "admin@mssgroupbd.com",
     role: "Administrator",
   },
 ]
