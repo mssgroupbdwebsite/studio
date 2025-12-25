@@ -8,26 +8,6 @@ import { siteConfig } from '@/config/site';
 import { ArrowRight } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.8,
-      ease: [0.6, -0.05, 0.01, 0.99],
-    },
-  },
-};
-
-const stagger = {
-  visible: {
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
-};
-
 const sentence = {
   hidden: { opacity: 1 },
   visible: {
@@ -49,13 +29,32 @@ const letter = {
   },
 };
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.6, -0.05, 0.01, 0.99],
+      delay: 0.5, // Delay to let headline animate first
+    },
+  },
+};
+
+const stagger = {
+  visible: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+
 export function Hero() {
   const { scrollYProgress } = useScroll();
   const parallaxY = useTransform(scrollYProgress, [0, 0.5], ['0%', '40%']);
   const fullHeadline = "Your Partner in Apparel Sourcing & Manufacturing";
-  const splitIndex = Math.floor(fullHeadline.length / 2.5);
-  const headlinePart1 = fullHeadline.substring(0, splitIndex);
-  const headlinePart2 = fullHeadline.substring(splitIndex);
 
   return (
     <section className="relative h-[85vh] md:h-[calc(100vh-56px)] flex items-center justify-start text-left">
@@ -89,16 +88,9 @@ export function Hero() {
             variants={sentence}
             className="mt-4 text-4xl md:text-6xl font-extrabold font-headline tracking-tight"
           >
-             <span className="text-white text-shadow-lg shadow-black/30">
-                {headlinePart1.split("").map((char, index) => (
-                <motion.span key={`p1-${char}-${index}`} variants={letter}>
-                    {char}
-                </motion.span>
-                ))}
-             </span>
-             <span className="text-primary text-shadow-md shadow-black/20">
-                {headlinePart2.split("").map((char, index) => (
-                <motion.span key={`p2-${char}-${index}`} variants={letter}>
+             <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                {fullHeadline.split("").map((char, index) => (
+                <motion.span key={`${char}-${index}`} variants={letter}>
                     {char}
                 </motion.span>
                 ))}
