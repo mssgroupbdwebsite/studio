@@ -36,44 +36,49 @@ export function Hero() {
   const parallaxY = useTransform(scrollYProgress, [0, 0.5], ['0%', '40%']);
   
   return (
-    <section className="relative h-[85vh] md:h-[calc(100vh-56px)] flex items-center justify-start text-left">
-      <motion.div
-        className="absolute inset-0"
-        style={{ y: parallaxY }}
-      >
-        <Image
-          src="https://res.cloudinary.com/dkfxz5wgx/image/upload/de9caitggnsiaeiwnm6w"
-          alt="Professional man and woman in stylish apparel"
-          fill
-          className="object-cover object-left"
-          priority
-          data-ai-hint="apparel models"
-          sizes="100vw"
-        />
-      </motion.div>
-      <div className="relative z-10 container mx-auto px-4 md:px-6">
+    <section>
+      <div className="relative h-[75vh] md:h-[calc(100vh-150px)] flex items-center justify-start text-left">
         <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={stagger}
+          className="absolute inset-0"
+          style={{ y: parallaxY }}
         >
-            <motion.div variants={fadeUp} className="mt-10 flex flex-wrap items-center justify-start gap-4">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Button asChild size="lg">
-                    <Link href="/contact">
-                        Start a Project <ArrowRight />
-                    </Link>
-                    </Button>
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Button asChild variant="outline" size="lg" className="bg-background/50 backdrop-blur-sm">
-                    <Link href="/products">
-                        Explore Products
-                    </Link>
-                    </Button>
-                </motion.div>
-            </motion.div>
+          <Image
+            src="https://res.cloudinary.com/dkfxz5wgx/image/upload/de9caitggnsiaeiwnm6w"
+            alt="Professional man and woman in stylish apparel"
+            fill
+            className="object-cover object-left"
+            priority
+            data-ai-hint="apparel models"
+            sizes="100vw"
+          />
         </motion.div>
+      </div>
+      <div className="bg-background">
+          <div className="container mx-auto px-4 md:px-6 -mt-16 relative z-10">
+              <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  variants={stagger}
+                  className="bg-card p-6 rounded-lg shadow-2xl"
+              >
+                  <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-center gap-4">
+                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                          <Button asChild size="lg">
+                          <Link href="/contact">
+                              Start a Project <ArrowRight />
+                          </Link>
+                          </Button>
+                      </motion.div>
+                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                          <Button asChild variant="outline" size="lg">
+                          <Link href="/products">
+                              Explore Products
+                          </Link>
+                          </Button>
+                      </motion.div>
+                  </motion.div>
+              </motion.div>
+          </div>
       </div>
     </section>
   );
