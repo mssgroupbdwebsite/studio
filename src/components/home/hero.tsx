@@ -1,4 +1,3 @@
-
 'use client';
 
 import Image from 'next/image';
@@ -63,19 +62,12 @@ export function Hero() {
             variants={fadeUp}
             className="text-sm font-light uppercase tracking-[0.2em] text-white/70"
           >
-            MSS Group BD
-          </motion.p>
-
-          <motion.p
-            variants={fadeUp}
-            className="text-5xl md:text-7xl font-signature text-primary mt-4"
-          >
-            Buying House
+            MSS GROUP BD
           </motion.p>
           
           <motion.h1
             variants={fadeUp}
-            className="mt-2 text-3xl md:text-5xl font-bold font-headline tracking-tight text-white text-shadow-sm"
+            className="mt-4 text-3xl md:text-5xl font-bold font-headline tracking-tight text-white text-shadow-sm"
           >
             Your Trusted Partner in Apparel Sourcing & Manufacturing
           </motion.h1>
