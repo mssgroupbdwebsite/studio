@@ -65,10 +65,17 @@ export function Hero() {
           >
             MSS Group BD
           </motion.p>
+
+          <motion.p
+            variants={fadeUp}
+            className="text-5xl md:text-7xl font-signature text-primary mt-4"
+          >
+            Buying House
+          </motion.p>
           
           <motion.h1
             variants={fadeUp}
-            className="mt-4 text-4xl md:text-6xl font-bold font-headline tracking-tight text-white text-shadow-sm"
+            className="mt-2 text-3xl md:text-5xl font-bold font-headline tracking-tight text-white text-shadow-sm"
           >
             Your Trusted Partner in Apparel Sourcing & Manufacturing
           </motion.h1>
@@ -77,7 +84,7 @@ export function Hero() {
             variants={fadeUp}
             className="mt-6 text-lg md:text-xl text-white/80 max-w-lg"
           >
-            Delivering quality-driven production, ethical sourcing, and global supply solutions.
+            Delivering quality-driven production and ethical sourcing solutions.
           </motion.p>
 
           <motion.div variants={fadeUp} className="mt-10 flex flex-wrap items-center justify-start gap-4">
