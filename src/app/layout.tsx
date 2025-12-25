@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import { siteConfig } from '@/config/site';
 import './globals.css';
 import { AppLayout } from './app-layout';
-import { Inter, Manrope } from 'next/font/google';
+import { Inter, Manrope, Dancing_Script } from 'next/font/google';
 
 export const metadata: Metadata = {
   title: {
@@ -60,7 +60,14 @@ const inter = Inter({
 const manrope = Manrope({
   subsets: ['latin'],
   variable: '--font-manrope',
-  weight: '800',
+  weight: ['400', '800'],
+  display: 'swap',
+});
+
+const dancingScript = Dancing_Script({
+  subsets: ['latin'],
+  variable: '--font-dancing-script',
+  weight: '700',
   display: 'swap',
 });
 
@@ -71,7 +78,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${manrope.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${manrope.variable} ${dancingScript.variable}`}>
       <head/>
       <body>
           <AppLayout>{children}</AppLayout>
@@ -79,4 +86,5 @@ export default function RootLayout({
     </html>
   );
 }
+
 

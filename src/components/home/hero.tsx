@@ -71,6 +71,7 @@ export function Hero() {
           data-ai-hint="apparel factory"
           sizes="100vw"
         />
+        
       </motion.div>
       <div className="relative z-10 container mx-auto px-4 md:px-6">
         <motion.div
@@ -103,16 +104,22 @@ export function Hero() {
           </motion.div>
           <motion.h1
             variants={sentence}
-            className="mt-4 text-4xl md:text-6xl font-extrabold font-headline tracking-tight text-shadow-md"
+            className="mt-4 text-3xl md:text-5xl font-bold font-headline tracking-tight text-white text-shadow"
           >
-             <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                {fullHeadline.split("").map((char, index) => (
-                <motion.span key={`${char}-${index}`} variants={letter}>
-                    {char}
-                </motion.span>
-                ))}
-             </span>
+            {fullHeadline.split("").map((char, index) => (
+            <motion.span key={`${char}-${index}`} variants={letter}>
+                {char}
+            </motion.span>
+            ))}
           </motion.h1>
+
+           <motion.p 
+              variants={fadeUp}
+              className="mt-2 text-2xl md:text-3xl font-signature text-gold text-shadow-sm"
+            >
+              over buying house
+            </motion.p>
+
 
           <motion.div variants={fadeUp} className="mt-10 flex flex-wrap items-center justify-start gap-4">
              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
