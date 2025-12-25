@@ -1,19 +1,23 @@
+
 'use client';
 
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Factory, GitFork } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 const serviceModels = [
   {
     icon: <Factory className="h-10 w-10 text-primary" />,
     title: 'Full-Service Manufacturing',
     description: 'Leverage our state-of-the-art manufacturing facilities. We manage the entire production process from yarn to finished garment, ensuring quality, efficiency, and timely delivery for large-scale orders.',
+    imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/uvykkero7jtpzyzv1i8k'
   },
   {
     icon: <GitFork className="h-10 w-10 text-primary" />,
     title: 'Flexible Sourcing Agent',
     description: 'Utilize our extensive network of trusted partner factories. We act as your on-the-ground sourcing team, finding the perfect match for your specific product needs, whether it\'s a niche item or a smaller batch.',
+    imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/ofefus6e0ikrdfh4682x'
   },
 ];
 
@@ -52,7 +56,10 @@ export function ServicesModel() {
         <motion.div variants={stagger} className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
           {serviceModels.map((model, index) => (
             <motion.div key={index} variants={fadeUp} whileHover={{ y: -8 }}>
-              <Card className="p-8 text-center shadow-lg hover:shadow-2xl transition-shadow group border-2 border-transparent hover:border-primary/50 h-full bg-background/50 backdrop-blur-sm">
+              <Card className="overflow-hidden text-center shadow-lg hover:shadow-2xl transition-shadow group border-2 border-transparent hover:border-primary/50 h-full bg-background/50 backdrop-blur-sm">
+                  <div className="relative h-56 w-full">
+                    <Image src={model.imageUrl} alt={model.title} fill className="object-cover"/>
+                  </div>
                   <CardHeader className="items-center">
                       <div className="mb-6 bg-primary/10 p-4 rounded-full group-hover:scale-110 transition-transform duration-300">
                           {model.icon}

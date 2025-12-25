@@ -62,7 +62,7 @@ export function QualityOverview() {
           </motion.div>
           <motion.div variants={fadeUp} className="relative aspect-square md:aspect-[4/3.5] rounded-lg overflow-hidden group">
             <Image
-              src="https://picsum.photos/seed/quality-assurance/800/600"
+              src="https://res.cloudinary.com/dkfxz5wgx/image/upload/lj0tgvg5sxxljlgvcp7p"
               alt="Apparel quality inspection"
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"

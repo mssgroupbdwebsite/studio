@@ -2,12 +2,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(req: NextRequest) {
-  if (req.nextUrl.pathname.startsWith('/media')) {
+  const path = req.nextUrl.pathname;
+  
+  if (path.startsWith('/admin') || path.startsWith('/media')) {
     const basicAuth = req.headers.get('authorization');
     const url = req.nextUrl;
 
     if (basicAuth) {
       const authValue = basicAuth.split(' ')[1];
+      // The atob function is available in Edge runtime
       const [user, pwd] = atob(authValue).split(':');
 
       const validUser = process.env.BASIC_AUTH_USER;
@@ -26,5 +29,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/media/:path*'],
+  matcher: ['/admin/:path*', '/media/:path*'],
 };

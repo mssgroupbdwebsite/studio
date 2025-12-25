@@ -28,7 +28,7 @@ export function AboutOverview() {
             className="relative aspect-square md:aspect-[4/3.5] rounded-lg overflow-hidden group"
           >
             <Image
-              src="https://picsum.photos/seed/teamwork/800/600"
+              src="https://res.cloudinary.com/dkfxz5wgx/image/upload/jfc8bdvz1eevtdz6egfh"
               alt="Team discussing apparel designs"
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"

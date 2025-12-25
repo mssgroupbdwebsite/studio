@@ -45,12 +45,11 @@ export function Hero() {
           src="https://res.cloudinary.com/dkfxz5wgx/image/upload/bzy4lfydvfobsdyyqwne"
           alt="Professional man and woman in stylish apparel"
           fill
-          className="object-cover"
+          className="object-cover object-left"
           priority
           data-ai-hint="apparel models"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-black/60" />
       </motion.div>
       <div className="relative z-10 container mx-auto px-4 md:px-6">
         <motion.div
@@ -80,16 +79,16 @@ export function Hero() {
             Delivering quality-driven production, ethical sourcing, and global supply solutions.
           </motion.p>
 
-          <motion.div variants={fadeUp} className="mt-10 flex flex-wrap items-center justify-start gap-4">
+          <motion.div variants={fadeUp} className="mt-10 flex flex-wrap items-center justify-start sm:justify-start gap-4 ml-8">
              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button asChild size="lg">
+                <Button asChild size="default" className="bg-gradient-to-r from-blue-800 to-blue-600 hover:from-blue-700 hover:to-blue-500 text-white">
                   <Link href="/contact">
                     Start a Project <ArrowRight />
                   </Link>
                 </Button>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button asChild variant="outline" size="lg" className="bg-transparent text-white hover:bg-white/10 hover:text-white border-white/50">
+                <Button asChild variant="outline" size="default" className="bg-transparent text-white hover:bg-white/10 hover:text-white border-white/50">
                   <Link href="/products">
                     Explore Products
                   </Link>

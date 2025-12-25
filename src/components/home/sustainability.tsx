@@ -25,7 +25,7 @@ export function Sustainability() {
         <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
           <motion.div variants={fadeUp} className="relative aspect-square md:aspect-[4/3.5] rounded-lg overflow-hidden group">
             <Image
-              src="https://picsum.photos/seed/green-fabric/800/600"
+              src="https://res.cloudinary.com/dkfxz5wgx/image/upload/qfkbwmpuafq5tqj9pwge"
               alt="Sustainable materials like cotton and linen"
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
