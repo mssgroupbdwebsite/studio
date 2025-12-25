@@ -51,7 +51,7 @@ export function Hero() {
           className="max-w-3xl text-left"
         >
           <motion.span variants={fadeUp} className="text-primary font-semibold uppercase tracking-wider font-headline">
-            Welcome to MSS Group
+            Welcome to MSS Group BD
           </motion.span>
           <motion.h1 variants={fadeUp} className="mt-2 text-4xl md:text-6xl font-bold font-headline tracking-tight text-foreground">
             Your Partner in Apparel Sourcing & Manufacturing
