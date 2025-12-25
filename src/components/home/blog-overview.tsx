@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Calendar, User } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { getBlogPosts, type BlogPost } from '@/lib/blogs';
+import { type BlogPost } from '@/lib/blogs';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -75,25 +75,14 @@ function PostSkeleton() {
     )
 }
 
-export function BlogOverview() {
-    const [posts, setPosts] = useState<BlogPost[]>([]);
+export function BlogOverview({ posts }: { posts: BlogPost[] }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        async function fetchPosts() {
-            try {
-                const allPosts = await getBlogPosts();
-                const visiblePosts = allPosts.filter(p => !p.hidden).slice(0, 3);
-                setPosts(visiblePosts);
-            } catch (error) {
-                console.error("Failed to fetch blog posts:", error);
-            } finally {
-                setLoading(false);
-            }
+        if (posts) {
+            setLoading(false);
         }
-
-        fetchPosts();
-    }, []);
+    }, [posts]);
 
   return (
     <motion.section

@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import { siteConfig } from '@/config/site';
 import './globals.css';
 import { AppLayout } from './app-layout';
+import { Inter, Manrope } from 'next/font/google';
 
 export const metadata: Metadata = {
   title: {
@@ -50,6 +51,19 @@ export const viewport: Viewport = {
   ],
 };
 
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
+const manrope = Manrope({
+  subsets: ['latin'],
+  variable: '--font-manrope',
+  weight: '800',
+  display: 'swap',
+});
+
 
 export default function RootLayout({
   children,
@@ -57,22 +71,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@800&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${manrope.variable}`}>
+      <head/>
       <body>
           <AppLayout>{children}</AppLayout>
       </body>
     </html>
   );
 }
+

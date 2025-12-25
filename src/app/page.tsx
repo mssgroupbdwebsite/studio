@@ -10,8 +10,12 @@ import { QualityOverview } from '@/components/home/quality-overview';
 import { Sustainability } from '@/components/home/sustainability';
 import { FinalCta } from '@/components/home/final-cta';
 import { BlogOverview } from '@/components/home/blog-overview';
+import { getBlogPosts, type BlogPost } from '@/lib/blogs';
 
-export default function Home() {
+export default async function Home() {
+  const allPosts = await getBlogPosts();
+  const posts = allPosts.filter(p => !p.hidden).slice(0, 3);
+
   return (
     <div className="flex flex-col">
       <Hero />
@@ -23,7 +27,7 @@ export default function Home() {
       <Capabilities />
       <QualityOverview />
       <Sustainability />
-      <BlogOverview />
+      <BlogOverview posts={posts} />
       <FinalCta />
     </div>
   );
