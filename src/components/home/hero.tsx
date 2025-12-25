@@ -76,9 +76,9 @@ export function Hero() {
 
           <motion.p 
             variants={fadeUp}
-            className="mt-6 text-lg md:text-xl text-white/80 max-w-lg"
+            className="mt-6 text-lg md:text-xl text-white/70 max-w-lg"
           >
-            Delivering quality-driven production and ethical sourcing solutions.
+            Delivering quality-driven production, ethical sourcing, and global supply solutions.
           </motion.p>
 
           <motion.div variants={fadeUp} className="mt-10 flex flex-wrap items-center justify-start gap-4">
