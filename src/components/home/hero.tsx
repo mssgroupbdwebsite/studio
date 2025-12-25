@@ -113,9 +113,7 @@ export function Hero() {
                 ))}
              </span>
           </motion.h1>
-          <motion.p variants={fadeUp} className="mt-6 max-w-xl text-lg md:text-xl text-white text-shadow-sm">
-            {siteConfig.description}
-          </motion.p>
+
           <motion.div variants={fadeUp} className="mt-10 flex flex-wrap items-center justify-start gap-4">
              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button asChild size="lg">
