@@ -84,10 +84,10 @@ export function Hero() {
           </motion.span>
           <motion.h1
             variants={sentence}
-            className="mt-4 text-4xl md:text-6xl font-extrabold font-headline tracking-tight text-foreground"
+            className="mt-4 text-4xl md:text-6xl font-extrabold font-headline tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent"
           >
              {headline.split("").map((char, index) => (
-              <motion.span key={`${char}-${index}`} variants={letter}>
+              <motion.span key={`${char}-${index}`} variants={letter} className="text-shadow-md shadow-black/30">
                 {char}
               </motion.span>
             ))}
