@@ -28,9 +28,31 @@ const stagger = {
   },
 };
 
+const sentence = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.04,
+    },
+  },
+};
+
+const letter = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      ease: [0.6, -0.05, 0.01, 0.99],
+    },
+  },
+};
+
 export function Hero() {
   const { scrollYProgress } = useScroll();
   const parallaxY = useTransform(scrollYProgress, [0, 0.5], ['0%', '40%']);
+  const headline = "Your Partner in Apparel Sourcing & Manufacturing";
 
   return (
     <section className="relative h-[85vh] md:h-[calc(100vh-56px)] flex items-center justify-start text-left">
@@ -61,10 +83,14 @@ export function Hero() {
             MSS Group BD
           </motion.span>
           <motion.h1
-            variants={fadeUp}
+            variants={sentence}
             className="mt-4 text-4xl md:text-6xl font-extrabold font-headline tracking-tight text-foreground"
           >
-            Your Partner in Apparel Sourcing & Manufacturing
+             {headline.split("").map((char, index) => (
+              <motion.span key={`${char}-${index}`} variants={letter}>
+                {char}
+              </motion.span>
+            ))}
           </motion.h1>
           <motion.p variants={fadeUp} className="mt-6 max-w-xl text-lg md:text-xl text-muted-foreground">
             {siteConfig.description}
