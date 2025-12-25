@@ -52,7 +52,28 @@ export function Hero() {
         />
       </motion.div>
       <div className="relative z-10 container mx-auto px-4 md:px-6">
-        {/* All text and buttons have been removed as per your request */}
+        <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={stagger}
+        >
+            <motion.div variants={fadeUp} className="mt-10 flex flex-wrap items-center justify-start gap-4">
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button asChild size="lg">
+                    <Link href="/contact">
+                        Start a Project <ArrowRight />
+                    </Link>
+                    </Button>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button asChild variant="outline" size="lg" className="bg-background/50 backdrop-blur-sm">
+                    <Link href="/products">
+                        Explore Products
+                    </Link>
+                    </Button>
+                </motion.div>
+            </motion.div>
+        </motion.div>
       </div>
     </section>
   );
