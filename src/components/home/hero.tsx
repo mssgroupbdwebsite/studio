@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -60,7 +61,7 @@ export function Hero() {
         >
           <motion.p 
             variants={fadeUp}
-            className="text-sm font-light uppercase tracking-[0.2em] text-white/70"
+            className="text-sm font-semibold uppercase tracking-[0.2em] text-primary"
           >
             MSS GROUP BD
           </motion.p>
