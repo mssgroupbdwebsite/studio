@@ -61,14 +61,14 @@ export function Hero() {
         >
           <motion.p 
             variants={fadeUp}
-            className="text-sm font-semibold uppercase tracking-[0.2em] text-primary"
+            className="text-sm font-semibold uppercase tracking-[0.3em] text-primary"
           >
             MSS GROUP BD
           </motion.p>
           
           <motion.h1
             variants={fadeUp}
-            className="mt-4 text-3xl md:text-5xl font-bold font-headline tracking-tight text-white text-shadow-sm"
+            className="mt-4 text-4xl md:text-5xl font-bold font-stylish tracking-tight text-white text-shadow-sm"
           >
             Your Trusted Partner in Apparel Sourcing & Manufacturing
           </motion.h1>

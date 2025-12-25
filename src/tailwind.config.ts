@@ -23,6 +23,7 @@ export default {
         body: ['var(--font-inter)', ...fontFamily.sans],
         headline: ['var(--font-manrope)', ...fontFamily.sans],
         signature: ['var(--font-dancing-script)', ...fontFamily.sans],
+        stylish: ['var(--font-playfair-display)', ...fontFamily.serif],
       },
       colors: {
         background: 'hsl(var(--background))',

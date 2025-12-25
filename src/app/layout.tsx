@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import { siteConfig } from '@/config/site';
 import './globals.css';
 import { AppLayout } from './app-layout';
-import { Inter, Manrope, Dancing_Script } from 'next/font/google';
+import { Inter, Manrope, Dancing_Script, Playfair_Display } from 'next/font/google';
 
 export const metadata: Metadata = {
   title: {
@@ -71,6 +71,13 @@ const dancingScript = Dancing_Script({
   display: 'swap',
 });
 
+const playfairDisplay = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair-display',
+  weight: ['400', '700'],
+  display: 'swap',
+});
+
 
 export default function RootLayout({
   children,
@@ -78,7 +85,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${manrope.variable} ${dancingScript.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${manrope.variable} ${dancingScript.variable} ${playfairDisplay.variable}`}>
       <head/>
       <body>
           <AppLayout>{children}</AppLayout>
@@ -86,6 +93,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-
-
