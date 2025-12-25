@@ -81,9 +81,28 @@ export function Hero() {
           variants={stagger}
           className="max-w-2xl"
         >
-          <motion.span variants={fadeUp} className="text-primary font-semibold uppercase tracking-widest font-headline">
-            MSS Group BD
-          </motion.span>
+          <motion.div
+            variants={fadeUp}
+            className="relative inline-block"
+          >
+            <motion.div
+              className="absolute -inset-2"
+              animate={{
+                scale: [1, 1.05, 1],
+                opacity: [0.3, 0.5, 0.3],
+              }}
+              transition={{
+                duration: 4,
+                ease: "easeInOut",
+                repeat: Infinity,
+              }}
+            >
+              <div className="w-full h-full bg-primary/30 rounded-full blur-xl"></div>
+            </motion.div>
+            <span className="relative text-gold font-semibold uppercase tracking-widest font-headline">
+              MSS Group BD
+            </span>
+          </motion.div>
           <motion.h1
             variants={sentence}
             className="mt-4 text-4xl md:text-6xl font-extrabold font-headline tracking-tight"
