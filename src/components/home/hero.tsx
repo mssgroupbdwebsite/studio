@@ -52,50 +52,7 @@ export function Hero() {
         />
       </motion.div>
       <div className="relative z-10 container mx-auto px-4 md:px-6">
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={stagger}
-          className="max-w-2xl"
-        >
-          <motion.p 
-            variants={fadeUp}
-            className="text-sm font-semibold uppercase tracking-[0.3em] text-primary"
-          >
-            MSS GROUP BD
-          </motion.p>
-          
-          <motion.h1
-            variants={fadeUp}
-            className="mt-4 text-4xl md:text-5xl font-bold tracking-tight text-white text-shadow-sm font-stylish"
-          >
-            Your Trusted Partner in Apparel Sourcing & Manufacturing
-          </motion.h1>
-
-          <motion.p 
-            variants={fadeUp}
-            className="mt-6 text-lg text-white/70 max-w-lg tracking-wide"
-          >
-            Delivering quality-driven production, ethical sourcing, and global supply solutions.
-          </motion.p>
-
-          <motion.div variants={fadeUp} className="mt-10 flex flex-wrap items-center justify-start sm:justify-start gap-4 ml-8">
-             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button asChild size="default" className="bg-gradient-to-r from-blue-800 to-blue-600 hover:from-blue-700 hover:to-blue-500 text-white">
-                  <Link href="/contact">
-                    Start a Project <ArrowRight />
-                  </Link>
-                </Button>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button asChild variant="outline" size="default" className="bg-transparent text-white hover:bg-white/10 hover:text-white border-white/50">
-                  <Link href="/products">
-                    Explore Products
-                  </Link>
-                </Button>
-            </motion.div>
-          </motion.div>
-        </motion.div>
+        {/* All text and buttons have been removed as per your request */}
       </div>
     </section>
   );
