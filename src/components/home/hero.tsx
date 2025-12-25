@@ -34,7 +34,7 @@ export function Hero() {
   const parallaxY = useTransform(scrollYProgress, [0, 0.5], ['0%', '40%']);
 
   return (
-    <section className="relative h-[85vh] md:h-[calc(100vh-56px)] flex items-end justify-end text-left p-8 md:p-16">
+    <section className="relative h-[85vh] md:h-[calc(100vh-56px)] flex items-end justify-start text-left p-8 md:p-16">
       <motion.div
         className="absolute inset-0"
         style={{ y: parallaxY }}
@@ -56,7 +56,7 @@ export function Hero() {
           animate="visible"
           variants={stagger}
         >
-          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-end gap-4">
+          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-start gap-4">
              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button asChild size="lg">
                   <Link href="/contact">
