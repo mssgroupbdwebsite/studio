@@ -71,8 +71,6 @@ export function Hero() {
           data-ai-hint="apparel factory"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/30 to-transparent" />
       </motion.div>
       <div className="relative z-10 container mx-auto px-4 md:px-6">
         <motion.div
@@ -105,7 +103,7 @@ export function Hero() {
           </motion.div>
           <motion.h1
             variants={sentence}
-            className="mt-4 text-4xl md:text-6xl font-extrabold font-headline tracking-tight"
+            className="mt-4 text-4xl md:text-6xl font-extrabold font-headline tracking-tight text-shadow-md"
           >
              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 {fullHeadline.split("").map((char, index) => (
@@ -115,7 +113,7 @@ export function Hero() {
                 ))}
              </span>
           </motion.h1>
-          <motion.p variants={fadeUp} className="mt-6 max-w-xl text-lg md:text-xl text-muted-foreground">
+          <motion.p variants={fadeUp} className="mt-6 max-w-xl text-lg md:text-xl text-white text-shadow-sm">
             {siteConfig.description}
           </motion.p>
           <motion.div variants={fadeUp} className="mt-10 flex flex-wrap items-center justify-start gap-4">
