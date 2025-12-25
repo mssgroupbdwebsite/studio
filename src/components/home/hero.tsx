@@ -63,7 +63,7 @@ export function Hero() {
         style={{ y: parallaxY }}
       >
         <Image
-          src="https://res.cloudinary.com/dkfxz5wgx/image/upload/huakbdxmo9g28zogtgtj"
+          src="https://res.cloudinary.com/dkfxz5wgx/image/upload/bzy4lfydvfobsdyyqwne"
           alt="Modern apparel manufacturing facility"
           fill
           className="object-cover"
