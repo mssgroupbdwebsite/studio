@@ -68,9 +68,10 @@ export function Hero() {
           
           <motion.h1
             variants={fadeUp}
-            className="mt-4 text-4xl md:text-5xl font-bold font-stylish tracking-tight text-white text-shadow-sm"
+            className="mt-4 text-4xl md:text-5xl font-bold tracking-tight text-white text-shadow-sm"
           >
-            Your Trusted Partner in Apparel Sourcing & Manufacturing
+            <span className="font-stylish">Your Trusted Partner </span>
+            <span className="font-headline">in Apparel Sourcing & Manufacturing</span>
           </motion.h1>
 
           <motion.p 
