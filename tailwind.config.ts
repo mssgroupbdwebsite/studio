@@ -1,3 +1,4 @@
+
 import type {Config} from 'tailwindcss';
 const {fontFamily} = require('tailwindcss/defaultTheme');
 import plugin from 'tailwindcss/plugin';
@@ -19,8 +20,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        headline: ['Manrope', 'sans-serif'],
+        body: ['Inter', ...fontFamily.sans],
+        headline: ['Manrope', ...fontFamily.sans],
       },
       colors: {
         background: 'hsl(var(--background))',

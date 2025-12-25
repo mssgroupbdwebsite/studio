@@ -10,14 +10,14 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { 
-      duration: 0.8, 
-      ease: [0.6, -0.05, 0.01, 0.99] 
-    } 
-  }
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.6, -0.05, 0.01, 0.99],
+    },
+  },
 };
 
 const stagger = {
@@ -34,7 +34,7 @@ export function Hero() {
 
   return (
     <section className="relative h-[85vh] md:h-[calc(100vh-56px)] flex items-center justify-start text-left">
-      <motion.div 
+      <motion.div
         className="absolute inset-0"
         style={{ y: parallaxY }}
       >
@@ -60,9 +60,9 @@ export function Hero() {
           <motion.span variants={fadeUp} className="text-primary font-semibold uppercase tracking-widest font-headline">
             MSS Group BD
           </motion.span>
-          <motion.h1 
-            variants={fadeUp} 
-            className="mt-4 text-4xl md:text-6xl font-extrabold font-headline tracking-tight text-foreground text-shadow-md"
+          <motion.h1
+            variants={fadeUp}
+            className="mt-4 text-4xl md:text-6xl font-extrabold font-headline tracking-tight text-foreground"
           >
             Your Partner in Apparel Sourcing & Manufacturing
           </motion.h1>
