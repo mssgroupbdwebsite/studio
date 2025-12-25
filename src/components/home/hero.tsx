@@ -80,33 +80,6 @@ export function Hero() {
           variants={stagger}
           className="max-w-2xl text-white"
         >
-          <motion.div
-            variants={fadeUp}
-            className="relative inline-block"
-          >
-            <span className="relative text-sm font-semibold uppercase tracking-widest font-headline text-white/80">
-              MSS GROUP BD
-            </span>
-          </motion.div>
-          <motion.h1
-            variants={sentence}
-            className="mt-4 text-4xl md:text-6xl font-extrabold font-headline tracking-tight text-shadow-md"
-          >
-             
-                {fullHeadline.split(" ").map((word, wordIndex) => (
-                    <span key={wordIndex} className="inline-block mr-3">
-                        {word.split("").map((char, index) => (
-                            <motion.span key={`${char}-${index}`} variants={letter} className={word.toUpperCase() === 'APPAREL' || word.toUpperCase() === 'SOURCING' || word.toUpperCase() === 'MANUFACTURING' || word === '&' ? 'text-primary' : ''}>
-                                {char}
-                            </motion.span>
-                        ))}
-                    </span>
-                ))}
-             
-          </motion.h1>
-           <motion.p variants={fadeUp} className="mt-6 text-lg text-white/90 max-w-lg">
-            Delivering quality-driven production, ethical sourcing, and global supply solutions.
-          </motion.p>
           <motion.div variants={fadeUp} className="mt-10 flex flex-wrap items-center justify-start gap-4">
              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button asChild size="lg">
