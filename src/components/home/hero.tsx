@@ -52,7 +52,10 @@ const letter = {
 export function Hero() {
   const { scrollYProgress } = useScroll();
   const parallaxY = useTransform(scrollYProgress, [0, 0.5], ['0%', '40%']);
-  const headline = "Your Partner in Apparel Sourcing & Manufacturing";
+  const fullHeadline = "Your Partner in Apparel Sourcing & Manufacturing";
+  const splitIndex = Math.floor(fullHeadline.length / 2.5);
+  const headlinePart1 = fullHeadline.substring(0, splitIndex);
+  const headlinePart2 = fullHeadline.substring(splitIndex);
 
   return (
     <section className="relative h-[85vh] md:h-[calc(100vh-56px)] flex items-center justify-start text-left">
@@ -84,13 +87,22 @@ export function Hero() {
           </motion.span>
           <motion.h1
             variants={sentence}
-            className="mt-4 text-4xl md:text-6xl font-extrabold font-headline tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent"
+            className="mt-4 text-4xl md:text-6xl font-extrabold font-headline tracking-tight"
           >
-             {headline.split("").map((char, index) => (
-              <motion.span key={`${char}-${index}`} variants={letter} className="text-shadow-md shadow-black/30">
-                {char}
-              </motion.span>
-            ))}
+             <span className="text-white text-shadow-lg shadow-black/30">
+                {headlinePart1.split("").map((char, index) => (
+                <motion.span key={`p1-${char}-${index}`} variants={letter}>
+                    {char}
+                </motion.span>
+                ))}
+             </span>
+             <span className="text-primary text-shadow-md shadow-black/20">
+                {headlinePart2.split("").map((char, index) => (
+                <motion.span key={`p2-${char}-${index}`} variants={letter}>
+                    {char}
+                </motion.span>
+                ))}
+             </span>
           </motion.h1>
           <motion.p variants={fadeUp} className="mt-6 max-w-xl text-lg md:text-xl text-muted-foreground">
             {siteConfig.description}
