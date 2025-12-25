@@ -63,12 +63,12 @@ export function Hero() {
         style={{ y: parallaxY }}
       >
         <Image
-          src="https://picsum.photos/seed/hero-bg/1800/1200"
-          alt="Abstract background image of textile"
+          src="https://res.cloudinary.com/dkfxz5wgx/image/upload/huakbdxmo9g28zogtgtj"
+          alt="Modern apparel manufacturing facility"
           fill
           className="object-cover"
           priority
-          data-ai-hint="abstract textile"
+          data-ai-hint="apparel factory"
           sizes="100vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
