@@ -48,7 +48,6 @@ export function Hero() {
           data-ai-hint="apparel factory"
           sizes="100vw"
         />
-         <div className="absolute inset-0 bg-black/30" />
       </motion.div>
       <div className="relative z-10">
         <motion.div
