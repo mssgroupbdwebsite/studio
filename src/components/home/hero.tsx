@@ -8,27 +8,6 @@ import { siteConfig } from '@/config/site';
 import { ArrowRight } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
-const sentence = {
-  hidden: { opacity: 1 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.04,
-    },
-  },
-};
-
-const letter = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      ease: [0.6, -0.05, 0.01, 0.99],
-    },
-  },
-};
-
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: {
@@ -37,25 +16,25 @@ const fadeUp = {
     transition: {
       duration: 0.8,
       ease: [0.6, -0.05, 0.01, 0.99],
-      delay: 0.5, // Delay to let headline animate first
     },
   },
 };
 
 const stagger = {
+  hidden: { opacity: 0 },
   visible: {
+    opacity: 1,
     transition: {
-      staggerChildren: 0.15,
+      staggerChildren: 0.2,
+      delayChildren: 0.2,
     },
   },
 };
 
-
 export function Hero() {
   const { scrollYProgress } = useScroll();
   const parallaxY = useTransform(scrollYProgress, [0, 0.5], ['0%', '40%']);
-  const fullHeadline = "Your Partner in Apparel Sourcing & Manufacturing";
-
+  
   return (
     <section className="relative h-[85vh] md:h-[calc(100vh-56px)] flex items-center justify-start text-left">
       <motion.div
@@ -64,14 +43,14 @@ export function Hero() {
       >
         <Image
           src="https://res.cloudinary.com/dkfxz5wgx/image/upload/bzy4lfydvfobsdyyqwne"
-          alt="Modern apparel manufacturing facility"
+          alt="Professional man and woman in stylish apparel"
           fill
           className="object-cover"
           priority
-          data-ai-hint="apparel factory"
+          data-ai-hint="apparel models"
           sizes="100vw"
         />
-        
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
       </motion.div>
       <div className="relative z-10 container mx-auto px-4 md:px-6">
         <motion.div
@@ -80,46 +59,26 @@ export function Hero() {
           variants={stagger}
           className="max-w-2xl"
         >
-          <motion.div
+          <motion.p 
             variants={fadeUp}
-            className="relative inline-block"
+            className="text-sm font-light uppercase tracking-[0.2em] text-white/70"
           >
-            <motion.div
-              className="absolute -inset-2"
-              animate={{
-                scale: [1, 1.05, 1],
-                opacity: [0.3, 0.5, 0.3],
-              }}
-              transition={{
-                duration: 4,
-                ease: "easeInOut",
-                repeat: Infinity,
-              }}
-            >
-              <div className="w-full h-full bg-primary/30 rounded-full blur-xl"></div>
-            </motion.div>
-            <span className="relative text-gold font-semibold uppercase tracking-widest font-headline">
-              MSS Group BD
-            </span>
-          </motion.div>
+            MSS Group BD
+          </motion.p>
+          
           <motion.h1
-            variants={sentence}
-            className="mt-4 text-3xl md:text-5xl font-bold font-headline tracking-tight text-white text-shadow"
+            variants={fadeUp}
+            className="mt-4 text-4xl md:text-6xl font-bold font-headline tracking-tight text-white text-shadow-sm"
           >
-            {fullHeadline.split("").map((char, index) => (
-            <motion.span key={`${char}-${index}`} variants={letter}>
-                {char}
-            </motion.span>
-            ))}
+            Your Trusted Partner in Apparel Sourcing & Manufacturing
           </motion.h1>
 
-           <motion.p 
-              variants={fadeUp}
-              className="mt-2 text-2xl md:text-3xl font-signature text-gold text-shadow-sm"
-            >
-              over buying house
-            </motion.p>
-
+          <motion.p 
+            variants={fadeUp}
+            className="mt-6 text-lg md:text-xl text-white/80 max-w-lg"
+          >
+            Delivering quality-driven production, ethical sourcing, and global supply solutions.
+          </motion.p>
 
           <motion.div variants={fadeUp} className="mt-10 flex flex-wrap items-center justify-start gap-4">
              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -130,7 +89,7 @@ export function Hero() {
                 </Button>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button asChild variant="outline" size="lg" className="bg-background/50 backdrop-blur-sm">
+                <Button asChild variant="outline" size="lg" className="bg-transparent text-white hover:bg-white/10 hover:text-white border-white/50">
                   <Link href="/products">
                     Explore Products
                   </Link>

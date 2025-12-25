@@ -60,7 +60,7 @@ const inter = Inter({
 const manrope = Manrope({
   subsets: ['latin'],
   variable: '--font-manrope',
-  weight: ['400', '800'],
+  weight: ['400', '500', '700', '800'],
   display: 'swap',
 });
 
@@ -86,5 +86,6 @@ export default function RootLayout({
     </html>
   );
 }
+
 
 
