@@ -42,7 +42,7 @@ export function Hero() {
         style={{ y: parallaxY }}
       >
         <Image
-          src="https://res.cloudinary.com/dkfxz5wgx/image/upload/bzy4lfydvfobsdyyqwne"
+          src="https://res.cloudinary.com/dkfxz5wgx/image/upload/kept00z6ae4jaxz9xmjz"
           alt="Professional man and woman in stylish apparel"
           fill
           className="object-cover object-left"
