@@ -43,7 +43,7 @@ export function Hero() {
           src="https://res.cloudinary.com/dkfxz5wgx/image/upload/de9caitggnsiaeiwnm6w"
           alt="Modern apparel manufacturing facility"
           fill
-          className="object-cover"
+          className="object-cover object-left"
           priority
           data-ai-hint="apparel factory"
           sizes="100vw"
