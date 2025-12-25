@@ -50,7 +50,7 @@ export function Hero() {
           data-ai-hint="apparel models"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-black/60" />
       </motion.div>
       <div className="relative z-10 container mx-auto px-4 md:px-6">
         <motion.div
@@ -68,14 +68,14 @@ export function Hero() {
           
           <motion.h1
             variants={fadeUp}
-            className="mt-4 text-3xl md:text-4xl font-light tracking-tight text-white text-shadow-sm font-headline"
+            className="mt-4 text-4xl md:text-5xl font-bold tracking-tight text-white text-shadow-sm font-stylish"
           >
             Your Trusted Partner in Apparel Sourcing & Manufacturing
           </motion.h1>
 
           <motion.p 
             variants={fadeUp}
-            className="mt-6 text-lg md:text-xl text-white/70 max-w-lg"
+            className="mt-6 text-lg text-white/70 max-w-lg tracking-wide"
           >
             Delivering quality-driven production, ethical sourcing, and global supply solutions.
           </motion.p>
