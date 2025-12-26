@@ -1,4 +1,6 @@
 
+'use client';
+
 import { getInquiries, Inquiry } from '@/lib/inquiries';
 import { formatDistanceToNow } from 'date-fns';
 import { Mail, Briefcase, Clock, Inbox, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -23,8 +25,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-export const revalidate = 0; // Don't cache this page
+import { useState, useEffect } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 function InquiryCard({ inquiry }: { inquiry: Inquiry }) {
     const initial = inquiry.name.charAt(0).toUpperCase();
@@ -94,38 +96,57 @@ function InquiryCard({ inquiry }: { inquiry: Inquiry }) {
     )
 }
 
-function PaginationControls({ currentPage, totalPages }: { currentPage: number, totalPages: number }) {
+function PaginationControls({ currentPage, totalPages, onPageChange }: { currentPage: number, totalPages: number, onPageChange: (page:number) => void }) {
     const hasPrev = currentPage > 1;
     const hasNext = currentPage < totalPages;
 
     return (
         <div className="flex items-center justify-center gap-6 mt-8">
-            <Button asChild variant="outline" disabled={!hasPrev}>
-                <Link href={`/admin/inquiries?page=${currentPage - 1}`} className={cn(!hasPrev && "pointer-events-none")}>
-                    <ChevronLeft className="h-4 w-4 mr-2" />
-                    Previous
-                </Link>
+            <Button variant="outline" disabled={!hasPrev} onClick={() => onPageChange(currentPage - 1)}>
+                <ChevronLeft className="h-4 w-4 mr-2" />
+                Previous
             </Button>
             <span className="text-sm font-medium text-muted-foreground">
                 Page {currentPage} of {totalPages}
             </span>
-            <Button asChild variant="outline" disabled={!hasNext}>
-                 <Link href={`/admin/inquiries?page=${currentPage + 1}`} className={cn(!hasNext && "pointer-events-none")}>
-                    Next
-                    <ChevronRight className="h-4 w-4 ml-2" />
-                </Link>
+            <Button variant="outline" disabled={!hasNext} onClick={() => onPageChange(currentPage + 1)}>
+                Next
+                <ChevronRight className="h-4 w-4 ml-2" />
             </Button>
         </div>
     )
 }
 
-export default async function AdminInquiriesPage({ searchParams }: { searchParams?: { page?: string }}) {
-    const currentPage = Number(searchParams?.page) || 1;
-    const { inquiries, totalPages } = await getInquiries({ page: currentPage, limit: 10 });
+export default function AdminInquiriesPage() {
+    const [inquiries, setInquiries] = useState<Inquiry[]>([]);
+    const [totalPages, setTotalPages] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchInquiries = async () => {
+            setIsLoading(true);
+            try {
+                const { inquiries: fetchedInquiries, totalPages: fetchedTotalPages } = await getInquiries({ page: currentPage, limit: 10 });
+                setInquiries(fetchedInquiries);
+                setTotalPages(fetchedTotalPages);
+            } catch (error) {
+                console.error("Failed to fetch inquiries:", error);
+                // Optionally, show a toast or error message to the user
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchInquiries();
+    }, [currentPage]);
+
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+    };
 
     return (
         <div className="relative min-h-full">
-            {/* Background pattern */}
             <div className="absolute inset-0 bg-grid-slate-100/[0.05] [mask-image:linear-gradient(to_bottom,white_10%,transparent_90%)] dark:bg-grid-slate-900/[0.05]"></div>
             
             <div className="relative p-4 sm:p-6">
@@ -134,7 +155,13 @@ export default async function AdminInquiriesPage({ searchParams }: { searchParam
                     <p className="text-muted-foreground">View and manage contact form submissions.</p>
                 </div>
                 
-                {inquiries.length > 0 ? (
+                {isLoading ? (
+                    <div className="space-y-4">
+                        <Skeleton className="h-24 w-full" />
+                        <Skeleton className="h-24 w-full" />
+                        <Skeleton className="h-24 w-full" />
+                    </div>
+                ) : inquiries.length > 0 ? (
                     <>
                         <div className="space-y-4">
                             {inquiries.map((inquiry) => (
@@ -142,7 +169,7 @@ export default async function AdminInquiriesPage({ searchParams }: { searchParam
                             ))}
                         </div>
                         {totalPages > 1 && (
-                            <PaginationControls currentPage={currentPage} totalPages={totalPages} />
+                            <PaginationControls currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
                         )}
                     </>
                 ) : (
