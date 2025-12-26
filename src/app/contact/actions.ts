@@ -1,8 +1,8 @@
 
-'use server';
+"use client";
 
-import { saveInquiry } from '@/lib/inquiries';
-import { revalidatePath } from 'next/cache';
+import { collection, addDoc } from "firebase/firestore";
+import { getSdks } from "@/firebase";
 
 // The Inquiry type needs to be defined for the form data
 interface InquiryFormData {
@@ -15,15 +15,15 @@ interface InquiryFormData {
 
 export async function submitInquiry(formData: InquiryFormData) {
     try {
+        const { firestore } = getSdks();
+        const inquiriesCollection = collection(firestore, 'inquiries');
+        
         const newInquiry = {
             ...formData,
             submittedAt: new Date().toISOString(),
         };
 
-        await saveInquiry(newInquiry);
-
-        // Revalidate the inquiries page to show the new submission
-        revalidatePath('/admin/inquiries');
+        await addDoc(inquiriesCollection, newInquiry);
 
         return { success: true };
     } catch (e: any) {

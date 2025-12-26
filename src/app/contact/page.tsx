@@ -16,7 +16,7 @@ import { submitInquiry } from './actions';
 interface InquiryFormData {
   name: string;
   email: string;
-  company?: string;
+  company: string;
   subject: string;
   message: string;
 }
