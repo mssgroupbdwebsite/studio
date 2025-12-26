@@ -9,20 +9,29 @@ export function middleware(req: NextRequest) {
     const url = req.nextUrl;
 
     if (basicAuth) {
-      const authValue = basicAuth.split(' ')[1];
-      // The atob function is available in Edge runtime
-      const [user, pwd] = atob(authValue).split(':');
+      try {
+        const authValue = basicAuth.split(' ')[1];
+        // The atob function is available in Edge runtime
+        const [user, pwd] = atob(authValue).split(':');
 
-      const validUser = process.env.BASIC_AUTH_USER;
-      const validPass = process.env.BASIC_AUTH_PASSWORD;
+        const validUser = process.env.BASIC_AUTH_USER;
+        const validPass = process.env.BASIC_AUTH_PASSWORD;
 
-      if (user === validUser && pwd === validPass) {
-        return NextResponse.next();
+        if (user === validUser && pwd === validPass) {
+          return NextResponse.next();
+        }
+      } catch (e) {
+        console.error('Error parsing basic auth header:', e);
       }
     }
     
-    url.pathname = '/api/auth/basic';
-    return NextResponse.rewrite(url);
+    // If auth fails or is not present, request authentication
+    return new NextResponse('Authentication required', {
+      status: 401,
+      headers: {
+        'WWW-Authenticate': 'Basic realm="Secure Area"',
+      },
+    });
   }
 
   return NextResponse.next();
