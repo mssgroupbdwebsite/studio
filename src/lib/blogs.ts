@@ -26,7 +26,11 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
     }
     const posts: BlogPost[] = [];
     snapshot.forEach(doc => {
-        posts.push({ id: doc.id, ...(doc.data() as Omit<BlogPost, 'id'>) });
+        const data = doc.data();
+        // Ensure the post has a slug before adding it to the list for static generation
+        if (data.slug) {
+            posts.push({ id: doc.id, ...(data as Omit<BlogPost, 'id'>) });
+        }
     });
     return posts;
 };
