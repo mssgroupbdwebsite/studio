@@ -49,13 +49,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export async function generateStaticParams() {
-  const posts = await getBlogPosts();
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
-}
-
 export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function BlogPostPage({ params }: Props) {
