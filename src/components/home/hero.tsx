@@ -8,7 +8,7 @@ export function Hero() {
     <section className="relative h-[85vh] md:h-[calc(100vh-56px)]">
       <div className="absolute inset-0">
         <Image
-          src="https://res.cloudinary.com/dkfxz5wgx/image/upload/db69gbxq4f4fz4j3opam"
+          src="https://res.cloudinary.com/dkfxz5wgx/image/upload/ncc7s6u0mbinhrm1sa1b"
           alt="Modern apparel manufacturing facility"
           fill
           className="object-cover object-left"
