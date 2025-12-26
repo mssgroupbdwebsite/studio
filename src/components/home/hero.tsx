@@ -49,12 +49,12 @@ export function Hero() {
           sizes="100vw"
         />
       </motion.div>
-      <div className="relative z-10 container mx-auto px-4 md:px-6 mb-16 md:mb-20">
+      <div className="relative z-10 container mx-auto px-4 md:px-6 mb-24 md:mb-32">
         <motion.div
           initial="hidden"
           animate="visible"
           variants={stagger}
-          className="max-w-2xl text-white ml-0 md:ml-8"
+          className="max-w-2xl text-white ml-0 md:ml-12"
         >
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-start sm:items-center justify-start gap-4">
              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
