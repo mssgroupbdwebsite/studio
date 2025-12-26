@@ -3,7 +3,7 @@
 
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
-import { addPostToFile, updatePostInFile, deletePostFromFile } from '@/lib/blogs';
+import { addPostToFirestore, updatePostInFirestore, deletePostFromFirestore } from '@/lib/blogs';
 
 export interface BlogPost {
   id: string;
@@ -35,7 +35,7 @@ export async function addBlogPost(data: BlogPostFormValues) {
   }
 
   try {
-    await addPostToFile({ ...validation.data, hidden: false });
+    await addPostToFirestore({ ...validation.data, hidden: false });
     revalidatePath('/admin/blogs');
     revalidatePath('/blog');
     return { success: true };
@@ -54,7 +54,7 @@ export async function updateBlogPost(data: BlogPostFormValues) {
     const { id, ...postData } = validation.data;
 
     try {
-        await updatePostInFile(id, postData);
+        await updatePostInFirestore(id, postData);
         revalidatePath('/admin/blogs');
         revalidatePath('/blog');
         revalidatePath(`/blog/${id}`);
@@ -70,7 +70,7 @@ export async function deleteBlogPost(postId: string) {
     }
 
     try {
-        const deleted = await deletePostFromFile(postId);
+        const deleted = await deletePostFromFirestore(postId);
         if (deleted) {
             revalidatePath('/admin/blogs');
             revalidatePath('/blog');

@@ -18,12 +18,10 @@ service cloud.firestore {
     }
 
     match /inquiries/{inquiryId} {
-      // Public users can create, only signed-in users can manage
       allow create: if true;
       allow read, update, delete: if isSignedIn();
     }
 
-    // Allow read for other collections if needed for public pages
     match /company_profile/{docId} {
       allow read: if true;
       allow write: if isSignedIn();

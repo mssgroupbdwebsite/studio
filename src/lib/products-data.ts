@@ -1,80 +1,53 @@
 
 'use server';
 
-import { promises as fs } from 'fs';
-import path from 'path';
+import { getAdminServices } from '@/firebase/server-init';
 import type { Product, ProductWithImage } from '@/app/admin/products/actions';
 
-const productsFilePath = path.join(process.cwd(), 'data', 'products.json');
-
-async function readProductsFromFile(): Promise<Product[]> {
-    try {
-        const fileContent = await fs.readFile(productsFilePath, 'utf-8');
-        return JSON.parse(fileContent);
-    } catch (error: any) {
-        if (error.code === 'ENOENT') {
-            return []; // File not found, return empty array
-        }
-        throw error;
-    }
-}
-
-async function writeProductsToFile(products: Product[]): Promise<void> {
-    await fs.writeFile(productsFilePath, JSON.stringify(products, null, 2), 'utf-8');
-}
-
+const { firestore: db } = getAdminServices();
+const productsCollection = db.collection('products');
 
 export async function getProducts(): Promise<ProductWithImage[]> {
-    const products = await readProductsFromFile();
-    // In this file-based version, Product and ProductWithImage are the same.
-    return products;
+    try {
+        const snapshot = await productsCollection.orderBy('name', 'asc').get();
+        if (snapshot.empty) {
+            return [];
+        }
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as ProductWithImage));
+    } catch (error) {
+        console.error("Error fetching products from Firestore:", error);
+        return [];
+    }
 };
 
-export async function addProductToFile(productData: Omit<Product, 'id'>): Promise<Product> {
-    const products = await readProductsFromFile();
-    const newProduct: Product = {
+export async function addProductToFirestore(productData: Omit<Product, 'id'>): Promise<Product> {
+    const docRef = await productsCollection.add(productData);
+    return {
+        id: docRef.id,
         ...productData,
-        id: `prod_${Date.now()}`
     };
-    products.unshift(newProduct);
-    await writeProductsToFile(products);
-    return newProduct;
 }
 
-export async function updateProductInFile(productId: string, updateData: Partial<Omit<Product, 'id'>>): Promise<Product | null> {
-    const products = await readProductsFromFile();
-    const productIndex = products.findIndex(p => p.id === productId);
-
-    if (productIndex === -1) {
-        return null;
-    }
-
-    const updatedProduct = { ...products[productIndex], ...updateData };
-    products[productIndex] = updatedProduct;
-    await writeProductsToFile(products);
-    return updatedProduct;
+export async function updateProductInFirestore(productId: string, updateData: Partial<Omit<Product, 'id'>>): Promise<Product | null> {
+    const docRef = productsCollection.doc(productId);
+    await docRef.update(updateData);
+    const updatedDoc = await docRef.get();
+    if (!updatedDoc.exists) return null;
+    return { id: updatedDoc.id, ...updatedDoc.data() } as Product;
 }
 
-export async function deleteProductFromFile(productId: string): Promise<boolean> {
-    let products = await readProductsFromFile();
-    const initialLength = products.length;
-    products = products.filter(p => p.id !== productId);
-
-    if (products.length < initialLength) {
-        await writeProductsToFile(products);
-        return true;
-    }
-    return false;
+export async function deleteProductFromFirestore(productId: string): Promise<boolean> {
+    const docRef = productsCollection.doc(productId);
+    await docRef.delete();
+    return true; // Assume success, or add checks if needed
 }
 
-export async function deleteMultipleProductsFromFile(productIds: string[]): Promise<boolean> {
-     let products = await readProductsFromFile();
-    const initialLength = products.length;
-    products = products.filter(p => !productIds.includes(p.id));
-
-    if (products.length < initialLength) {
-        await writeProductsToFile(products);
-        return true;
-    }
-    return false;
+export async function deleteMultipleProductsFromFirestore(productIds: string[]): Promise<boolean> {
+    const batch = db.batch();
+    productIds.forEach(id => {
+        const docRef = productsCollection.doc(id);
+        batch.delete(docRef);
+    });
+    await batch.commit();
+    return true;
 }

@@ -1,8 +1,7 @@
 
 'use server';
 
-import { promises as fs } from 'fs';
-import path from 'path';
+import { getAdminServices } from '@/firebase/server-init';
 
 export interface BlogPost {
   id: string;
@@ -15,35 +14,36 @@ export interface BlogPost {
   hidden?: boolean;
 }
 
-const blogsFilePath = path.join(process.cwd(), 'data', 'blogs.json');
+const { firestore: db } = getAdminServices();
+const blogsCollection = db.collection('blogs');
 
-async function readPostsFromFile(): Promise<BlogPost[]> {
+
+async function readPostsFromFirestore(): Promise<BlogPost[]> {
     try {
-        const fileContent = await fs.readFile(blogsFilePath, 'utf-8');
-        return JSON.parse(fileContent);
-    } catch (error: any) {
-        if (error.code === 'ENOENT') {
-            return []; // File not found, which is fine, start with empty array
+        const snapshot = await blogsCollection.orderBy('publishedAt', 'desc').get();
+        if (snapshot.empty) {
+            return [];
         }
-        throw error; // For other errors, re-throw
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as BlogPost));
+    } catch (error) {
+        console.error("Error fetching blog posts from Firestore:", error);
+        return [];
     }
-}
-
-async function writePostsToFile(posts: BlogPost[]): Promise<void> {
-    // Sort by date before writing to keep it consistent
-    posts.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
-    await fs.writeFile(blogsFilePath, JSON.stringify(posts, null, 2), 'utf-8');
 }
 
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
-    const posts = await readPostsFromFile();
-    return posts;
+    const posts = await readPostsFromFirestore();
+    return posts.filter(post => post && post.slug);
 };
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | undefined> {
-    const posts = await readPostsFromFile();
-    return posts.find(post => post.slug === slug);
+    const snapshot = await blogsCollection.where('slug', '==', slug).limit(1).get();
+    if (snapshot.empty) {
+        return undefined;
+    }
+    const doc = snapshot.docs[0];
+    return { id: doc.id, ...doc.data() } as BlogPost;
 }
 
 
@@ -58,53 +58,42 @@ function createSlug(title: string, uniqueSuffix: string) {
 }
 
 
-export async function addPostToFile(postData: Omit<BlogPost, 'id' | 'slug'>): Promise<BlogPost> {
-    const posts = await readPostsFromFile();
+export async function addPostToFirestore(postData: Omit<BlogPost, 'id' | 'slug'>): Promise<BlogPost> {
     const uniquePart = Date.now().toString().slice(-4) + Math.floor(Math.random() * 1000);
+    const slug = createSlug(postData.title, uniquePart);
     
-    const newPost: BlogPost = {
+    const docRef = await blogsCollection.add({
         ...postData,
-        id: `blog_${Date.now()}`,
-        slug: createSlug(postData.title, uniquePart)
-    };
+        slug: slug
+    });
 
-    posts.push(newPost);
-    await writePostsToFile(posts);
+    const newPost: BlogPost = {
+        id: docRef.id,
+        slug: slug,
+        ...postData
+    };
     return newPost;
 }
 
-export async function updatePostInFile(postId: string, updateData: Partial<Omit<BlogPost, 'id'>>): Promise<BlogPost | null> {
-     const posts = await readPostsFromFile();
-    const postIndex = posts.findIndex(p => p.id === postId);
+export async function updatePostInFirestore(postId: string, updateData: Partial<Omit<BlogPost, 'id'>>): Promise<BlogPost | null> {
+    const docRef = blogsCollection.doc(postId);
 
-    if (postIndex === -1) {
-        return null;
-    }
-
-    const currentPost = posts[postIndex];
-    
-    // If the title is being updated, regenerate the slug
-    if (updateData.title && updateData.title !== currentPost.title) {
-        const uniquePart = postId.slice(-4);
+    if (updateData.title) {
+        const uniquePart = postId.slice(0, 4); 
         updateData.slug = createSlug(updateData.title, uniquePart);
     }
     
-    const updatedPost = { ...currentPost, ...updateData };
-    posts[postIndex] = updatedPost;
-    await writePostsToFile(posts);
-    return updatedPost;
+    await docRef.update(updateData);
+    const updatedDoc = await docRef.get();
+     if (!updatedDoc.exists) {
+        return null;
+    }
+
+    return { id: updatedDoc.id, ...updatedDoc.data() } as BlogPost;
 }
 
 
-export async function deletePostFromFile(postId: string): Promise<boolean> {
-    let posts = await readPostsFromFile();
-    const initialLength = posts.length;
-    posts = posts.filter(p => p.id !== postId);
-    
-    if (posts.length < initialLength) {
-        await writePostsToFile(posts);
-        return true;
-    }
-    
-    return false;
+export async function deletePostFromFirestore(postId: string): Promise<boolean> {
+    await blogsCollection.doc(postId).delete();
+    return true;
 }

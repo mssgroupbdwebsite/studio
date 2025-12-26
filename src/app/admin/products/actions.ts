@@ -3,7 +3,7 @@
 
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
-import { addProductToFile, updateProductInFile, deleteProductFromFile, deleteMultipleProductsFromFile } from '@/lib/products-data';
+import { addProductToFirestore, updateProductInFirestore, deleteProductFromFirestore, deleteMultipleProductsFromFirestore } from '@/lib/products-data';
 import { productCategories, productSegments } from '@/config/products';
 
 export type ProductCategory = typeof productCategories[number];
@@ -44,7 +44,7 @@ export async function addProduct(data: ProductFormValues) {
   }
 
   try {
-    await addProductToFile({ ...validation.data, hidden: false });
+    await addProductToFirestore({ ...validation.data, hidden: false });
     revalidatePath('/admin/products');
     revalidatePath('/products');
     return { success: true };
@@ -63,7 +63,7 @@ export async function updateProduct(data: ProductFormValues) {
     const { id, ...productData } = validation.data;
 
     try {
-        await updateProductInFile(id, productData);
+        await updateProductInFirestore(id, productData);
         revalidatePath('/admin/products');
         revalidatePath('/products');
         return { success: true };
@@ -78,7 +78,7 @@ export async function toggleProductVisibility(productId: string, willBeHidden: b
     }
     
     try {
-        await updateProductInFile(productId, { hidden: willBeHidden });
+        await updateProductInFirestore(productId, { hidden: willBeHidden });
         revalidatePath('/admin/products');
         revalidatePath('/products');
         return { success: true };
@@ -93,7 +93,7 @@ export async function deleteProduct(productId: string) {
     }
 
     try {
-        const deleted = await deleteProductFromFile(productId);
+        const deleted = await deleteProductFromFirestore(productId);
         if (deleted) {
             revalidatePath('/admin/products');
             revalidatePath('/products');
@@ -111,7 +111,7 @@ export async function deleteSelectedProducts(productIds: string[]) {
     }
 
     try {
-        await deleteMultipleProductsFromFile(productIds);
+        await deleteMultipleProductsFromFirestore(productIds);
         revalidatePath('/admin/products');
         revalidatePath('/products');
         return { success: true };
