@@ -95,7 +95,8 @@ export function Footer() {
        {/* Sub-footer */}
       <div className="border-t bg-muted/50">
         <div className="container text-center py-6 text-sm text-muted-foreground">
-            <p>&copy; {new Date().getFullYear()} {siteConfig.name}. All Rights Reserved.</p>
+            <p>&copy; 2025 {siteConfig.name}. All Rights Reserved.</p>
+            <p>Designed by orjon</p>
         </div>
       </div>
     </footer>
