@@ -1,8 +1,8 @@
 
-'use server';
+'use client';
 
-import { deleteInquiry as deleteInquiryFromFile } from '@/lib/inquiries';
-import { revalidatePath } from 'next/cache';
+import { deleteDoc, doc } from 'firebase/firestore';
+import { getSdks } from '@/firebase';
 
 export async function deleteInquiry(inquiryId: string) {
     if (!inquiryId) {
@@ -10,12 +10,11 @@ export async function deleteInquiry(inquiryId: string) {
     }
     
     try {
-        await deleteInquiryFromFile(inquiryId);
-        revalidatePath('/admin/inquiries');
+        const { firestore } = getSdks();
+        const inquiryRef = doc(firestore, 'inquiries', inquiryId);
+        await deleteDoc(inquiryRef);
         return { success: true };
     } catch (e: any) {
         return { success: false, error: e.message || 'Failed to delete inquiry.' };
     }
 }
-
-    

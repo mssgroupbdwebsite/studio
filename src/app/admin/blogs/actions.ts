@@ -1,9 +1,9 @@
 
-'use server';
+'use client';
 
 import { z } from 'zod';
-import { revalidatePath } from 'next/cache';
-import { addPostToFirestore, updatePostInFirestore, deletePostFromFirestore } from '@/lib/blogs';
+import { collection, addDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { getSdks } from '@/firebase';
 
 export interface BlogPost {
   id: string;
@@ -27,6 +27,16 @@ const blogPostSchema = z.object({
 
 export type BlogPostFormValues = z.infer<typeof blogPostSchema>;
 
+function createSlug(title: string, uniqueSuffix: string) {
+    const slugBase = title.toLowerCase()
+        .replace(/\s+/g, '-') // Replace spaces with -
+        .replace(/[^\w-]+/g, '') // Remove all non-word chars
+        .replace(/--+/g, '-') // Replace multiple - with single -
+        .replace(/^-+/, '') // Trim - from start of text
+        .replace(/-+$/, ''); // Trim - from end of text
+    return `${slugBase}-${uniqueSuffix}`;
+}
+
 export async function addBlogPost(data: BlogPostFormValues) {
   const validation = blogPostSchema.safeParse(data);
 
@@ -35,9 +45,12 @@ export async function addBlogPost(data: BlogPostFormValues) {
   }
 
   try {
-    await addPostToFirestore({ ...validation.data, hidden: false });
-    revalidatePath('/admin/blogs');
-    revalidatePath('/blog');
+    const { firestore } = getSdks();
+    const blogsCollection = collection(firestore, 'blogs');
+    const uniquePart = Date.now().toString().slice(-4) + Math.floor(Math.random() * 1000);
+    const slug = createSlug(validation.data.title, uniquePart);
+
+    await addDoc(blogsCollection, { ...validation.data, hidden: false, slug });
     return { success: true };
   } catch (e: any) {
     return { success: false, error: e.message || 'Failed to add blog post.' };
@@ -54,10 +67,22 @@ export async function updateBlogPost(data: BlogPostFormValues) {
     const { id, ...postData } = validation.data;
 
     try {
-        await updatePostInFirestore(id, postData);
-        revalidatePath('/admin/blogs');
-        revalidatePath('/blog');
-        revalidatePath(`/blog/${id}`);
+        const { firestore } = getSdks();
+        const postRef = doc(firestore, 'blogs', id);
+        
+        let newSlug;
+        if(postData.title){
+             const uniquePart = id.slice(0, 4);
+             newSlug = createSlug(postData.title, uniquePart);
+        }
+        
+        const updateData: any = {...postData};
+        if (newSlug) {
+            updateData.slug = newSlug;
+        }
+        
+        await updateDoc(postRef, updateData);
+
         return { success: true };
     } catch (e: any) {
         return { success: false, error: e.message || 'Failed to update blog post.' };
@@ -70,13 +95,10 @@ export async function deleteBlogPost(postId: string) {
     }
 
     try {
-        const deleted = await deletePostFromFirestore(postId);
-        if (deleted) {
-            revalidatePath('/admin/blogs');
-            revalidatePath('/blog');
-            return { success: true };
-        }
-        return { success: false, error: 'Post not found.' };
+        const { firestore } = getSdks();
+        const postRef = doc(firestore, 'blogs', postId);
+        await deleteDoc(postRef);
+        return { success: true };
     } catch (e: any) {
         return { success: false, error: e.message || 'Failed to delete blog post.' };
     }

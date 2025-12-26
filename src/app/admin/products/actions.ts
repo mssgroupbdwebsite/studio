@@ -1,9 +1,10 @@
 
-'use server';
+'use client';
 
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
-import { addProductToFirestore, updateProductInFirestore, deleteProductFromFirestore, deleteMultipleProductsFromFirestore } from '@/lib/products-data';
+import { collection, addDoc, doc, updateDoc, deleteDoc, writeBatch } from 'firebase/firestore';
+import { getSdks } from '@/firebase';
 import { productCategories, productSegments } from '@/config/products';
 
 export type ProductCategory = typeof productCategories[number];
@@ -42,11 +43,11 @@ export async function addProduct(data: ProductFormValues) {
   if (!validation.success) {
       return { success: false, error: "Invalid data provided." };
   }
-
+  
   try {
-    await addProductToFirestore({ ...validation.data, hidden: false });
-    revalidatePath('/admin/products');
-    revalidatePath('/products');
+    const { firestore } = getSdks();
+    const productsCollection = collection(firestore, 'products');
+    await addDoc(productsCollection, { ...validation.data, hidden: false });
     return { success: true };
   } catch (e: any) {
     return { success: false, error: e.message || 'Failed to add product.' };
@@ -63,9 +64,9 @@ export async function updateProduct(data: ProductFormValues) {
     const { id, ...productData } = validation.data;
 
     try {
-        await updateProductInFirestore(id, productData);
-        revalidatePath('/admin/products');
-        revalidatePath('/products');
+        const { firestore } = getSdks();
+        const productRef = doc(firestore, 'products', id);
+        await updateDoc(productRef, productData);
         return { success: true };
     } catch (e: any) {
         return { success: false, error: e.message || 'Failed to update product.' };
@@ -78,9 +79,9 @@ export async function toggleProductVisibility(productId: string, willBeHidden: b
     }
     
     try {
-        await updateProductInFirestore(productId, { hidden: willBeHidden });
-        revalidatePath('/admin/products');
-        revalidatePath('/products');
+        const { firestore } = getSdks();
+        const productRef = doc(firestore, 'products', productId);
+        await updateDoc(productRef, { hidden: willBeHidden });
         return { success: true };
     } catch (e: any) {
         return { success: false, error: e.message || 'Failed to update product visibility.' };
@@ -93,13 +94,10 @@ export async function deleteProduct(productId: string) {
     }
 
     try {
-        const deleted = await deleteProductFromFirestore(productId);
-        if (deleted) {
-            revalidatePath('/admin/products');
-            revalidatePath('/products');
-            return { success: true };
-        }
-        return { success: false, error: 'Product not found.' };
+        const { firestore } = getSdks();
+        const productRef = doc(firestore, 'products', productId);
+        await deleteDoc(productRef);
+        return { success: true };
     } catch (e: any) {
         return { success: false, error: e.message || 'Failed to delete product.' };
     }
@@ -111,9 +109,13 @@ export async function deleteSelectedProducts(productIds: string[]) {
     }
 
     try {
-        await deleteMultipleProductsFromFirestore(productIds);
-        revalidatePath('/admin/products');
-        revalidatePath('/products');
+        const { firestore } = getSdks();
+        const batch = writeBatch(firestore);
+        productIds.forEach(id => {
+            const docRef = doc(firestore, 'products', id);
+            batch.delete(docRef);
+        });
+        await batch.commit();
         return { success: true };
     } catch (e: any) {
         return { success: false, error: e.message || 'Failed to delete products.' };
