@@ -1,50 +1,110 @@
+/**
+ * Core Philosophy: This ruleset enforces a "Public Read, Restricted Write" security model.
+ * It is designed for a public-facing website where catalog and company information is
+ * freely readable by anyone, but can only be modified by a trusted backend service (e.g., using the Admin SDK).
+ * User-submitted data, like inquiries, is handled with a "write-once" policy, where authenticated
+ * users can submit data but cannot read or modify it afterward, ensuring privacy.
+ *
+ * Data Structure: The data model is flat, using top-level collections for distinct types
+ * of data: `/products`, `/company_profile`, `/quality_compliance`, and `/inquiries`.
+ * This structural segregation simplifies security rules by ensuring a uniform security
+ * posture within each collection.
+ *
+ * Key Security Decisions:
+ * - Public Collections (`products`, `company_profile`, `quality_compliance`): These are globally readable
+ *   to support the public-facing website. All client-side write operations are explicitly disabled
+ *   to prevent unauthorized modification. Content management is expected to be performed by a
+ *   backend server with administrative privileges.
+ * - Private Submissions (`inquiries`): To protect user privacy, any authenticated user (including
+ *   anonymous users) can create an inquiry, but no user can read, list, update, or delete any inquiry.
+ *   This creates a secure "drop-box" for contact form submissions.
+ *
+ * Denormalization for Authorization: This ruleset is simple and does not require denormalized
+ * authorization fields. Public data is open, and inquiry submission only requires authentication status,
+ * not user-specific roles or ownership data.
+ *
+ * Structural Segregation: The use of separate collections for public content versus private
+ * user submissions is a core part of the security design. It prevents accidental data leaks
+ * and allows for highly efficient and secure list operations on the public collections.
+ */
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    /**
-     * Core Philosophy: This ruleset establishes a clear separation between publicly
-     * readable content and private, admin-managed data. The core security model
-     * allows any user, including unauthenticated visitors, to read product and
-     * company information. All write operations (creating,
-     * updating, deleting) are disabled on the client side.
-     *
-     * Data Structure: The data is organized into two distinct, top-level
-     * collections:
-     * - /products: Public catalog of all products.
-     * - /companyProfiles: Public information about the company.
-     *
-     * Key Security Decisions:
-     * - Public Read, No Writes: `products` and `companyProfiles` are globally
-     *   readable to support the public-facing website. All modifications are
-     *   locked down from the client.
-     *
-     * Denormalization for Authorization: This ruleset does not require
-     * denormalization as access controls are collection-wide.
-     *
-     * Structural Segregation: The use of separate top-level collections for
-     * `products` and `companyProfiles` provides a strong security boundary.
-     */
+    // ----------------------------------------------------------------------
+    // Helper Functions
+    // ----------------------------------------------------------------------
 
     /**
-     * @description Publicly readable product catalog.
+     * Checks if the user is authenticated.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+
+    // ----------------------------------------------------------------------
+    // Collection Rules
+    // ----------------------------------------------------------------------
+
+    /**
+     * @description Allows public read access to all products but blocks all client-side writes.
      * @path /products/{productId}
-     * @allow (get) Any user, signed-in or not, can read a specific product.
-     * @deny (create) All client-side writes are denied.
-     * @principle Public read access for catalog data, with all writes disabled.
+     * @allow An unauthenticated user reads a specific product document. (get)
+     * @deny An authenticated user tries to create a new product document. (create)
+     * @principle Secures catalog data as read-only for clients, assuming content is managed by a trusted backend process.
      */
     match /products/{productId} {
       allow get: if true;
       allow list: if true;
-      allow write: if false;
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
     }
 
     /**
-     * @description Publicly readable company profile information.
-     * @path /companyProfiles/{companyProfileId}
-     * @allow (list) Any user, signed-in or not, can list all company profiles.
-     * @deny (update) All client-side writes are denied.
-     * @principle Public read access for company info, with all writes disabled.
+     * @description Allows any authenticated user to submit an inquiry but prevents anyone from reading or modifying any inquiry.
+     * @path /inquiries/{inquiryId}
+     * @allow An authenticated (including anonymous) user creates a new inquiry. (create)
+     * @deny Any user, including the one who submitted it, tries to read an inquiry. (get)
+     * @principle Enforces a "write-once, read-never" pattern for private user submissions to protect confidentiality.
      */
-    match /companyProfiles
+    match /inquiries/{inquiryId} {
+      allow get: if false;
+      allow list: if false;
+      allow create: if isSignedIn();
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    /**
+     * @description Allows public read access to company profile information but blocks all client-side writes.
+     * @path /company_profile/{companyProfileId}
+     * @allow An unauthenticated user reads the company's mission statement. (get)
+     * @deny An authenticated user tries to update the company profile. (update)
+     * @principle Secures company information as read-only for clients, with management handled by a trusted backend.
+     */
+    match /company_profile/{companyProfileId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    /**
+     * @description Allows public read access to quality and compliance documents but blocks all client-side writes.
+     * @path /quality_compliance/{qualityComplianceId}
+     * @allow Any visitor to the site lists all quality compliance documents. (list)
+     * @deny An authenticated user attempts to delete a compliance document. (delete)
+     * @principle Secures informational content as read-only for clients, assuming it is managed by a backend process.
+     */
+    match /quality_compliance/{qualityComplianceId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+  }
+}

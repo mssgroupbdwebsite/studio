@@ -8,7 +8,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique identifier for the Product entity."
+          "description": "Unique identifier for the product."
         },
         "name": {
           "type": "string",
@@ -24,11 +24,11 @@
         },
         "segment": {
           "type": "string",
-          "description": "Target segment for the product (e.g., Menswear, Womenswear, Kids & Newborn, Unisex)."
+          "description": "Segment of the product (e.g., Menswear, Womenswear, Kids & Newborn, Unisex)."
         },
         "sourcingModel": {
           "type": "string",
-          "description": "Sourcing model for the product (Manufacturer or Trading Partner)."
+          "description": "Sourcing model of the product (Manufacturer / Trading Partner)."
         },
         "imageUrl": {
           "type": "string",
@@ -46,31 +46,68 @@
         "imageUrl"
       ]
     },
+    "Inquiry": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Inquiry",
+      "type": "object",
+      "description": "Represents an inquiry submitted through the contact form.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the inquiry."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the person submitting the inquiry."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the person submitting the inquiry.",
+          "format": "email"
+        },
+        "message": {
+          "type": "string",
+          "description": "The inquiry message."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp of when the inquiry was submitted.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "email",
+        "message",
+        "timestamp"
+      ]
+    },
     "CompanyProfile": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "CompanyProfile",
       "type": "object",
-      "description": "Represents the company's profile information.",
+      "description": "Represents company profile information.",
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique identifier for the CompanyProfile entity."
+          "description": "Unique identifier for the company profile."
         },
         "aboutUs": {
           "type": "string",
-          "description": "Description about the company."
+          "description": "About us information."
         },
         "vision": {
           "type": "string",
-          "description": "Company's vision statement."
+          "description": "Company vision statement."
         },
         "mission": {
           "type": "string",
-          "description": "Company's mission statement."
+          "description": "Company mission statement."
         },
         "coreValues": {
           "type": "string",
-          "description": "Company's core values."
+          "description": "Company core values."
         }
       },
       "required": [
@@ -80,10 +117,46 @@
         "mission",
         "coreValues"
       ]
+    },
+    "QualityCompliance": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "QualityCompliance",
+      "type": "object",
+      "description": "Represents quality and compliance information.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the quality and compliance information."
+        },
+        "qaFlowSteps": {
+          "type": "string",
+          "description": "Quality assurance flow steps."
+        },
+        "inspectionStages": {
+          "type": "string",
+          "description": "Inspection stages."
+        },
+        "workerSafetyEthics": {
+          "type": "string",
+          "description": "Information on worker safety and ethics."
+        },
+        "complianceCommitment": {
+          "type": "string",
+          "description": "Compliance commitment statement."
+        }
+      },
+      "required": [
+        "id",
+        "qaFlowSteps",
+        "inspectionStages",
+        "workerSafetyEthics",
+        "complianceCommitment"
+      ]
     }
   },
   "auth": {
     "providers": [
+      "password",
       "anonymous"
     ]
   },
@@ -96,7 +169,7 @@
           "schema": {
             "$ref": "#/backend/entities/Product"
           },
-          "description": "Stores product information. Publicly accessible for read operations. productId is the unique product ID.",
+          "description": "Stores product information. No denormalized authorization fields needed for public read access.",
           "params": [
             {
               "name": "productId",
@@ -106,13 +179,29 @@
         }
       },
       {
-        "path": "/companyProfiles/{companyProfileId}",
+        "path": "/inquiries/{inquiryId}",
+        "definition": {
+          "entityName": "Inquiry",
+          "schema": {
+            "$ref": "#/backend/entities/Inquiry"
+          },
+          "description": "Stores contact form submissions (inquiries). No denormalized authorization fields are needed, as only authenticated users may create documents.",
+          "params": [
+            {
+              "name": "inquiryId",
+              "description": "Unique identifier for the inquiry."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/company_profile/{companyProfileId}",
         "definition": {
           "entityName": "CompanyProfile",
           "schema": {
             "$ref": "#/backend/entities/CompanyProfile"
           },
-          "description": "Stores company profile information. Publicly accessible for read operations. companyProfileId represents the unique ID for the profile.",
+          "description": "Stores company profile details. No denormalized authorization fields are needed for public read access.",
           "params": [
             {
               "name": "companyProfileId",
@@ -120,8 +209,24 @@
             }
           ]
         }
+      },
+      {
+        "path": "/quality_compliance/{qualityComplianceId}",
+        "definition": {
+          "entityName": "QualityCompliance",
+          "schema": {
+            "$ref": "#/backend/entities/QualityCompliance"
+          },
+          "description": "Stores quality and compliance information. No denormalized authorization fields needed for public read access.",
+          "params": [
+            {
+              "name": "qualityComplianceId",
+              "description": "Unique identifier for the quality and compliance information."
+            }
+          ]
+        }
       }
     ],
-    "reasoning": "The Firestore structure is designed to support the MSS Group BD application, focusing on products and company profiles. It emphasizes security, scalability, and ease of debugging. Authorization Independence is achieved by avoiding hierarchical `get()` calls in security rules. Each top-level collection serves a distinct purpose, simplifying security rule definition. Segregation is used to separate different types of data into different collections based on their distinct security needs. Products and company profiles are designed for public read access."
+    "reasoning": "The Firestore structure is designed to store product information, company details, and inquiries submitted through the contact form. This structure prioritizes simplicity and ease of management while adhering to the principles of Authorization Independence (though authentication is limited to anonymous and password for now), Clarity of Intent, and Rules are Not Filters.\n\n*   `/products`: Stores product information.\n*   `/company_profile`: Stores company profile details.\n*   `/quality_compliance`: Stores quality and compliance information.\n*   `/inquiries`: Stores contact form submissions (inquiries).\n\n**Authorization Independence:** Currently, the structure does not explicitly enforce granular authorization rules beyond authentication. If more complex access control is required in the future (e.g., restricting access to product details based on user roles or company partnerships), relevant authorization data (e.g., a `members` map or `ownerId`) will be added to the documents to eliminate the need for `get()` calls in security rules.\n\n**QAPs (Rules are not Filters):** The structure uses structural segregation by storing different types of data in separate collections, enforcing a homogeneous security posture within each collection. The `/inquiries` collection can be secured such that only authenticated users can create inquiries. The list operation on `/products` can be public, as sensitive data should not be stored in the products collection."
   }
 }
