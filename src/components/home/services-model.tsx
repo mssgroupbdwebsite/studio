@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
@@ -58,7 +57,13 @@ export function ServicesModel() {
             <motion.div key={index} variants={fadeUp} whileHover={{ y: -8 }}>
               <Card className="overflow-hidden text-center shadow-lg hover:shadow-2xl transition-shadow group border-2 border-transparent hover:border-primary/50 h-full bg-background/50 backdrop-blur-sm">
                   <div className="relative h-56 w-full">
-                    <Image src={model.imageUrl} alt={model.title} fill className="object-cover"/>
+                    <Image 
+                      src={model.imageUrl} 
+                      alt={model.title} 
+                      fill 
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
                   </div>
                   <CardHeader className="items-center">
                       <div className="mb-6 bg-primary/10 p-4 rounded-full group-hover:scale-110 transition-transform duration-300">

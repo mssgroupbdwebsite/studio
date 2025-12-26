@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -7,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Calendar, User } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { type BlogPost } from '@/lib/blogs';
+import { getBlogPosts, type BlogPost } from '@/lib/blogs';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -75,14 +74,25 @@ function PostSkeleton() {
     )
 }
 
-export function BlogOverview({ posts }: { posts: BlogPost[] }) {
+export function BlogOverview() {
+    const [posts, setPosts] = useState<BlogPost[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (posts) {
-            setLoading(false);
-        }
-    }, [posts]);
+        const fetchPosts = async () => {
+            try {
+                const allPosts = await getBlogPosts();
+                const visiblePosts = allPosts.filter(p => !p.hidden).slice(0, 3);
+                setPosts(visiblePosts);
+            } catch (error) {
+                console.error("Failed to fetch blog posts:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPosts();
+    }, []);
 
   return (
     <motion.section
@@ -124,7 +134,7 @@ export function BlogOverview({ posts }: { posts: BlogPost[] }) {
             )}
         </motion.div>
         
-        {posts.length > 0 && (
+        {posts.length > 0 && !loading && (
              <motion.div variants={fadeUp} className="mt-16 text-center">
                 <Button asChild size="lg" variant="outline">
                     <Link href="/blog">

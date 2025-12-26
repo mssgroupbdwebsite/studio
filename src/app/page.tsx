@@ -1,4 +1,3 @@
-
 import { Hero } from '@/components/home/hero';
 import { TrustIndicators } from '@/components/home/trust-indicators';
 import { AboutOverview } from '@/components/home/about-overview';
@@ -10,14 +9,8 @@ import { QualityOverview } from '@/components/home/quality-overview';
 import { Sustainability } from '@/components/home/sustainability';
 import { FinalCta } from '@/components/home/final-cta';
 import { BlogOverview } from '@/components/home/blog-overview';
-import { getBlogPosts, type BlogPost } from '@/lib/blogs';
 
-export const revalidate = 0;
-
-export default async function Home() {
-  const allPosts = await getBlogPosts();
-  const posts = allPosts.filter(p => !p.hidden).slice(0, 3);
-
+export default function Home() {
   return (
     <div className="flex flex-col">
       <Hero />
@@ -29,7 +22,7 @@ export default async function Home() {
       <Capabilities />
       <QualityOverview />
       <Sustainability />
-      <BlogOverview posts={posts} />
+      <BlogOverview />
       <FinalCta />
     </div>
   );
