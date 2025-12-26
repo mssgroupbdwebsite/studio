@@ -3,6 +3,8 @@ import { getProducts } from '@/lib/products-data';
 import { ProductsPageClient } from './_components/products-page-client';
 import type { ProductWithImage } from './actions';
 
+export const revalidate = 0;
+
 export default async function AdminProductsPage() {
   const products: ProductWithImage[] = await getProducts();
 

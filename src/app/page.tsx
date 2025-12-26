@@ -12,6 +12,8 @@ import { FinalCta } from '@/components/home/final-cta';
 import { BlogOverview } from '@/components/home/blog-overview';
 import { getBlogPosts, type BlogPost } from '@/lib/blogs';
 
+export const revalidate = 0;
+
 export default async function Home() {
   const allPosts = await getBlogPosts();
   const posts = allPosts.filter(p => !p.hidden).slice(0, 3);
