@@ -1,6 +1,9 @@
 
-import fs from 'fs/promises';
-import path from 'path';
+'use server';
+
+import { getAdminServices } from '@/firebase/server-init';
+import { revalidatePath } from 'next/cache';
+import type { FieldValue } from 'firebase-admin/firestore';
 
 export interface Inquiry {
   id: string;
@@ -19,43 +22,22 @@ export interface PaginatedInquiries {
     totalPages: number;
 }
 
-const dataFilePath = path.join(process.cwd(), 'data', 'inquiries.json');
-
-// Ensure the data directory and file exist
-async function ensureFileExists() {
-    try {
-        await fs.access(dataFilePath);
-    } catch {
-        try {
-            await fs.mkdir(path.dirname(dataFilePath), { recursive: true });
-            await fs.writeFile(dataFilePath, JSON.stringify([]), 'utf-8');
-        } catch (error) {
-            console.error("Could not create inquiries data file:", error);
-        }
-    }
-}
-
-async function readAllInquiries(): Promise<Inquiry[]> {
-    await ensureFileExists();
-    try {
-        const fileContent = await fs.readFile(dataFilePath, 'utf-8');
-        const inquiries = JSON.parse(fileContent) as Inquiry[];
-        // Sort by most recent first
-        return inquiries.sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime());
-    } catch (error) {
-        console.error("Error reading inquiries:", error);
-        return [];
-    }
-}
+const { firestore } = getAdminServices();
+const inquiriesCollection = firestore.collection('inquiries');
 
 
 export async function getInquiries({ page = 1, limit = 10 } : { page: number, limit: number }): Promise<PaginatedInquiries> {
-    const allInquiries = await readAllInquiries();
-    const total = allInquiries.length;
+    const inquiriesRef = inquiriesCollection.orderBy('submittedAt', 'desc');
+    const totalSnapshot = await inquiriesRef.count().get();
+    const total = totalSnapshot.data().count;
     const totalPages = Math.ceil(total / limit);
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
-    const inquiries = allInquiries.slice(startIndex, endIndex);
+
+    const snapshot = await inquiriesRef.limit(limit).offset((page - 1) * limit).get();
+    
+    const inquiries: Inquiry[] = [];
+    snapshot.forEach(doc => {
+        inquiries.push({ id: doc.id, ...(doc.data() as Omit<Inquiry, 'id'>) });
+    });
 
     return {
         inquiries,
@@ -65,18 +47,12 @@ export async function getInquiries({ page = 1, limit = 10 } : { page: number, li
     };
 }
 
-export async function saveInquiry(inquiry: Inquiry): Promise<void> {
-    await ensureFileExists();
-    const inquiries = await readAllInquiries();
-    inquiries.unshift(inquiry); // Add to the beginning to maintain sort order
-    await fs.writeFile(dataFilePath, JSON.stringify(inquiries, null, 2), 'utf-8');
+export async function saveInquiry(inquiry: Omit<Inquiry, 'id'>): Promise<void> {
+    await inquiriesCollection.add(inquiry);
+    revalidatePath('/admin/inquiries');
 }
 
 export async function deleteInquiry(inquiryId: string): Promise<void> {
-    await ensureFileExists();
-    let inquiries = await readAllInquiries();
-    inquiries = inquiries.filter(inq => inq.id !== inquiryId);
-    // Re-sort after filtering before writing
-    const sortedInquiries = inquiries.sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime());
-    await fs.writeFile(dataFilePath, JSON.stringify(sortedInquiries, null, 2), 'utf-8');
+    await inquiriesCollection.doc(inquiryId).delete();
+    revalidatePath('/admin/inquiries');
 }

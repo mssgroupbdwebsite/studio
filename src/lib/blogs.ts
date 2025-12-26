@@ -1,8 +1,9 @@
 
 'use server';
 
-import fs from 'fs/promises';
-import path from 'path';
+import { getAdminServices } from '@/firebase/server-init';
+import { revalidatePath } from 'next/cache';
+import type { FieldValue } from 'firebase-admin/firestore';
 
 export interface BlogPost {
   id: string;
@@ -15,87 +16,91 @@ export interface BlogPost {
   hidden?: boolean;
 }
 
-const dataFilePath = path.join(process.cwd(), 'data', 'blogs.json');
-
-async function readPostsFromFile(): Promise<BlogPost[]> {
-    try {
-        await fs.access(dataFilePath);
-        const fileContent = await fs.readFile(dataFilePath, 'utf-8');
-        return JSON.parse(fileContent) as BlogPost[];
-    } catch {
-        await fs.writeFile(dataFilePath, JSON.stringify([], null, 2), 'utf-8');
-        return [];
-    }
-}
-
-async function writePostsToFile(posts: BlogPost[]): Promise<void> {
-    const sortedPosts = posts.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
-    await fs.writeFile(dataFilePath, JSON.stringify(sortedPosts, null, 2), 'utf-8');
-}
+const { firestore } = getAdminServices();
+const blogsCollection = firestore.collection('blogs');
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
-    const posts = await readPostsFromFile();
+    const snapshot = await blogsCollection.orderBy('publishedAt', 'desc').get();
+    if (snapshot.empty) {
+        return [];
+    }
+    const posts: BlogPost[] = [];
+    snapshot.forEach(doc => {
+        posts.push({ id: doc.id, ...(doc.data() as Omit<BlogPost, 'id'>) });
+    });
     return posts;
 };
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | undefined> {
-    const posts = await readPostsFromFile();
-    return posts.find(p => p.slug === slug);
+    const snapshot = await blogsCollection.where('slug', '==', slug).limit(1).get();
+    if (snapshot.empty) {
+        return undefined;
+    }
+    const doc = snapshot.docs[0];
+    return { id: doc.id, ...(doc.data() as Omit<BlogPost, 'id'>) };
 }
 
+function createSlug(title: string, id: string) {
+    const slugBase = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+    return `${slugBase}-${id.slice(0, 4)}`;
+}
 
 export async function addPostToFile(postData: Omit<BlogPost, 'id' | 'slug'>): Promise<BlogPost> {
-    const posts = await readPostsFromFile();
-    const newId = `blog_${Date.now()}`;
-    const slug = postData.title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+    const docRef = blogsCollection.doc();
+    const slug = createSlug(postData.title, docRef.id);
     
-    const newPost: BlogPost = {
+    const newPost: Omit<BlogPost, 'id'> = {
         ...postData,
-        id: newId,
-        slug: `${slug}-${newId.slice(-4)}`,
+        slug: slug,
     };
+    
+    await docRef.set(newPost);
+    
+    revalidatePath('/admin/blogs');
+    revalidatePath('/blog');
 
-    const updatedPosts = [...posts, newPost];
-    await writePostsToFile(updatedPosts);
-    return newPost;
+    return { ...newPost, id: docRef.id };
 }
 
 export async function updatePostInFile(postId: string, updateData: Partial<Omit<BlogPost, 'id' | 'slug'>>): Promise<BlogPost | null> {
-    const posts = await readPostsFromFile();
-    const postIndex = posts.findIndex(p => p.id === postId);
-
-    if (postIndex === -1) {
+    const docRef = blogsCollection.doc(postId);
+    const doc = await docRef.get();
+    if (!doc.exists) {
         return null;
     }
 
-    const currentPost = posts[postIndex];
-    
-    const updatedPostData = {
-        ...currentPost,
-        ...updateData
-    };
-    
+    const currentData = doc.data() as BlogPost;
+    const newData = { ...updateData };
+
     // If title changes, update slug
-    if (updateData.title && updateData.title !== currentPost.title) {
-        const newSlug = updateData.title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
-        updatedPostData.slug = `${newSlug}-${postId.slice(-4)}`;
+    if (updateData.title && updateData.title !== currentData.title) {
+        (newData as Partial<BlogPost>).slug = createSlug(updateData.title, postId);
+    }
+    
+    await docRef.update(newData);
+
+    revalidatePath('/admin/blogs');
+    revalidatePath('/blog');
+    if ((newData as Partial<BlogPost>).slug) {
+        revalidatePath(`/blog/${(newData as Partial<BlogPost>).slug}`);
+    }
+    if (currentData.slug) {
+         revalidatePath(`/blog/${currentData.slug}`);
     }
 
-
-    posts[postIndex] = updatedPostData;
-
-    await writePostsToFile(posts);
-    return updatedPostData;
+    const updatedDoc = await docRef.get();
+    return { id: updatedDoc.id, ...(updatedDoc.data() as Omit<BlogPost, 'id'>) };
 }
 
 export async function deletePostFromFile(postId: string): Promise<boolean> {
-    let posts = await readPostsFromFile();
-    const initialLength = posts.length;
-    posts = posts.filter(p => p.id !== postId);
-
-    if (posts.length < initialLength) {
-        await writePostsToFile(posts);
-        return true;
+    const docRef = blogsCollection.doc(postId);
+    const doc = await docRef.get();
+    if (!doc.exists) {
+        return false;
     }
-    return false;
+
+    await docRef.delete();
+    revalidatePath('/admin/blogs');
+    revalidatePath('/blog');
+    return true;
 }

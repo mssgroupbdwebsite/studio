@@ -1,14 +1,22 @@
 
 'use server';
 
-import { saveInquiry, Inquiry } from '@/lib/inquiries';
+import { saveInquiry } from '@/lib/inquiries';
 import { revalidatePath } from 'next/cache';
 
-export async function submitInquiry(formData: Omit<Inquiry, 'id' | 'submittedAt'>) {
+// The Inquiry type needs to be defined for the form data
+interface InquiryFormData {
+  name: string;
+  email: string;
+  company?: string;
+  subject: string;
+  message: string;
+}
+
+export async function submitInquiry(formData: InquiryFormData) {
     try {
-        const newInquiry: Inquiry = {
+        const newInquiry = {
             ...formData,
-            id: `inq_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
             submittedAt: new Date().toISOString(),
         };
 

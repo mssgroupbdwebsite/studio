@@ -11,7 +11,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from "@/hooks/use-toast"
 import { motion } from 'framer-motion';
 import { submitInquiry } from './actions';
-import type { Inquiry } from '@/lib/inquiries';
+
+// The Inquiry type needs to be defined for the form data
+interface InquiryFormData {
+  name: string;
+  email: string;
+  company?: string;
+  subject: string;
+  message: string;
+}
 
 const contactInfo = [
     {
@@ -41,7 +49,7 @@ const stagger = {
 
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState<Omit<Inquiry, 'id' | 'submittedAt'>>({
+  const [formData, setFormData] = useState<InquiryFormData>({
     name: '',
     email: '',
     company: '',
