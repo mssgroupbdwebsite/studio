@@ -24,24 +24,16 @@ const { firestore: db } = getAdminServices();
 const inquiriesCollection = db.collection('inquiries');
 
 export async function getInquiries({ page = 1, limit = 10 } : { page: number, limit: number }): Promise<PaginatedInquiries> {
-    const inquiriesRef = inquiriesCollection;
-    const countSnapshot = await inquiriesRef.count().get();
-    const total = countSnapshot.data().count;
-    const totalPages = Math.ceil(total / limit);
+    // Fetch all inquiries and paginate in memory to avoid count() issues
+    const snapshot = await inquiriesCollection.orderBy('submittedAt', 'desc').get();
+    const allInquiries = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Inquiry));
 
-    let query: Query = inquiriesRef.orderBy('submittedAt', 'desc');
-    
-    if (page > 1) {
-        const lastVisibleSnapshot = await inquiriesRef.orderBy('submittedAt', 'desc').limit((page - 1) * limit).get();
-        const lastVisible = lastVisibleSnapshot.docs[lastVisibleSnapshot.docs.length - 1];
-        if (lastVisible) {
-            query = query.startAfter(lastVisible);
-        }
-    }
-    
-    const snapshot = await query.limit(limit).get();
-    const paginatedInquiries = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Inquiry));
-    
+    const total = allInquiries.length;
+    const totalPages = Math.ceil(total / limit);
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const paginatedInquiries = allInquiries.slice(startIndex, endIndex);
+
     return {
         inquiries: paginatedInquiries,
         total,

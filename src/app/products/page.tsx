@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: `Explore our extensive product catalog, including knitwear, woven, denim, and sweater for all segments. Sourced via our manufacturer and trading partner network.`,
 };
 
-export const revalidate = 0; // Revalidate on every request
+export const revalidate = 300; // Revalidate every 5 minutes
 
 export default async function ProductsPage() {
   const products = await getProducts();

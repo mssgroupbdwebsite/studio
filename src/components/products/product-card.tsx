@@ -15,6 +15,15 @@ const cardVariants = {
 };
 
 export function ProductCard({ product }: ProductCardProps) {
+  // Validate imageUrl - use fallback if invalid or corrupted
+  const isValidImageUrl = product.imageUrl &&
+    product.imageUrl.startsWith('http') &&
+    !product.imageUrl.includes('rules_version');
+
+  const imageUrl = isValidImageUrl
+    ? product.imageUrl
+    : 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=600&fit=crop'; // Fallback image
+
   return (
     <motion.div
       variants={cardVariants}
@@ -32,32 +41,32 @@ export function ProductCard({ product }: ProductCardProps) {
       >
         <Card className="h-full overflow-hidden flex flex-col relative z-10 bg-card">
            <div
-            className={cn(
-              'absolute top-0 right-0 z-20 text-xs font-bold text-white uppercase tracking-widest px-4 py-2 shadow-lg',
-              product.sourcingModel === 'Manufacturer'
-                ? 'bg-primary'
-                : 'bg-accent text-accent-foreground',
-              'transform origin-top-right -rotate-0 rounded-bl-2xl'
-            )}
-           >
-            {product.sourcingModel}
-          </div>
+             className={cn(
+               'absolute top-0 right-0 z-20 text-xs font-bold text-white uppercase tracking-widest px-4 py-2 shadow-lg',
+               product.sourcingModel === 'Manufacturer'
+                 ? 'bg-primary'
+                 : 'bg-accent text-accent-foreground',
+               'transform origin-top-right -rotate-0 rounded-bl-2xl'
+             )}
+            >
+             {product.sourcingModel}
+           </div>
 
-          {/* Animated Glow Effect */}
-           <div className="absolute inset-[-2px] bg-gradient-to-r from-primary/50 to-accent/50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-lg animate-pulse" />
+           {/* Animated Glow Effect */}
+            <div className="absolute inset-[-2px] bg-gradient-to-r from-primary/50 to-accent/50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-lg animate-pulse" />
 
 
-          <CardContent className="p-0">
-            <div className="relative aspect-[3/4] w-full overflow-hidden">
-              <Image
-                src={product.imageUrl}
-                alt={product.description}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-110"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-              />
-            </div>
-          </CardContent>
+           <CardContent className="p-0">
+             <div className="relative aspect-[3/4] w-full overflow-hidden">
+               <Image
+                 src={imageUrl}
+                 alt={product.description}
+                 fill
+                 className="object-cover transition-transform duration-500 group-hover:scale-110"
+                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+               />
+             </div>
+           </CardContent>
           <CardFooter className="flex flex-col items-start gap-1 p-4 flex-grow bg-card/80 backdrop-blur-sm">
             <div className="flex-grow">
               <p className="text-sm font-semibold text-primary">

@@ -22,6 +22,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  // Validate imageUrl - use fallback if invalid or corrupted
+  const isValidImageUrl = post.imageUrl &&
+    post.imageUrl.startsWith('http') &&
+    !post.imageUrl.includes('rules_version');
+
+  const imageUrl = isValidImageUrl
+    ? post.imageUrl
+    : 'https://images.unsplash.com/photo-1486312338219-ce68e2c6f44d?w=1200&h=630&fit=crop'; // Fallback image
+
   return {
     title: `${post.title} - ${siteConfig.name}`,
     description: post.content.substring(0, 160),
@@ -33,7 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         authors: [post.author],
         images: [
             {
-                url: post.imageUrl,
+                url: imageUrl,
                 width: 1200,
                 height: 630,
                 alt: post.title,
@@ -44,7 +53,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         card: "summary_large_image",
         title: post.title,
         description: post.content.substring(0, 160),
-        images: [post.imageUrl],
+        images: [imageUrl],
     },
   };
 }
@@ -57,7 +66,16 @@ export default async function BlogPostPage({ params }: Props) {
   if (!post || post.hidden) {
     notFound();
   }
-  
+
+  // Validate imageUrl - use fallback if invalid or corrupted
+  const isValidImageUrl = post.imageUrl &&
+    post.imageUrl.startsWith('http') &&
+    !post.imageUrl.includes('rules_version');
+
+  const imageUrl = isValidImageUrl
+    ? post.imageUrl
+    : 'https://images.unsplash.com/photo-1486312338219-ce68e2c6f44d?w=1200&h=630&fit=crop'; // Fallback image
+
   const authorInitial = post.author.charAt(0).toUpperCase();
 
   return (
@@ -65,7 +83,7 @@ export default async function BlogPostPage({ params }: Props) {
         <header className="relative h-[60vh] flex items-end text-white py-12 md:py-24">
             <div className="absolute inset-0">
                 <Image
-                src={post.imageUrl}
+                src={imageUrl}
                 alt={post.title}
                 fill
                 className="object-cover"

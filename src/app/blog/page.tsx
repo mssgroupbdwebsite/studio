@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description: `Latest news, insights, and stories from the apparel industry by ${siteConfig.name}.`,
 };
 
-export const revalidate = 0;
+export const revalidate = 300; // Revalidate every 5 minutes
 
 export default async function BlogPage() {
   const allPosts = await getBlogPosts();
@@ -38,12 +38,22 @@ export default async function BlogPage() {
       <main className="container mx-auto px-4 md:px-6 py-16 md:py-24">
         {posts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts.map((post) => (
+            {posts.map((post) => {
+              // Validate imageUrl - use fallback if invalid or corrupted
+              const isValidImageUrl = post.imageUrl &&
+                post.imageUrl.startsWith('http') &&
+                !post.imageUrl.includes('rules_version');
+
+              const imageUrl = isValidImageUrl
+                ? post.imageUrl
+                : 'https://images.unsplash.com/photo-1486312338219-ce68e2c6f44d?w=800&h=400&fit=crop'; // Fallback image
+
+              return (
               <Card key={post.id} className="group overflow-hidden flex flex-col hover:shadow-2xl transition-all duration-300">
                  <Link href={`/blog/${post.slug}`} className="block relative">
                     <div className="aspect-video relative overflow-hidden">
                         <Image
-                            src={post.imageUrl}
+                            src={imageUrl}
                             alt={post.title}
                             fill
                             className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -73,7 +83,8 @@ export default async function BlogPage() {
                     </Button>
                 </CardFooter>
               </Card>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <div className="text-center py-24">
