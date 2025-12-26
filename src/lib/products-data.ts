@@ -1,67 +1,80 @@
 
 'use server';
 
-import { getAdminServices } from '@/firebase/server-init';
-import { revalidatePath } from 'next/cache';
+import { promises as fs } from 'fs';
+import path from 'path';
 import type { Product, ProductWithImage } from '@/app/admin/products/actions';
 
-const { firestore } = getAdminServices();
-const productsCollection = firestore.collection('products');
+const productsFilePath = path.join(process.cwd(), 'data', 'products.json');
+
+async function readProductsFromFile(): Promise<Product[]> {
+    try {
+        const fileContent = await fs.readFile(productsFilePath, 'utf-8');
+        return JSON.parse(fileContent);
+    } catch (error: any) {
+        if (error.code === 'ENOENT') {
+            return []; // File not found, return empty array
+        }
+        throw error;
+    }
+}
+
+async function writeProductsToFile(products: Product[]): Promise<void> {
+    await fs.writeFile(productsFilePath, JSON.stringify(products, null, 2), 'utf-8');
+}
 
 
 export async function getProducts(): Promise<ProductWithImage[]> {
-    const snapshot = await productsCollection.orderBy('name').get();
-    if (snapshot.empty) {
-        return [];
-    }
-    const products: ProductWithImage[] = [];
-    snapshot.forEach(doc => {
-        products.push({ id: doc.id, ...(doc.data() as Omit<Product, 'id'>) });
-    });
+    const products = await readProductsFromFile();
+    // In this file-based version, Product and ProductWithImage are the same.
     return products;
 };
 
 export async function addProductToFile(productData: Omit<Product, 'id'>): Promise<Product> {
-    const docRef = await productsCollection.add(productData);
-    revalidatePath('/admin/products');
-    revalidatePath('/products');
-    return { ...productData, id: docRef.id };
+    const products = await readProductsFromFile();
+    const newProduct: Product = {
+        ...productData,
+        id: `prod_${Date.now()}`
+    };
+    products.unshift(newProduct);
+    await writeProductsToFile(products);
+    return newProduct;
 }
 
 export async function updateProductInFile(productId: string, updateData: Partial<Omit<Product, 'id'>>): Promise<Product | null> {
-    const docRef = productsCollection.doc(productId);
-    const doc = await docRef.get();
-    if (!doc.exists) {
+    const products = await readProductsFromFile();
+    const productIndex = products.findIndex(p => p.id === productId);
+
+    if (productIndex === -1) {
         return null;
     }
-    await docRef.update(updateData);
-    revalidatePath('/admin/products');
-    revalidatePath('/products');
 
-    const updatedDoc = await docRef.get();
-    return { id: updatedDoc.id, ...(updatedDoc.data() as Omit<Product, 'id'>) };
+    const updatedProduct = { ...products[productIndex], ...updateData };
+    products[productIndex] = updatedProduct;
+    await writeProductsToFile(products);
+    return updatedProduct;
 }
 
 export async function deleteProductFromFile(productId: string): Promise<boolean> {
-    const docRef = productsCollection.doc(productId);
-    const doc = await docRef.get();
-    if (!doc.exists) {
-        return false;
+    let products = await readProductsFromFile();
+    const initialLength = products.length;
+    products = products.filter(p => p.id !== productId);
+
+    if (products.length < initialLength) {
+        await writeProductsToFile(products);
+        return true;
     }
-    await docRef.delete();
-    revalidatePath('/admin/products');
-    revalidatePath('/products');
-    return true;
+    return false;
 }
 
 export async function deleteMultipleProductsFromFile(productIds: string[]): Promise<boolean> {
-    const batch = firestore.batch();
-    productIds.forEach(id => {
-        const docRef = productsCollection.doc(id);
-        batch.delete(docRef);
-    });
-    await batch.commit();
-    revalidatePath('/admin/products');
-    revalidatePath('/products');
-    return true;
+     let products = await readProductsFromFile();
+    const initialLength = products.length;
+    products = products.filter(p => !productIds.includes(p.id));
+
+    if (products.length < initialLength) {
+        await writeProductsToFile(products);
+        return true;
+    }
+    return false;
 }

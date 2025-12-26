@@ -1,9 +1,8 @@
 
 'use server';
 
-import { getAdminServices } from '@/firebase/server-init';
-import { revalidatePath } from 'next/cache';
-import type { FieldValue } from 'firebase-admin/firestore';
+import { promises as fs } from 'fs';
+import path from 'path';
 
 export interface BlogPost {
   id: string;
@@ -12,99 +11,100 @@ export interface BlogPost {
   content: string;
   author: string;
   imageUrl: string;
-  publishedAt: string;
+  publishedAt: string; // ISO 8601 string
   hidden?: boolean;
 }
 
-const { firestore } = getAdminServices();
-const blogsCollection = firestore.collection('blogs');
+const blogsFilePath = path.join(process.cwd(), 'data', 'blogs.json');
+
+async function readPostsFromFile(): Promise<BlogPost[]> {
+    try {
+        const fileContent = await fs.readFile(blogsFilePath, 'utf-8');
+        return JSON.parse(fileContent);
+    } catch (error: any) {
+        if (error.code === 'ENOENT') {
+            return []; // File not found, which is fine, start with empty array
+        }
+        throw error; // For other errors, re-throw
+    }
+}
+
+async function writePostsToFile(posts: BlogPost[]): Promise<void> {
+    // Sort by date before writing to keep it consistent
+    posts.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+    await fs.writeFile(blogsFilePath, JSON.stringify(posts, null, 2), 'utf-8');
+}
+
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
-    const snapshot = await blogsCollection.orderBy('publishedAt', 'desc').get();
-    if (snapshot.empty) {
-        return [];
-    }
-    const posts: BlogPost[] = [];
-    snapshot.forEach(doc => {
-        const data = doc.data();
-        // Ensure the post has a slug before adding it to the list for static generation
-        if (data.slug) {
-            posts.push({ id: doc.id, ...(data as Omit<BlogPost, 'id'>) });
-        }
-    });
+    const posts = await readPostsFromFile();
     return posts;
 };
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | undefined> {
-    const snapshot = await blogsCollection.where('slug', '==', slug).limit(1).get();
-    if (snapshot.empty) {
-        return undefined;
-    }
-    const doc = snapshot.docs[0];
-    return { id: doc.id, ...(doc.data() as Omit<BlogPost, 'id'>) };
+    const posts = await readPostsFromFile();
+    return posts.find(post => post.slug === slug);
 }
 
-function createSlug(title: string, id: string) {
-    const slugBase = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
-    return `${slugBase}-${id.slice(0, 4)}`;
+
+function createSlug(title: string, uniqueSuffix: string) {
+    const slugBase = title.toLowerCase()
+        .replace(/\s+/g, '-') // Replace spaces with -
+        .replace(/[^\w-]+/g, '') // Remove all non-word chars
+        .replace(/--+/g, '-') // Replace multiple - with single -
+        .replace(/^-+/, '') // Trim - from start of text
+        .replace(/-+$/, ''); // Trim - from end of text
+    return `${slugBase}-${uniqueSuffix}`;
 }
+
 
 export async function addPostToFile(postData: Omit<BlogPost, 'id' | 'slug'>): Promise<BlogPost> {
-    const docRef = blogsCollection.doc();
-    const slug = createSlug(postData.title, docRef.id);
+    const posts = await readPostsFromFile();
+    const uniquePart = Date.now().toString().slice(-4) + Math.floor(Math.random() * 1000);
     
-    const newPost: Omit<BlogPost, 'id'> = {
+    const newPost: BlogPost = {
         ...postData,
-        slug: slug,
+        id: `blog_${Date.now()}`,
+        slug: createSlug(postData.title, uniquePart)
     };
-    
-    await docRef.set(newPost);
-    
-    revalidatePath('/admin/blogs');
-    revalidatePath('/blog');
 
-    return { ...newPost, id: docRef.id };
+    posts.push(newPost);
+    await writePostsToFile(posts);
+    return newPost;
 }
 
-export async function updatePostInFile(postId: string, updateData: Partial<Omit<BlogPost, 'id' | 'slug'>>): Promise<BlogPost | null> {
-    const docRef = blogsCollection.doc(postId);
-    const doc = await docRef.get();
-    if (!doc.exists) {
+export async function updatePostInFile(postId: string, updateData: Partial<Omit<BlogPost, 'id'>>): Promise<BlogPost | null> {
+     const posts = await readPostsFromFile();
+    const postIndex = posts.findIndex(p => p.id === postId);
+
+    if (postIndex === -1) {
         return null;
     }
 
-    const currentData = doc.data() as BlogPost;
-    const newData = { ...updateData };
-
-    // If title changes, update slug
-    if (updateData.title && updateData.title !== currentData.title) {
-        (newData as Partial<BlogPost>).slug = createSlug(updateData.title, postId);
+    const currentPost = posts[postIndex];
+    
+    // If the title is being updated, regenerate the slug
+    if (updateData.title && updateData.title !== currentPost.title) {
+        const uniquePart = postId.slice(-4);
+        updateData.slug = createSlug(updateData.title, uniquePart);
     }
     
-    await docRef.update(newData);
-
-    revalidatePath('/admin/blogs');
-    revalidatePath('/blog');
-    if ((newData as Partial<BlogPost>).slug) {
-        revalidatePath(`/blog/${(newData as Partial<BlogPost>).slug}`);
-    }
-    if (currentData.slug) {
-         revalidatePath(`/blog/${currentData.slug}`);
-    }
-
-    const updatedDoc = await docRef.get();
-    return { id: updatedDoc.id, ...(updatedDoc.data() as Omit<BlogPost, 'id'>) };
+    const updatedPost = { ...currentPost, ...updateData };
+    posts[postIndex] = updatedPost;
+    await writePostsToFile(posts);
+    return updatedPost;
 }
 
-export async function deletePostFromFile(postId: string): Promise<boolean> {
-    const docRef = blogsCollection.doc(postId);
-    const doc = await docRef.get();
-    if (!doc.exists) {
-        return false;
-    }
 
-    await docRef.delete();
-    revalidatePath('/admin/blogs');
-    revalidatePath('/blog');
-    return true;
+export async function deletePostFromFile(postId: string): Promise<boolean> {
+    let posts = await readPostsFromFile();
+    const initialLength = posts.length;
+    posts = posts.filter(p => p.id !== postId);
+    
+    if (posts.length < initialLength) {
+        await writePostsToFile(posts);
+        return true;
+    }
+    
+    return false;
 }
