@@ -1,7 +1,19 @@
 
 'use client';
 
-import { getInquiries, Inquiry } from '@/lib/inquiries';
+import { collection, getDocs, query, orderBy, limit, startAfter, type QueryDocumentSnapshot } from 'firebase/firestore';
+import { useFirebase } from '@/firebase';
+import type { DocumentData } from 'firebase/firestore';
+
+interface Inquiry {
+  id: string;
+  name: string;
+  email: string;
+  company?: string;
+  subject: string;
+  message: string;
+  submittedAt: string;
+}
 import { formatDistanceToNow } from 'date-fns';
 import { Mail, Briefcase, Clock, Inbox, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import { DeleteInquiryButton } from './delete-inquiry-button';
@@ -122,14 +134,34 @@ export default function AdminInquiriesPage() {
     const [totalPages, setTotalPages] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
+    const { firestore } = useFirebase();
 
     useEffect(() => {
         const fetchInquiries = async () => {
+            if (!firestore) return;
+
             setIsLoading(true);
             try {
-                const { inquiries: fetchedInquiries, totalPages: fetchedTotalPages } = await getInquiries({ page: currentPage, limit: 10 });
-                setInquiries(fetchedInquiries);
-                setTotalPages(fetchedTotalPages);
+                const inquiriesRef = collection(firestore, 'inquiries');
+
+                // Fetch all inquiries and sort by submittedAt desc
+                const q = query(inquiriesRef, orderBy('submittedAt', 'desc'));
+                const querySnapshot = await getDocs(q);
+
+                const allInquiries: Inquiry[] = [];
+                querySnapshot.forEach((doc) => {
+                    allInquiries.push({ id: doc.id, ...doc.data() } as Inquiry);
+                });
+
+                // Simple pagination
+                const total = allInquiries.length;
+                const totalPages = Math.ceil(total / 10);
+                const startIndex = (currentPage - 1) * 10;
+                const endIndex = startIndex + 10;
+                const paginatedInquiries = allInquiries.slice(startIndex, endIndex);
+
+                setInquiries(paginatedInquiries);
+                setTotalPages(totalPages);
             } catch (error) {
                 console.error("Failed to fetch inquiries:", error);
                 // Optionally, show a toast or error message to the user
@@ -139,7 +171,7 @@ export default function AdminInquiriesPage() {
         };
 
         fetchInquiries();
-    }, [currentPage]);
+    }, [currentPage, firestore]);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);

@@ -1,7 +1,8 @@
 
 'use client';
 
-import { getProducts } from '@/lib/products-data';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { useFirebase } from '@/firebase';
 import { ProductsPageClient } from './_components/products-page-client';
 import type { ProductWithImage } from './actions';
 import { useEffect, useState } from 'react';
@@ -10,12 +11,23 @@ import { Skeleton } from '@/components/ui/skeleton';
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<ProductWithImage[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { firestore } = useFirebase();
 
   useEffect(() => {
     const fetchProducts = async () => {
+      if (!firestore) return;
+
       setIsLoading(true);
       try {
-        const fetchedProducts = await getProducts();
+        const productsRef = collection(firestore, 'products');
+        const q = query(productsRef, orderBy('name', 'asc'));
+        const querySnapshot = await getDocs(q);
+
+        const fetchedProducts: ProductWithImage[] = [];
+        querySnapshot.forEach((doc) => {
+          fetchedProducts.push({ id: doc.id, ...doc.data() } as ProductWithImage);
+        });
+
         setProducts(fetchedProducts);
       } catch (error) {
         console.error("Failed to fetch products:", error);
@@ -24,7 +36,7 @@ export default function AdminProductsPage() {
       }
     };
     fetchProducts();
-  }, []);
+  }, [firestore]);
 
   if (isLoading) {
     return (

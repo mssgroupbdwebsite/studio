@@ -22,9 +22,13 @@ if (getApps().length === 0) {
   const appOptions: AppOptions = {
     projectId: firebaseConfig.projectId,
   };
-  
+
   if (serviceAccount) {
     appOptions.credential = cert(serviceAccount);
+  } else {
+    // For environments without service account (like Vercel), try to initialize without credentials
+    // This may work for read operations if Firestore rules allow it
+    console.warn('No FIREBASE_SERVICE_ACCOUNT provided, initializing without credentials. This may limit functionality.');
   }
 
   app = initializeApp(appOptions);

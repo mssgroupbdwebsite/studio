@@ -1,7 +1,8 @@
 
 'use client';
 
-import { getBlogPosts } from '@/lib/blogs';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { useFirebase } from '@/firebase';
 import { BlogsPageClient } from './_components/blogs-page-client';
 import { useEffect, useState } from 'react';
 import type { BlogPost } from './actions';
@@ -11,12 +12,23 @@ import { Skeleton } from '@/components/ui/skeleton';
 export default function AdminBlogsPage() {
     const [posts, setPosts] = useState<BlogPost[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const { firestore } = useFirebase();
 
     useEffect(() => {
         const fetchPosts = async () => {
+            if (!firestore) return;
+
             setIsLoading(true);
             try {
-                const fetchedPosts = await getBlogPosts();
+                const blogsRef = collection(firestore, 'blogs');
+                const q = query(blogsRef, orderBy('publishedAt', 'desc'));
+                const querySnapshot = await getDocs(q);
+
+                const fetchedPosts: BlogPost[] = [];
+                querySnapshot.forEach((doc) => {
+                    fetchedPosts.push({ id: doc.id, ...doc.data() } as BlogPost);
+                });
+
                 setPosts(fetchedPosts);
             } catch (error) {
                 console.error("Failed to fetch blog posts:", error);
@@ -25,7 +37,7 @@ export default function AdminBlogsPage() {
             }
         };
         fetchPosts();
-    }, []);
+    }, [firestore]);
 
     if (isLoading) {
        return (
