@@ -49,23 +49,23 @@ export function Hero() {
           sizes="100vw"
         />
       </motion.div>
-      <div className="relative z-10 container mx-auto px-4 md:px-6 mb-12">
+      <div className="relative z-10 container mx-auto px-4 md:px-6 mb-16 md:mb-20">
         <motion.div
           initial="hidden"
           animate="visible"
           variants={stagger}
-          className="max-w-2xl text-white"
+          className="max-w-2xl text-white ml-0 md:ml-8"
         >
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-start sm:items-center justify-start gap-4">
              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button asChild size="lg">
+                <Button asChild size="default">
                   <Link href="/contact">
                     Start a Project <ArrowRight />
                   </Link>
                 </Button>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button asChild variant="outline" size="lg" className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20">
+                <Button asChild variant="outline" size="default" className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20">
                   <Link href="/products">
                     Explore Products
                   </Link>
