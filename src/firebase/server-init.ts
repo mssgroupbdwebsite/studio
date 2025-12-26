@@ -1,5 +1,5 @@
 
-import { initializeApp, getApps, getApp, App, cert } from 'firebase-admin/app';
+import { initializeApp, getApps, getApp, App, cert, AppOptions } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
 import { firebaseConfig } from '@/firebase/config';
@@ -19,10 +19,15 @@ if (serviceAccountString) {
 
 // Ensure the app is initialized only once.
 if (getApps().length === 0) {
-  app = initializeApp({
-    credential: serviceAccount ? cert(serviceAccount) : undefined,
+  const appOptions: AppOptions = {
     projectId: firebaseConfig.projectId,
-  });
+  };
+  
+  if (serviceAccount) {
+    appOptions.credential = cert(serviceAccount);
+  }
+
+  app = initializeApp(appOptions);
 } else {
   app = getApp();
 }
