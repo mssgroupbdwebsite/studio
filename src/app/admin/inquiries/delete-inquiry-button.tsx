@@ -17,11 +17,9 @@ import { useToast } from "@/hooks/use-toast";
 import { Trash2 } from "lucide-react";
 import { useState, useTransition } from "react";
 import { deleteInquiry } from "./actions";
-import { useRouter } from "next/navigation";
 
 export function DeleteInquiryButton({ inquiryId }: { inquiryId: string }) {
   const { toast } = useToast();
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -34,7 +32,6 @@ export function DeleteInquiryButton({ inquiryId }: { inquiryId: string }) {
           description: "The inquiry has been successfully removed.",
         });
         setOpen(false);
-        router.refresh(); // Refresh the page to reflect the deletion
       } else {
         toast({
           variant: "destructive",
@@ -62,8 +59,8 @@ export function DeleteInquiryButton({ inquiryId }: { inquiryId: string }) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
-          <AlertDialogAction 
-            onClick={handleDelete} 
+          <AlertDialogAction
+            onClick={handleDelete}
             className="bg-destructive hover:bg-destructive/90"
             disabled={isPending}
           >
