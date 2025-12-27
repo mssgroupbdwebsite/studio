@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { addProduct, updateProduct, ProductFormValues } from "../actions";
+import { addProduct, updateProduct, ProductFormValues, productSchema } from "../actions";
 import { productCategories, productSegments } from "@/config/products";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
@@ -29,16 +29,6 @@ import { Loader2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import type { ProductWithImage } from '../actions';
 import { useEffect } from "react";
-
-const productSchema = z.object({
-    id: z.string().optional(),
-    name: z.string().min(1, "Name is required"),
-    category: z.enum(productCategories),
-    segment: z.enum(productSegments),
-    sourcingModel: z.enum(['Manufacturer', 'Trading Partner']),
-    imageUrl: z.string().min(1, "Image is required").url("Must be a valid URL"),
-    description: z.string().min(1, "Description is required"),
-});
 
 interface ProductFormProps {
   product?: ProductWithImage;
@@ -54,9 +44,9 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
       ...product,
     } : {
       name: "",
-      category: "Knitwear",
-      segment: "Menswear",
-      sourcingModel: "Manufacturer",
+      category: "Knit" as const,
+      segment: "Menswear" as const,
+      sourcingModel: "Manufacturer" as const,
       imageUrl: "",
       description: "",
     },
@@ -74,9 +64,9 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
       // If we are in "add new" mode, reset to default empty values.
       form.reset({
         name: "",
-        category: "Knitwear",
-        segment: "Menswear",
-        sourcingModel: "Manufacturer",
+        category: "Knit" as const,
+        segment: "Menswear" as const,
+        sourcingModel: "Manufacturer" as const,
         imageUrl: "",
         description: "",
       });
@@ -95,7 +85,6 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
         description: `"${data.name}" has been saved.`,
       });
       onSuccess?.();
-      // Revalidate path is called in server action, router.refresh() will refetch data
       router.refresh();
     } else {
       toast({

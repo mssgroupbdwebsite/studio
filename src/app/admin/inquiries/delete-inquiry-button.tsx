@@ -16,10 +16,12 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Trash2 } from "lucide-react";
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { deleteInquiry } from "./actions";
 
 export function DeleteInquiryButton({ inquiryId }: { inquiryId: string }) {
   const { toast } = useToast();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -32,6 +34,7 @@ export function DeleteInquiryButton({ inquiryId }: { inquiryId: string }) {
           description: "The inquiry has been successfully removed.",
         });
         setOpen(false);
+        router.refresh();
       } else {
         toast({
           variant: "destructive",

@@ -25,7 +25,7 @@ export interface Product {
 // This type is used on the client, so it doesn't contain the full image object.
 export interface ProductWithImage extends Product {}
 
-const productSchema = z.object({
+export const productSchema = z.object({
     id: z.string().optional(),
     name: z.string().min(1, "Name is required"),
     category: z.enum(productCategories),
@@ -48,6 +48,7 @@ export async function addProduct(data: ProductFormValues) {
     const { firestore } = getAdminServices();
     await firestore.collection('products').add({ ...validation.data, hidden: false });
     revalidatePath('/products');
+    revalidatePath('/admin/products');
     return { success: true };
   } catch (e: any) {
     return { success: false, error: e.message || 'Failed to add product.' };
@@ -67,6 +68,7 @@ export async function updateProduct(data: ProductFormValues) {
         const { firestore } = getAdminServices();
         await firestore.collection('products').doc(id!).update(productData);
         revalidatePath('/products');
+        revalidatePath('/admin/products');
         return { success: true };
     } catch (e: any) {
         return { success: false, error: e.message || 'Failed to update product.' };
@@ -82,6 +84,7 @@ export async function toggleProductVisibility(productId: string, willBeHidden: b
         const { firestore } = getAdminServices();
         await firestore.collection('products').doc(productId).update({ hidden: willBeHidden });
         revalidatePath('/products');
+        revalidatePath('/admin/products');
         return { success: true };
     } catch (e: any) {
         return { success: false, error: e.message || 'Failed to update product visibility.' };
@@ -97,6 +100,7 @@ export async function deleteProduct(productId: string) {
         const { firestore } = getAdminServices();
         await firestore.collection('products').doc(productId).delete();
         revalidatePath('/products');
+        revalidatePath('/admin/products');
         return { success: true };
     } catch (e: any) {
         return { success: false, error: e.message || 'Failed to delete product.' };
@@ -117,6 +121,7 @@ export async function deleteSelectedProducts(productIds: string[]) {
         });
         await batch.commit();
         revalidatePath('/products');
+        revalidatePath('/admin/products');
         return { success: true };
     } catch (e: any) {
         return { success: false, error: e.message || 'Failed to delete products.' };
