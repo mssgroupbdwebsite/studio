@@ -3,7 +3,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Camera, Users, Sparkles, Star, Linkedin, Twitter } from 'lucide-react';
+import { Camera, Linkedin, Twitter, Facebook } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const mdDetails = {
@@ -12,8 +12,9 @@ const mdDetails = {
     imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/obmekpiozv9nwykamn8j',
     description: "A visionary leader with over two decades of experience in the apparel industry, A. al-Mamun founded MSS Group with a commitment to quality, innovation, and ethical manufacturing. His leadership drives the company's success and global expansion.",
     socials: [
-      { icon: <Linkedin className="h-5 w-5"/>, href: '#' },
-      { icon: <Twitter className="h-5 w-5"/>, href: '#' },
+      { icon: <Linkedin className="h-4 w-4"/>, href: '#' },
+      { icon: <Twitter className="h-4 w-4"/>, href: '#' },
+      { icon: <Facebook className="h-4 w-4" />, href: '#'},
     ]
 };
 
@@ -22,31 +23,31 @@ const teamMembers = [
         name: 'Orjon',
         role: 'Lead Designer',
         imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/tlf5jgxxdysraofyz5ir',
-        description: 'Orjon brings creative flair and a keen eye for trends to the team, leading the design department to create innovative and market-leading apparel.'
+        description: 'Orjon brings creative flair and a keen eye for trends to the team, leading the design department.'
     },
     {
         name: 'Jane Smith',
         role: 'Head of Production',
         imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/qhveuyuh3c5ercd73doy',
-        description: 'With a meticulous approach to manufacturing, Jane oversees all production lines, ensuring efficiency, quality, and on-time delivery.'
+        description: 'Jane oversees all production lines, ensuring efficiency, quality, and on-time delivery.'
     },
     {
         name: 'Emily White',
         role: 'Marketing Director',
         imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/jao5i9xzp8hs7mtselmh',
-        description: 'Emily drives the brand’s global presence, crafting marketing strategies that connect with audiences and build lasting partnerships.'
+        description: 'Emily drives the brand’s global presence, crafting marketing strategies that connect with audiences.'
     },
     {
         name: 'Michael Brown',
         role: 'Logistics Manager',
         imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/xxbdatzh6kgbypm2nftm',
-        description: 'Michael manages the complex global supply chain, ensuring that products move seamlessly from the factory floor to the client’s doorstep.'
+        description: 'Michael manages the complex global supply chain, ensuring seamless product movement.'
     },
     {
         name: 'Sarah Green',
         role: 'Quality Assurance Lead',
         imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/xbkjkmrtqbkf1yjuzz6o',
-        description: 'Sarah is the guardian of our quality promise, implementing rigorous testing and inspection protocols at every stage of production.'
+        description: 'Sarah is the guardian of our quality promise, implementing rigorous testing protocols.'
     },
 ];
 
@@ -68,107 +69,103 @@ const stagger = {
   visible: { transition: { staggerChildren: 0.1 } }
 };
 
+const memberPositions = [
+    { top: '0%', left: '50%', transform: 'translate(-50%, -50%)', isReversed: false },
+    { top: '25%', left: '95%', transform: 'translate(-95%, -25%)', isReversed: true },
+    { top: '75%', left: '95%', transform: 'translate(-95%, -75%)', isReversed: true },
+    { top: '100%', left: '50%', transform: 'translate(-50%, -100%)', isReversed: false },
+    { top: '75%', left: '5%', transform: 'translate(-5%, -75%)', isReversed: false },
+    { top: '25%', left: '5%', transform: 'translate(-5%, -25%)', isReversed: false },
+];
+
 export default function GalleryPageComponent() {
 
   return (
     <div className="bg-background text-foreground overflow-hidden">
       
       {/* Hero Section */}
-      <header className="py-24 md:py-32 bg-gray-900 text-white">
-        <div className="container mx-auto px-4 text-center">
+      <header className="py-24 md:py-32 bg-secondary/30 text-center">
+        <div className="container mx-auto px-4">
             <motion.div initial="hidden" animate="visible" variants={fadeUp}>
-                <div className="bg-primary inline-block px-8 py-4">
-                    <h1 className="text-4xl md:text-5xl font-bold tracking-wider text-primary-foreground">MEET OUR TEAM</h1>
-                </div>
-                <p className="mt-6 text-lg text-gray-400 max-w-2xl mx-auto">
+                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary font-headline">Meet Our Team</h1>
+                <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
                     The passionate, dedicated, and expert individuals who make MSS Group a leader in the apparel industry.
                 </p>
             </motion.div>
         </div>
       </header>
 
-      {/* MD Section */}
-       <section className="py-24 md:py-32 bg-gray-900">
-         <div className="container mx-auto px-4">
-            <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                variants={fadeUp}
-                className="grid md:grid-cols-2 gap-12 items-center"
+      {/* New Team Section */}
+      <section className="py-24 md:py-32">
+        <div className="container mx-auto px-4">
+          <div className="relative w-full aspect-square max-w-5xl mx-auto">
+             {/* Center Circle */}
+            <motion.div 
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[35%] h-[35%] rounded-full overflow-hidden"
+                initial={{ opacity: 0, scale: 0.5 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
             >
-                <div className="relative aspect-[4/5] max-w-md mx-auto w-full">
-                     <Image
-                        src={mdDetails.imageUrl}
-                        alt={`Portrait of ${mdDetails.name}`}
-                        fill
-                        className="object-cover object-top z-0 rounded-lg shadow-2xl"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                </div>
-                <div className="text-white">
-                    <h2 className="text-4xl font-bold text-primary font-headline">{mdDetails.name}</h2>
-                    <p className="text-xl text-gray-300 mt-1">{mdDetails.role}</p>
-                    <p className="mt-6 text-gray-400 leading-relaxed">{mdDetails.description}</p>
-                     <div className="mt-8 flex items-center gap-4">
-                        {mdDetails.socials.map((social, index) => (
-                           <a key={index} href={social.href} className="text-gray-400 hover:text-primary transition-colors">
-                                {social.icon}
-                           </a>
-                        ))}
-                    </div>
+                <Image src="https://picsum.photos/seed/office/600/600" alt="Meet the team background" fill className="object-cover" />
+                <div className="absolute inset-0 bg-primary/80 flex items-center justify-center">
+                    <h2 className="text-4xl font-bold text-primary-foreground text-center leading-tight">Meet the Team</h2>
                 </div>
             </motion.div>
-         </div>
-      </section>
 
-      {/* Team Section */}
-      <section className="py-24 md:py-32 bg-gray-900 relative">
-        <div className="container mx-auto px-4 relative z-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-24 gap-x-8">
-                 {teamMembers.map((member, index) => (
-                    <motion.div 
-                        key={member.name}
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.3 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                        className="flex flex-col items-center text-center text-white"
-                    >
-                        <div className="relative h-64 w-64 mb-[-2rem] z-10">
-                             <Image
-                                src={member.imageUrl}
-                                alt={`Portrait of ${member.name}`}
-                                fill
-                                className="object-cover object-top rounded-full shadow-2xl"
-                                sizes="256px"
-                            />
-                        </div>
-                        <Card className="bg-gray-800/50 backdrop-blur-sm pt-12 rounded-lg w-full">
-                            <CardContent className="pt-4">
-                                <div className="bg-primary text-primary-foreground inline-block px-4 py-1">
-                                    <h3 className="text-lg font-bold uppercase tracking-wider">{member.name}</h3>
+            {/* Team Members Orbit */}
+            {[mdDetails, ...teamMembers].map((member, index) => {
+                const position = memberPositions[index];
+                const alignmentClass = position.isReversed ? 'flex-row-reverse text-left' : 'text-right';
+                const textAlignClass = position.isReversed ? 'text-left' : 'text-right';
+
+                return (
+                     <motion.div 
+                        key={member.name} 
+                        className="absolute flex items-center gap-6 w-1/3"
+                        style={{ top: position.top, left: position.left, transform: position.transform }}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true, amount: 0.5 }}
+                        transition={{ duration: 0.6, delay: 0.2 + index * 0.1, ease: 'easeOut' }}
+                     >
+                        <div className={`flex items-center gap-6 ${alignmentClass}`}>
+                            <div className="flex-shrink-0 relative h-28 w-28 md:h-36 md:w-36">
+                                <div className="absolute inset-0 rounded-full border-4 border-primary/50" />
+                                 <Image
+                                    src={member.imageUrl}
+                                    alt={`Portrait of ${member.name}`}
+                                    fill
+                                    className="object-cover rounded-full p-1.5"
+                                    sizes="144px"
+                                />
+                            </div>
+                            <div className="flex-grow">
+                                <h3 className="text-xl font-bold font-headline">{member.name}</h3>
+                                <p className="text-primary font-semibold">{member.role}</p>
+                                <p className="text-xs text-muted-foreground mt-2">{member.description}</p>
+                                <div className={`flex gap-3 mt-3 ${position.isReversed ? 'justify-start' : 'justify-end'}`}>
+                                    {member.socials?.map((social, i) => (
+                                        <a key={i} href={social.href} className="flex items-center justify-center h-8 w-8 rounded-full bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground transition-colors">
+                                           {social.icon}
+                                        </a>
+                                    ))}
                                 </div>
-                                <p className="text-primary mt-3 font-semibold">{member.role}</p>
-                                <p className="mt-4 text-gray-400 text-sm leading-relaxed px-4">
-                                    {member.description}
-                                </p>
-                            </CardContent>
-                        </Card>
+                            </div>
+                        </div>
                     </motion.div>
-                ))}
-            </div>
+                )
+            })}
+          </div>
         </div>
       </section>
 
       {/* Gallery Carousel Section */}
-      <section className="py-24 md:py-32 bg-gray-900 relative">
+      <section className="py-24 md:py-32 bg-secondary/30 relative">
          <div className="container mx-auto px-4 relative">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center max-w-3xl mx-auto mb-16">
-                 <div className="bg-primary inline-block px-8 py-4">
-                    <h2 className="text-4xl font-bold font-headline flex items-center justify-center gap-4 text-primary-foreground"><Camera className="h-10 w-10" /> In the Moment</h2>
-                </div>
-                <p className="text-lg text-gray-400 mt-6">
+                <h2 className="text-4xl font-bold font-headline flex items-center justify-center gap-4 text-primary"><Camera className="h-10 w-10" /> In the Moment</h2>
+                <p className="text-lg text-muted-foreground mt-6">
                     A visual journey through our facilities, processes, and the moments that define us.
                 </p>
             </motion.div>
@@ -206,3 +203,5 @@ export default function GalleryPageComponent() {
     </div>
   );
 }
+
+    
