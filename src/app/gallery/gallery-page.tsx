@@ -116,20 +116,6 @@ export default function GalleryPageComponent() {
               <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
                 {mdDetails.description}
               </p>
-               <div className="mt-8 flex items-center gap-4">
-                 <p className="font-semibold">Follow:</p>
-                    {mdDetails.socials.map((social, i) => (
-                        <motion.a 
-                          key={i} 
-                          href={social.href} 
-                          className="flex items-center justify-center h-10 w-10 rounded-full bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                        >
-                           {social.icon}
-                        </motion.a>
-                    ))}
-                </div>
             </div>
           </motion.div>
         </div>
