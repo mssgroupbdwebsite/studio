@@ -5,6 +5,7 @@ import { Logo } from './logo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Send, Linkedin, Facebook, Instagram } from 'lucide-react';
+import { Badge } from '../ui/badge';
 
 const socialLinks = [
     { name: 'LinkedIn', icon: Linkedin, href: '#' },
@@ -96,7 +97,16 @@ export function Footer() {
       <div className="border-t bg-muted/50">
         <div className="container text-center py-6 text-sm text-muted-foreground">
             <p>&copy; 2025 {siteConfig.name}. All Rights Reserved.</p>
-            <p>Designed by orjon</p>
+             <p className="mt-2">
+                <a 
+                    href="https://www.facebook.com/mohibbulorjon" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-block px-3 py-1 text-xs bg-gray-200 dark:bg-gray-800 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300"
+                >
+                    Designed by orjon
+                </a>
+            </p>
         </div>
       </div>
     </footer>
