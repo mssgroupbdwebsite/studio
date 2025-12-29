@@ -4,7 +4,7 @@ import { siteConfig } from '@/config/site';
 import { Logo } from './logo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Send, Linkedin, Facebook, Instagram } from 'lucide-react';
+import { Send, Linkedin, Facebook, Instagram, Heart } from 'lucide-react';
 import { Badge } from '../ui/badge';
 
 const socialLinks = [
@@ -102,9 +102,9 @@ export function Footer() {
                     href="https://www.facebook.com/mohibbulorjon" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="inline-block px-3 py-1 text-xs bg-gray-200 dark:bg-gray-800 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300"
+                    className="group inline-flex items-center gap-1.5 text-xs text-muted-foreground/80 hover:text-primary transition-colors duration-300"
                 >
-                    Designed by orjon
+                    Designed with <Heart className="h-3 w-3 text-red-500 transition-transform group-hover:scale-125" /> by orjon
                 </a>
             </p>
         </div>
