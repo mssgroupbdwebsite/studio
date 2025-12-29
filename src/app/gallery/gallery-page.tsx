@@ -44,6 +44,16 @@ const teamMembers = [
         role: 'Quality Assurance Lead',
         imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/xbkjkmrtqbkf1yjuzz6o',
     },
+    {
+        name: 'Jessica Lee',
+        role: 'HR Manager',
+        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/mmaq1i5zfovbbyo1ajjg',
+    },
+    {
+        name: 'David Chen',
+        role: 'Finance Head',
+        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/giaug5xkvf2jpvqpqyuv',
+    },
 ];
 
 const galleryImages = [
@@ -133,7 +143,7 @@ export default function GalleryPageComponent() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
             variants={stagger}
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8"
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
           >
             {teamMembers.map((member) => (
               <motion.div
@@ -142,7 +152,7 @@ export default function GalleryPageComponent() {
                 className="group relative text-center"
               >
                 <motion.div 
-                    className="relative aspect-square rounded-full overflow-hidden shadow-lg mx-auto w-48 h-48"
+                    className="relative aspect-square rounded-full overflow-hidden shadow-lg mx-auto w-48 h-48 border-4 border-background group-hover:border-primary transition-all duration-300"
                     whileHover={{ scale: 1.05 }}
                     transition={{ type: 'spring', stiffness: 300 }}
                 >
@@ -150,10 +160,9 @@ export default function GalleryPageComponent() {
                     src={member.imageUrl}
                     alt={`Portrait of ${member.name}`}
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:grayscale"
+                    className="object-cover transition-transform duration-500"
                     sizes="200px"
                   />
-                   <div className="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300"/>
                 </motion.div>
                 <div className="mt-6">
                     <h3 className="text-xl font-bold font-headline">{member.name}</h3>
@@ -208,7 +217,5 @@ export default function GalleryPageComponent() {
     </div>
   );
 }
-
-    
 
     
