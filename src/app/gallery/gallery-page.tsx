@@ -9,7 +9,7 @@ import { Card, CardContent } from '@/components/ui/card';
 const mdDetails = {
     name: 'A. al-Mamun',
     role: 'Founder & CEO',
-    imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/adfmqkhlvoctbvjgwwin',
+    imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/obmekpiozv9nwykamn8j',
     description: "A visionary leader with over two decades of experience in the apparel industry, A. al-Mamun founded MSS Group with a commitment to quality, innovation, and ethical manufacturing. His leadership drives the company's success and global expansion.",
     socials: [
       { icon: <Linkedin className="h-5 w-5"/>, href: '#' },
