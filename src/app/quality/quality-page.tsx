@@ -78,7 +78,7 @@ export default function QualityPageComponent() {
                 <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
                      <div className="relative aspect-square md:aspect-[4/3.5] rounded-lg overflow-hidden group shadow-2xl">
                         <Image
-                        src="https://picsum.photos/seed/fabric-check/800/700"
+                        src="https://res.cloudinary.com/dkfxz5wgx/image/upload/svgwcyskvo68pviqwm3r"
                         alt="Hand inspecting fabric texture"
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -130,7 +130,7 @@ export default function QualityPageComponent() {
                 <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
                     <div className="md:order-last relative aspect-square md:aspect-[4/3.5] rounded-lg overflow-hidden group shadow-2xl">
                         <Image
-                        src="https://picsum.photos/seed/factory-workers/800/700"
+                        src="https://res.cloudinary.com/dkfxz5wgx/image/upload/wuens18szp1qwaenf6xe"
                         alt="Happy and safe factory workers"
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -170,7 +170,7 @@ export default function QualityPageComponent() {
                 <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
                      <div className="relative aspect-square md:aspect-[4/3.5] rounded-lg overflow-hidden group shadow-2xl">
                         <Image
-                        src="https://picsum.photos/seed/sustainable-materials/800/700"
+                        src="https://res.cloudinary.com/dkfxz5wgx/image/upload/g2lomecltv1darlsfyum"
                         alt="Rolls of sustainable, eco-friendly fabric"
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
