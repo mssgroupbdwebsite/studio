@@ -9,7 +9,7 @@ const teamMembers = [
     {
         name: 'A. al-Mamun',
         role: 'Founder & CEO',
-        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/vgw7r8utrkxzwmsm8hy3',
+        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/adfmqkhlvoctbvjgwwin',
         color: 'hsla(221, 83%, 53%, 0.4)',
     },
     {
