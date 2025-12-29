@@ -95,18 +95,16 @@ export function Footer() {
       
        {/* Sub-footer */}
       <div className="border-t bg-muted/50">
-        <div className="container text-center py-6 text-sm text-muted-foreground">
+        <div className="container flex flex-col sm:flex-row items-center justify-between py-4 text-sm text-muted-foreground gap-4">
             <p>&copy; 2025 {siteConfig.name}. All Rights Reserved.</p>
-             <p className="mt-2">
-                <a 
-                    href="https://www.facebook.com/mohibbulorjon" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-1.5 text-xs text-muted-foreground/80 hover:text-primary transition-colors duration-300"
-                >
-                    Designed with <Heart className="h-3 w-3 text-red-500 transition-transform group-hover:scale-125" /> by orjon
-                </a>
-            </p>
+            <a 
+                href="https://www.facebook.com/mohibbulorjon" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-1.5 text-xs text-muted-foreground/80 hover:text-primary transition-colors duration-300"
+            >
+                Designed with <Heart className="h-3 w-3 text-red-500 transition-transform group-hover:scale-125" /> by ORJON
+            </a>
         </div>
       </div>
     </footer>
