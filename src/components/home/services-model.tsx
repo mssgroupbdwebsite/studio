@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
@@ -16,7 +17,7 @@ const serviceModels = [
     icon: <GitFork className="h-10 w-10 text-primary" />,
     title: 'Flexible Sourcing Agent',
     description: 'Utilize our extensive network of trusted partner factories. We act as your on-the-ground sourcing team, finding the perfect match for your specific product needs, whether it\'s a niche item or a smaller batch.',
-    imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/ofefus6e0ikrdfh4682x'
+    imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/gikc1dhxqj77q8zzp43b'
   },
 ];
 
