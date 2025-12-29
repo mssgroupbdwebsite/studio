@@ -9,7 +9,7 @@ export const siteConfig = {
     { title: "Home", href: "/" },
     { title: "Products", href: "/products" },
     { title: "Company", href: "/about" },
-    { title: "Other", href: "/gallery" },
+    { title: "Our Team", href: "/gallery" },
     { title: "Quality", href: "/quality" },
     { title: "Sustainability", href: "/sustainability" },
     { title: "Blog", href: "/blog" },
