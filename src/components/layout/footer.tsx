@@ -104,7 +104,7 @@ export function Footer() {
                     rel="noopener noreferrer"
                     className="group inline-flex items-center gap-1.5 text-xs text-muted-foreground/80 hover:text-primary transition-colors duration-300"
                 >
-                    Designed with <Heart className="h-3 w-3 text-red-500 transition-transform group-hover:scale-125" /> by ORJON
+                    Developed by ORJON
                 </a>
             </div>
         </div>
