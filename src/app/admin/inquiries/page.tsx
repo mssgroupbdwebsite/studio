@@ -1,18 +1,18 @@
 
 'use client';
 
-import { collection, getDocs, query, orderBy, limit, startAfter, type QueryDocumentSnapshot } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy, type QueryDocumentSnapshot } from 'firebase/firestore';
 import { useFirebase } from '@/firebase';
 import type { DocumentData } from 'firebase/firestore';
 
 interface Inquiry {
-  id: string;
-  name: string;
-  email: string;
-  company?: string;
-  subject: string;
-  message: string;
-  submittedAt: string;
+   id: string;
+   name: string;
+   email: string;
+   company?: string;
+   subject: string;
+   message: string;
+   submittedAt: string;
 }
 import { formatDistanceToNow } from 'date-fns';
 import { Mail, Briefcase, Clock, Inbox, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -36,9 +36,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
 
 function InquiryCard({ inquiry }: { inquiry: Inquiry }) {
     const initial = inquiry.name.charAt(0).toUpperCase();
@@ -108,31 +106,8 @@ function InquiryCard({ inquiry }: { inquiry: Inquiry }) {
     )
 }
 
-function PaginationControls({ currentPage, totalPages, onPageChange }: { currentPage: number, totalPages: number, onPageChange: (page:number) => void }) {
-    const hasPrev = currentPage > 1;
-    const hasNext = currentPage < totalPages;
-
-    return (
-        <div className="flex items-center justify-center gap-6 mt-8">
-            <Button variant="outline" disabled={!hasPrev} onClick={() => onPageChange(currentPage - 1)}>
-                <ChevronLeft className="h-4 w-4 mr-2" />
-                Previous
-            </Button>
-            <span className="text-sm font-medium text-muted-foreground">
-                Page {currentPage} of {totalPages}
-            </span>
-            <Button variant="outline" disabled={!hasNext} onClick={() => onPageChange(currentPage + 1)}>
-                Next
-                <ChevronRight className="h-4 w-4 ml-2" />
-            </Button>
-        </div>
-    )
-}
-
 export default function AdminInquiriesPage() {
     const [inquiries, setInquiries] = useState<Inquiry[]>([]);
-    const [totalPages, setTotalPages] = useState(1);
-    const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
     const { firestore } = useFirebase();
 
@@ -153,15 +128,7 @@ export default function AdminInquiriesPage() {
                     allInquiries.push({ id: doc.id, ...doc.data() } as Inquiry);
                 });
 
-                // Simple pagination
-                const total = allInquiries.length;
-                const totalPages = Math.ceil(total / 10);
-                const startIndex = (currentPage - 1) * 10;
-                const endIndex = startIndex + 10;
-                const paginatedInquiries = allInquiries.slice(startIndex, endIndex);
-
-                setInquiries(paginatedInquiries);
-                setTotalPages(totalPages);
+                setInquiries(allInquiries);
             } catch (error) {
                 console.error("Failed to fetch inquiries:", error);
                 // Optionally, show a toast or error message to the user
@@ -171,11 +138,7 @@ export default function AdminInquiriesPage() {
         };
 
         fetchInquiries();
-    }, [currentPage, firestore]);
-
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
-    };
+    }, [firestore]);
 
     return (
         <div className="relative min-h-full">
@@ -188,22 +151,15 @@ export default function AdminInquiriesPage() {
                 </div>
                 
                 {isLoading ? (
-                    <div className="space-y-4">
-                        <Skeleton className="h-24 w-full" />
-                        <Skeleton className="h-24 w-full" />
-                        <Skeleton className="h-24 w-full" />
+                    <div className="text-center py-24">
+                        <p>Loading inquiries...</p>
                     </div>
                 ) : inquiries.length > 0 ? (
-                    <>
-                        <div className="space-y-4">
-                            {inquiries.map((inquiry) => (
-                               <InquiryCard key={inquiry.id} inquiry={inquiry} />
-                            ))}
-                        </div>
-                        {totalPages > 1 && (
-                            <PaginationControls currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
-                        )}
-                    </>
+                    <div className="space-y-4">
+                        {inquiries.map((inquiry) => (
+                           <InquiryCard key={inquiry.id} inquiry={inquiry} />
+                        ))}
+                    </div>
                 ) : (
                     <div className="text-center py-24 border-2 border-dashed rounded-lg bg-card/50">
                         <Inbox className="mx-auto h-16 w-16 text-muted-foreground/50" strokeWidth={1}/>
