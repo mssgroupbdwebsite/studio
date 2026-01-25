@@ -182,7 +182,7 @@ export default function SustainabilityPageComponent() {
         </motion.section>
 
         {/* Process Section */}
-        <section ref={processRef} className="py-24 md:py-32 overflow-hidden">
+        <section ref={processRef} className="py-24 md:py-32 overflow-hidden relative">
             <div className="container mx-auto px-4">
                  <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center max-w-3xl mx-auto">
                     <span className="text-primary font-semibold uppercase tracking-wider font-headline">Our Process</span>

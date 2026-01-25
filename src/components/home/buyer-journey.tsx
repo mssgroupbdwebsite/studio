@@ -57,7 +57,7 @@ export function BuyerJourney() {
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
       variants={stagger}
-      className="bg-secondary/50"
+      className="bg-secondary/50 relative"
     >
       <div className="container mx-auto px-4 md:px-6 py-16 md:py-32">
         <motion.div variants={fadeUp} className="text-center max-w-3xl mx-auto">
