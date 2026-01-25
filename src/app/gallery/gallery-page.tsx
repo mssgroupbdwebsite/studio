@@ -20,11 +20,6 @@ const mdDetails = {
 
 const teamMembers = [
     {
-        name: 'Orjon',
-        role: 'Lead Designer',
-        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/tlf5jgxxdysraofyz5ir',
-    },
-    {
         name: 'Jane Smith',
         role: 'Head of Production',
         imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/qhveuyuh3c5ercd73doy',
@@ -43,11 +38,6 @@ const teamMembers = [
         name: 'Sarah Green',
         role: 'Quality Assurance Lead',
         imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/xbkjkmrtqbkf1yjuzz6o',
-    },
-    {
-        name: 'Jessica Lee',
-        role: 'HR Manager',
-        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/mmaq1i5zfovbbyo1ajjg',
     },
     {
         name: 'David Chen',
