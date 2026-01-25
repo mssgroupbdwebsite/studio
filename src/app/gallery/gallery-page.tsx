@@ -15,16 +15,17 @@ const mdDetails = {
 
 const teamMembers = [
 
-    {
-        name: 'MD Afsar Ali',
-        role: 'Director',
-        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/xbkjkmrtqbkf1yjuzz6o',
-    },
+
     {
       name: 'MD.Abul Hossain',
       role: 'Director',
       imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/a5wkcfngxpttcq4vmfrs',
   },
+        {
+        name: 'MD Afsar Ali',
+        role: 'Director',
+        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/xbkjkmrtqbkf1yjuzz6o',
+    },
   {
     name: 'MD.Anarul Islam',
     role: 'Manager Operation and Marketing',
