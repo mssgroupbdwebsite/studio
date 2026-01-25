@@ -39,6 +39,16 @@ const teamMembers = [
         role: 'Manager (QC)',
         imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/pg49canvtn1m5kmmycxb',
     },
+    {
+        name: 'MD.Hashaduzzaman',
+        role: 'Technical Manager',
+        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/fcubfhfx9ppvn8mq8twq',
+    },
+    {
+        name: 'Ayesha Akhter Akhi',
+        role: 'Quality Assurance (QA)',
+        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/jao5i9xzp8hs7mtselmh',
+    },
 ];
 
 const galleryImages = [
