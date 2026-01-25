@@ -15,11 +15,6 @@ const mdDetails = {
 
 const teamMembers = [
     {
-        name: 'Jane Smith',
-        role: 'Head of Production',
-        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/qhveuyuh3c5ercd73doy',
-    },
-    {
         name: 'Emily White',
         role: 'Marketing Director',
         imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/jao5i9xzp8hs7mtselmh',
@@ -198,4 +193,6 @@ export default function GalleryPageComponent() {
     </div>
   );
 }
+    
+
     
