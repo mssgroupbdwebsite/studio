@@ -33,7 +33,7 @@ const teamMembers = [
 },
     {
       name: 'Jahid Hasan Babu',
-      role: 'Genaral Manager',
+      role: 'Sourcing and Marketing Manager',
       imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/ortwmxkrseczvfwvj1os',
   },
 
