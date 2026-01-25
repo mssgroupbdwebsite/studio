@@ -7,10 +7,10 @@ import { Camera, Linkedin, Twitter, Facebook } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const mdDetails = {
-    name: 'A. al-Mamun',
+    name: 'MD. Maidul Islam',
     role: 'Founder & CEO',
     imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/obmekpiozv9nwykamn8j',
-    description: "A visionary leader with over two decades of experience in the apparel industry, A. al-Mamun founded MSS Group with a commitment to quality, innovation, and ethical manufacturing. His leadership drives the company's success and global expansion.",
+    description: "A visionary leader with over two decades of experience in the apparel industry, MD. Maidul Islam founded MSS Group with a commitment to quality, innovation, and ethical manufacturing. His leadership drives the company's success and global expansion.",
 };
 
 const teamMembers = [
@@ -183,5 +183,4 @@ export default function GalleryPageComponent() {
     </div>
   );
 }
-
     
