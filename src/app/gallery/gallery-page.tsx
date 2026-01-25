@@ -34,6 +34,11 @@ const teamMembers = [
         role: 'Finance Head',
         imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/giaug5xkvf2jpvqpqyuv',
     },
+    {
+        name: 'MD. Monir Hossen',
+        role: 'Manager (QC)',
+        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/pg49canvtn1m5kmmycxb',
+    },
 ];
 
 const galleryImages = [
