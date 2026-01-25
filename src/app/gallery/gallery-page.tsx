@@ -49,7 +49,7 @@ const teamMembers = [
     {
         name: 'Ayesha Akhter Akhi',
         role: 'Quality Assurance (QA)',
-        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/v1767044892/jjmovbu56hvfpwsx4d6u.jpg',
+        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/vigw8wzwxjinowi42lp6',
     },
 
   {
