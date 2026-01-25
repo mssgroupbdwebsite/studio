@@ -14,36 +14,49 @@ const mdDetails = {
 };
 
 const teamMembers = [
+
     {
-        name: 'Emily White',
-        role: 'Marketing Director',
-        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/v1767044892/jjmovbu56hvfpwsx4d6u.jpg',
-    },
-    {
-        name: 'Sarah Green',
-        role: 'Quality Assurance Lead',
+        name: 'MD Afsar Ali',
+        role: 'Director',
         imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/xbkjkmrtqbkf1yjuzz6o',
     },
     {
-        name: 'David Chen',
-        role: 'Finance Head',
-        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/giaug5xkvf2jpvqpqyuv',
-    },
+      name: 'MD.Abul Hossain',
+      role: 'Director',
+      imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/a5wkcfngxpttcq4vmfrs',
+  },
+  {
+    name: 'MD.Anarul Islam',
+    role: 'Manager Operation and Marketing',
+    imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/iad2qpmdw7onqoh8ynuv',
+},
+    {
+      name: 'Jahid Hasan Babu',
+      role: 'Genaral Manager',
+      imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/ortwmxkrseczvfwvj1os',
+  },
+
     {
         name: 'MD. Monir Hossen',
         role: 'Manager (QC)',
         imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/pg49canvtn1m5kmmycxb',
     },
     {
-        name: 'MD.Hashaduzzaman',
+        name: 'MD.Hasanuzzaman',
         role: 'Technical Manager',
         imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/fcubfhfx9ppvn8mq8twq',
     },
     {
         name: 'Ayesha Akhter Akhi',
         role: 'Quality Assurance (QA)',
-        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/jao5i9xzp8hs7mtselmh',
+        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/v1767044892/jjmovbu56hvfpwsx4d6u.jpg',
     },
+
+  {
+    name: ' MD Ashanur Islam Rudro',
+    role: 'Administration & IT',
+    imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/sjo9oirudfosccfewsvx',
+},
 ];
 
 const galleryImages = [
