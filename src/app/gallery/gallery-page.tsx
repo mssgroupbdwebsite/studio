@@ -17,7 +17,7 @@ const teamMembers = [
     {
         name: 'Emily White',
         role: 'Marketing Director',
-        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/jao5i9xzp8hs7mtselmh',
+        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/v1767044892/jjmovbu56hvfpwsx4d6u.jpg',
     },
     {
         name: 'Sarah Green',
