@@ -192,10 +192,10 @@ const stagger = {
 
 
 export default function PrivacyPolicyPageComponent() {
-  const [date, setDate] = useState('');
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setDate(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
+    setIsClient(true);
   }, []);
 
   return (
@@ -211,7 +211,7 @@ export default function PrivacyPolicyPageComponent() {
                 Your Privacy Matters to Us
             </h1>
             <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-              Last Updated: {date}
+              {isClient ? `Last Updated: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}` : <>&nbsp;</>}
             </p>
         </div>
       </motion.header>

@@ -37,9 +37,16 @@ import {
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 function InquiryCard({ inquiry }: { inquiry: Inquiry }) {
     const initial = inquiry.name.charAt(0).toUpperCase();
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
 
     return (
         <Card className="group relative transition-all duration-300 ease-in-out hover:shadow-2xl hover:border-primary/50">
@@ -68,7 +75,11 @@ function InquiryCard({ inquiry }: { inquiry: Inquiry }) {
                             </div>
                             <div className="text-xs text-muted-foreground flex items-center gap-2 flex-shrink-0 mx-4">
                                 <Clock className="h-3 w-3" />
-                                <span>{formatDistanceToNow(new Date(inquiry.submittedAt), { addSuffix: true })}</span>
+                                 {isClient ? (
+                                    <span>{formatDistanceToNow(new Date(inquiry.submittedAt), { addSuffix: true })}</span>
+                                ) : (
+                                    <Skeleton className="h-4 w-20" />
+                                )}
                             </div>
                             <AccordionTrigger className="p-2 rounded-full hover:bg-accent [&[data-state=open]]:-rotate-180 transition-transform duration-300">
                                 <ChevronDown className="h-5 w-5" />
