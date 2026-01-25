@@ -11,11 +11,6 @@ const mdDetails = {
     role: 'Founder & CEO',
     imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/obmekpiozv9nwykamn8j',
     description: "A visionary leader with over two decades of experience in the apparel industry, A. al-Mamun founded MSS Group with a commitment to quality, innovation, and ethical manufacturing. His leadership drives the company's success and global expansion.",
-    socials: [
-      { icon: <Linkedin className="h-4 w-4"/>, href: '#' },
-      { icon: <Twitter className="h-4 w-4"/>, href: '#' },
-      { icon: <Facebook className="h-4 w-4" />, href: '#'},
-    ]
 };
 
 const teamMembers = [
@@ -28,11 +23,6 @@ const teamMembers = [
         name: 'Emily White',
         role: 'Marketing Director',
         imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/jao5i9xzp8hs7mtselmh',
-    },
-    {
-        name: 'Michael Brown',
-        role: 'Logistics Manager',
-        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/xxbdatzh6kgbypm2nftm',
     },
     {
         name: 'Sarah Green',
