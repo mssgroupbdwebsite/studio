@@ -8,7 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 
 const mdDetails = {
     name: 'MD. Maidul Islam',
-    role: 'Founder & CEO',
+    role: 'Managing Director & CEO',
     imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/obmekpiozv9nwykamn8j',
     description: "A visionary leader with over two decades of experience in the apparel industry, MD. Maidul Islam founded MSS Group with a commitment to quality, innovation, and ethical manufacturing. His leadership drives the company's success and global expansion.",
 };
@@ -52,7 +52,11 @@ const teamMembers = [
         role: 'Quality Assurance (QA)',
         imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/vigw8wzwxjinowi42lp6',
     },
-
+    {
+        name: 'Sadia Sultanai',
+        role: 'Communication Officer',
+        imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/v1769529257/f9fltlcpprihmzs6iej5.jpg',
+    },
   {
     name: ' MD Ashanur Islam Rudro',
     role: 'Administration & IT',
