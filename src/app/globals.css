@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* =========================
+   CSS VARIABLES (THEME SAFE)
+   ========================= */
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -24,6 +27,8 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
     --radius: 0.5rem;
+
+    /* Custom Brand */
     --chart-1: 217 91% 60%;
     --gold: 45 75% 50%;
   }
@@ -48,25 +53,55 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+
     --chart-1: 217 91% 60%;
     --gold: 45 75% 55%;
   }
 }
 
+/* =========================
+   BASE STYLES
+   ========================= */
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
   }
 }
 
+/* =========================
+   COMPONENTS
+   ========================= */
 @layer components {
   .btn-primary-gradient {
-      @apply bg-gradient-to-br from-blue-700 to-blue-500 text-white shadow-lg;
+    @apply bg-gradient-to-br from-blue-700 to-blue-500 text-white shadow-lg transition-all;
   }
+
   .btn-primary-gradient:hover {
-      @apply from-blue-800 to-blue-600 shadow-blue-500/50;
+    @apply from-blue-800 to-blue-600 shadow-blue-500/50;
   }
+
+  /* Luxury divider line */
+  .lux-divider {
+    @apply h-[2px] w-16 bg-gradient-to-r from-foreground/80 to-transparent;
+  }
+}
+
+/* =========================
+   ANIMATIONS (FACTORY SLIDER)
+   ========================= */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-55%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 45s linear infinite;
 }
