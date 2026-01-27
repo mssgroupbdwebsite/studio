@@ -53,7 +53,7 @@ const teamMembers = [
         imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/vigw8wzwxjinowi42lp6',
     },
     {
-        name: 'Sadia Sultanai',
+        name: 'Sadia Sultana',
         role: 'Communication Officer',
         imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/v1769529257/f9fltlcpprihmzs6iej5.jpg',
     },
