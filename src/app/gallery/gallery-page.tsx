@@ -17,7 +17,7 @@ const teamMembers = [
 
 
     {
-      name: 'MD.Abul Hossain',
+      name: 'MD Abul Hossain',
       role: 'Director',
       imageUrl: 'https://res.cloudinary.com/dkfxz5wgx/image/upload/a5wkcfngxpttcq4vmfrs',
   },
