@@ -51,7 +51,7 @@ export default function Page() {
       <LuxurySection
         title="Washing Unit"
         description="Eco-conscious industrial washing technology ensuring durability, softness, and color integrity."
-        img1="https://res.cloudinary.com/your-id/image/upload/wash1.jpg"
+        img1="hhttps://res.cloudinary.com/dkfxz5wgx/image/upload/sxvvcxdm7airtjbzc9zr"
         img2="https://res.cloudinary.com/your-id/image/upload/wash2.jpg"
       />
 
