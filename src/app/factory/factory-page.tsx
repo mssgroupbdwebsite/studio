@@ -1,13 +1,13 @@
 export default function Page() {
   return (
     <main className="bg-white text-gray-900 dark:bg-[#0B0E14] dark:text-gray-100 transition-colors duration-300">
-      {/* HERO WITH BACKGROUND IMAGE */}
+      {/* HERO */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage:
-              "url(https://res.cloudinary.com/your-id/image/upload/hero.jpg)",
+              "url(https://res.cloudinary.com/dkfxz5wgx/image/upload/v1769685448/tzqdpvmecztiqyrdei6h.jpg)",
           }}
         />
         <div className="absolute inset-0 bg-white/70 dark:bg-black/65 backdrop-blur-[2px]" />
@@ -31,39 +31,41 @@ export default function Page() {
         </div>
       </section>
 
-      {/* SECTIONS */}
-
+      {/* CUTTING */}
       <LuxurySection
         title="Cutting Division"
         description="Advanced digital cutting systems ensuring absolute accuracy, efficiency, and optimized fabric utilization."
-        img1="https://res.cloudinary.com/your-id/image/upload/cutting1.jpg"
-        img2="https://res.cloudinary.com/your-id/image/upload/cutting2.jpg"
+        img1="https://res.cloudinary.com/dkfxz5wgx/image/upload/skh8adddfzreb9hydf0b"
+        img2="https://res.cloudinary.com/dkfxz5wgx/image/upload/yqpcp5cseveqioqpg9g0"
       />
 
+      {/* KNITTING */}
       <LuxurySection
         title="Knitting Division"
         description="State-of-the-art knitting lines delivering consistency, scalability, and premium textile quality."
         reverse
-        img1="https://res.cloudinary.com/your-id/image/upload/knit1.jpg"
-        img2="https://res.cloudinary.com/your-id/image/upload/knit2.jpg"
+        img1="https://res.cloudinary.com/dkfxz5wgx/image/upload/a4cqqiykj3f3kg4dde1u"
+        img2="https://res.cloudinary.com/dkfxz5wgx/image/upload/ibfaxjam5ln7ms84qh6w"
       />
 
+      {/* WASHING */}
       <LuxurySection
         title="Washing Unit"
         description="Eco-conscious industrial washing technology ensuring durability, softness, and color integrity."
-        img1="hhttps://res.cloudinary.com/dkfxz5wgx/image/upload/sxvvcxdm7airtjbzc9zr"
-        img2="https://res.cloudinary.com/your-id/image/upload/wash2.jpg"
+        img1="https://res.cloudinary.com/dkfxz5wgx/image/upload/sxvvcxdm7airtjbzc9zr"
+        img2="https://res.cloudinary.com/dkfxz5wgx/image/upload/oxjtd2nhte3boykxvn3q"
       />
 
+      {/* FINISHING & IRONING */}
       <LuxurySection
         title="Ironing & Finishing"
         description="Meticulous finishing, inspection, and packaging aligned with international buyer standards."
         reverse
-        img1="https://res.cloudinary.com/your-id/image/upload/finish1.jpg"
-        img2="https://res.cloudinary.com/your-id/image/upload/finish2.jpg"
+        img1="https://res.cloudinary.com/dkfxz5wgx/image/upload/r90vehb72vkmwyleo5fx"
+        img2="https://res.cloudinary.com/dkfxz5wgx/image/upload/ovn0htyd8m8nqcovx5vk"
       />
 
-      {/* AUTO MOVING GALLERY */}
+      {/* GALLERY */}
       <section className="py-28 bg-gray-50 dark:bg-[#111520] transition-colors">
         <h2 className="text-center text-4xl font-semibold mb-16">
           Factory Production Highlights
@@ -71,10 +73,16 @@ export default function Page() {
 
         <div className="overflow-hidden">
           <div className="flex gap-10 animate-marquee">
-            {Array.from({ length: 14 }).map((_, i) => (
+            {[
+              "https://res.cloudinary.com/dkfxz5wgx/image/upload/v1769685446/vhkljwuyzgx0dtwipn42.jpg",
+              "https://res.cloudinary.com/dkfxz5wgx/image/upload/wq92ssbpfbb2npmm283x",
+              "https://res.cloudinary.com/dkfxz5wgx/image/upload/hsbun0gqv4thfa05iiow",
+              "https://res.cloudinary.com/dkfxz5wgx/image/upload/aqqha8yavkghayixltx0",
+              "https://res.cloudinary.com/dkfxz5wgx/image/upload/hssiplwny0e2fdmpardc",
+            ].map((src, i) => (
               <img
                 key={i}
-                src="https://res.cloudinary.com/your-id/image/upload/gallery.jpg"
+                src={src}
                 alt="Factory"
                 className="w-[420px] h-[260px] rounded-2xl object-cover shadow-2xl flex-shrink-0"
               />
@@ -91,7 +99,7 @@ export default function Page() {
   );
 }
 
-/* ---------------- LUXURY SECTION COMPONENT ---------------- */
+/* ---------------- SECTION COMPONENT ---------------- */
 
 function LuxurySection({
   title,
@@ -108,13 +116,9 @@ function LuxurySection({
 }) {
   return (
     <section className="max-w-7xl mx-auto px-6 py-28">
-      <div
-        className={`grid grid-cols-1 md:grid-cols-2 gap-20 items-center ${
-          reverse ? "md:flex-row-reverse" : ""
-        }`}
-      >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
         {/* TEXT */}
-        <div className="space-y-8">
+        <div className={`space-y-8 ${reverse ? "md:order-2" : ""}`}>
           <div className="w-16 h-[2px] bg-gradient-to-r from-gray-900/80 to-transparent dark:from-white/80" />
           <h2 className="text-4xl font-semibold">{title}</h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-xl">
@@ -123,7 +127,7 @@ function LuxurySection({
         </div>
 
         {/* IMAGES */}
-        <div className="grid grid-cols-2 gap-8">
+        <div className={`grid grid-cols-2 gap-8 ${reverse ? "md:order-1" : ""}`}>
           <img
             src={img1}
             alt={title}
