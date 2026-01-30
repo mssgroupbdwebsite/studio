@@ -3,19 +3,15 @@ export default function Page() {
     <main className="bg-white text-gray-900 dark:bg-[#0B0E14] dark:text-gray-100 transition-colors duration-300">
       {/* HERO WITH BACKGROUND IMAGE */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage:
-              "url(https://res.cloudinary.com/demo/image/upload/sample.jpg)",
+              "url(https://res.cloudinary.com/your-id/image/upload/hero.jpg)",
           }}
         />
-
-        {/* Overlay */}
         <div className="absolute inset-0 bg-white/70 dark:bg-black/65 backdrop-blur-[2px]" />
 
-        {/* Content */}
         <div className="relative z-10 max-w-5xl px-6 text-center space-y-8">
           <span className="uppercase tracking-[0.35em] text-sm font-medium text-gray-700 dark:text-gray-300">
             Garment Buying House
@@ -36,26 +32,35 @@ export default function Page() {
       </section>
 
       {/* SECTIONS */}
+
       <LuxurySection
         title="Cutting Division"
         description="Advanced digital cutting systems ensuring absolute accuracy, efficiency, and optimized fabric utilization."
+        img1="https://res.cloudinary.com/your-id/image/upload/cutting1.jpg"
+        img2="https://res.cloudinary.com/your-id/image/upload/cutting2.jpg"
       />
 
       <LuxurySection
         title="Knitting Division"
         description="State-of-the-art knitting lines delivering consistency, scalability, and premium textile quality."
         reverse
+        img1="https://res.cloudinary.com/your-id/image/upload/knit1.jpg"
+        img2="https://res.cloudinary.com/your-id/image/upload/knit2.jpg"
       />
 
       <LuxurySection
         title="Washing Unit"
         description="Eco-conscious industrial washing technology ensuring durability, softness, and color integrity."
+        img1="https://res.cloudinary.com/your-id/image/upload/wash1.jpg"
+        img2="https://res.cloudinary.com/your-id/image/upload/wash2.jpg"
       />
 
       <LuxurySection
         title="Ironing & Finishing"
         description="Meticulous finishing, inspection, and packaging aligned with international buyer standards."
         reverse
+        img1="https://res.cloudinary.com/your-id/image/upload/finish1.jpg"
+        img2="https://res.cloudinary.com/your-id/image/upload/finish2.jpg"
       />
 
       {/* AUTO MOVING GALLERY */}
@@ -69,7 +74,7 @@ export default function Page() {
             {Array.from({ length: 14 }).map((_, i) => (
               <img
                 key={i}
-                src="https://res.cloudinary.com/demo/image/upload/sample.jpg"
+                src="https://res.cloudinary.com/your-id/image/upload/gallery.jpg"
                 alt="Factory"
                 className="w-[420px] h-[260px] rounded-2xl object-cover shadow-2xl flex-shrink-0"
               />
@@ -86,16 +91,20 @@ export default function Page() {
   );
 }
 
-/* ---------------- LUXURY SECTION ---------------- */
+/* ---------------- LUXURY SECTION COMPONENT ---------------- */
 
 function LuxurySection({
   title,
   description,
   reverse = false,
+  img1,
+  img2,
 }: {
   title: string;
   description: string;
   reverse?: boolean;
+  img1: string;
+  img2: string;
 }) {
   return (
     <section className="max-w-7xl mx-auto px-6 py-28">
@@ -113,15 +122,15 @@ function LuxurySection({
           </p>
         </div>
 
-        {/* IMAGES (2 PER SECTION) */}
+        {/* IMAGES */}
         <div className="grid grid-cols-2 gap-8">
           <img
-            src="https://res.cloudinary.com/demo/image/upload/sample.jpg"
+            src={img1}
             alt={title}
             className="h-64 w-full object-cover rounded-2xl shadow-xl"
           />
           <img
-            src="https://res.cloudinary.com/demo/image/upload/sample.jpg"
+            src={img2}
             alt={title}
             className="h-64 w-full object-cover rounded-2xl shadow-xl translate-y-12"
           />
